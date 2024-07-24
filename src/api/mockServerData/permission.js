@@ -56,11 +56,11 @@ export default {
               icon: "pie-chart",
               children: [
                 {
-                  path: "/productype",
-                  name: "productype",
-                  lable: "商品类型",
+                  path: "/datamanagment",
+                  name: "datamanagment",
+                  lable: "数据管理",
                   icon: "s-custom",
-                  url: "ProductType.vue",
+                  url: "DataManagement.vue",
                 },
                 {
                   path: "/languagescreen",

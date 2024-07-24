@@ -4,7 +4,7 @@
 
 <script>
 export default {
-  name: "ProductType",
+  name: "DataManagement",
   data() {
     return {};
   },

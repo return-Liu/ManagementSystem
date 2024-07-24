@@ -13,24 +13,10 @@
 
 <!-- 通过事件总线把数据大屏信息传给数据管理 -->
 <script>
-import { eventBus } from "../main"; // 导入事件总线
 export default {
   name: "DataManagement",
   data() {
-    return {
-      receivedData: [], // 用于存储从事件总线接收到的数据
-    };
-  },
-  created() {
-    // 监听事件总线上的'dataUpdated'事件
-    eventBus.$on("dataUpdated", (data) => {
-      this.receivedData = data;
-      console.log("Received data:", data);
-    });
-  },
-  beforeDestroy() {
-    // 组件销毁前，移除事件监听器
-    eventBus.$off("dataUpdated");
+    return {};
   },
 };
 </script>

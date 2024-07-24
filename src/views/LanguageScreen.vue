@@ -23,7 +23,6 @@
 </template>
 
 <script>
-import { eventBus } from "../main";
 export default {
   name: "LanguageScreen",
   data() {
@@ -36,17 +35,6 @@ export default {
         { date: "javascript", address: "20%" },
       ],
     };
-  },
-  methods: {
-    addData() {
-      if (this.formDta.date && this.formDta.address) {
-        this.tableData.push({ ...this.formDta });
-        this.formDta = { date: "", address: "" };
-        this.dialogVisible = false;
-        // 通知数据管理组件数据已更新
-        eventBus.$emit("dataUpdated", this.tableData);
-      }
-    },
   },
 };
 </script>

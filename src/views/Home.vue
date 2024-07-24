@@ -62,7 +62,7 @@
       <div class="num-list">
         <el-card
           style="
-            height: 273px;
+            height: 290px;
             width: 100%;
             background-color: var(--bg1);
             border: var(--border1);

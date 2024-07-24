@@ -88,7 +88,11 @@
       </span>
     </el-dialog>
     <div class="manage-header">
-      <el-button type="primary" @click="hanlderAdd" class="primary">
+      <el-button
+        type="primary"
+        class="el-button el-button--primary"
+        @click="hanlderAdd"
+      >
         + 新增</el-button
       >
       <el-button

@@ -8,7 +8,7 @@
   >
     <h3 style="color: var(--text-color1); background-color: var(--bg3)">
       <!-- <img src="../assets/logo.png" class="logo" /> -->
-      {{ isCollapse ? "后台" : "商品后台管理系统" }}
+      {{ isCollapse ? "后台" : "后台管理系统" }}
     </h3>
     <el-menu-item
       @click="clickMenu(item)"

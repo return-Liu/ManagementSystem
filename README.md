@@ -1,8 +1,16 @@
 ## 项目文档
 
-项目的技术栈: vue2、vuex、vue-router、axios、element-ui less
-此项目采用 mock.js 模拟数据
-将在 vue3 中使用后端技术 待开发
+//1.项目的技术栈: vue2、vuex、vue-router、axios、element-ui less
+//2.此项目采用 mock.js 模拟数据
+//将在 vue3 中使用后端技术 待开发
+
+## 项目功能主要
+
+1. 登录注册功能
+2. 菜单栏功能
+3. 权限管理功能
+4. 搜索功能 增删改查与批量操作功能 分页功能
+5. 头像上传功能 主题切换功能
 
 ## 账号密码
 

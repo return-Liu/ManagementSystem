@@ -1,0 +1,22 @@
+/* 默认亮色主题 */
+:root {
+  --text-color: #fff;
+  --text-color1: #fff;
+  --text-color2: #ab9292;
+  --bg1: #fff;
+  --bg2: #b0b0f0;
+  --bg3: rgb(84, 92, 100);
+  --bg4: var(--bg2);
+  --border1: #ff7070;
+}
+/* 暗色主题 */
+html[data-theme="dark"] {
+  --text-color: #5e5757;
+  --text-color1: #333;
+  --text-color2: #333;
+  --bg1: #121111;
+  --bg2: #121111;
+  --bg3: #121111;
+  --bg4: #121111;
+  --border1: #2a2845;
+}

@@ -1,8 +1,7 @@
 ## 项目文档
 
-//1.项目的技术栈: vue2、vuex、vue-router、axios、element-ui less
-//2.此项目采用 mock.js 模拟数据
-//将在 vue3 中使用后端技术 待开发
+项目的技术栈: vue2、vuex、vue-router、axios、element-ui less . 此项目采用 mock.js 模拟数据
+. 将在 vue3 中使用后端技术 待开发
 
 ## 项目功能主要
 

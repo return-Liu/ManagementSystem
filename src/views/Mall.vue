@@ -12,7 +12,6 @@
         type="error"
         v-show="alertVisible"
       ></el-alert>
-
       <!-- 商品的表单信息 -->
       <el-form
         ref="form"

@@ -1,8 +1,5 @@
 <template>
-  <div class="language">
-    <dv-border-box-1 :color="['blue']" :background-color="['blue']">
-    </dv-border-box-1>
-  </div>
+  <div class="language"></div>
 </template>
 <script>
 // 引入

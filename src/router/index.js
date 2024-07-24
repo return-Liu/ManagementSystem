@@ -8,7 +8,7 @@ Vue.use(VueRouter);
 // import User from "../views/User";
 import Main from "../views/Main";
 // import Mall from "../views/Mall";
-// import ProductType from "../views/ProductType";
+// import DataManagement from "../views/DataManagement";
 import Login from "../views/Login";
 import Register from "../views/Register";
 // import LanguageScreen from "../views/LanguageScreen";
@@ -40,9 +40,9 @@ const routes = [
       //   component: Mall,
       // },
       // {
-      //   name: "productype",
-      //   path: "productype",
-      //   component: ProductType, //商品类型
+      //   name: "datamanagment",
+      //   path: "datamanagment", //数据管理
+      //   component: DataManagement,
       // },
       // {
       //   name: "languagescreen",

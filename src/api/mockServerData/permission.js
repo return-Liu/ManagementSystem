@@ -56,8 +56,8 @@ export default {
               icon: "pie-chart",
               children: [
                 {
-                  path: "/datamanagment",
-                  name: "datamanagment",
+                  path: "/datamanagement",
+                  name: "datamanagement",
                   lable: "数据管理",
                   icon: "s-custom",
                   url: "DataManagement.vue",

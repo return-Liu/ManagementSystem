@@ -35,7 +35,7 @@
           <i class="el-icon-arrow-down el-icon--right"></i>
         </span>
         <el-dropdown-menu slot="dropdown">
-          <el-dropdown-item @click="hanldermessage">个人信息</el-dropdown-item>
+          <el-dropdown-item @click="hanldermessage">个人中心</el-dropdown-item>
           <el-dropdown-item command="cancel">退出</el-dropdown-item>
         </el-dropdown-menu>
         <div class="el-icon-full-screen" @click="handlerscreen"></div>

@@ -47,7 +47,7 @@ export default {
             {
               path: "/user",
               name: "user",
-              lable: "用户信息",
+              lable: "用户管理",
               icon: "user-solid",
               url: "User.vue",
             },

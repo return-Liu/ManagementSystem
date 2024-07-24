@@ -4,7 +4,7 @@
 <script>
 // 引入
 export default {
-  name: "LanguageScreen",
+  name: "PersonalCenter",
   data() {
     return {};
   },

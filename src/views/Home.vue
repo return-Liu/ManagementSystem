@@ -68,17 +68,7 @@
             border: var(--border1);
           "
         >
-          <div class="message">
-            基本语言详情<span
-              style="
-                margin-left: 10px;
-                color: var(--text-color2);
-                cursor: pointer;
-              "
-              @click="updateLang"
-              >其他语言请查看大屏</span
-            >
-          </div>
+          <div class="message">基本语言详情</div>
           <div class="progress">
             <template v-for="lang in languages">
               <span :key="lang.id">{{ lang.name }}</span>

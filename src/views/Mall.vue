@@ -2,7 +2,7 @@
   <div class="mallMeggage">
     <el-dialog
       style="background-color: var(--bg1)"
-      :title="modelType ? '编辑商品' : '新增商品'"
+      :title="modelType ? '编辑产品' : '新增产品'"
       :visible.sync="dialogVisible"
       width="50%"
       :before-close="handleClose"
@@ -23,19 +23,25 @@
         <el-row :gutter="20">
           <el-col :span="12">
             <el-card style="height: 100%">
-              <el-form-item label="商品名称" prop="name">
+              <el-form-item label="产品名称" prop="name">
                 <el-input
                   v-model="form.name"
-                  placeholder="请输入商品名称"
+                  placeholder="请输入产品名称"
                 ></el-input>
               </el-form-item>
             </el-card>
           </el-col>
           <el-col :span="12">
             <el-card style="height: 100%">
-              <el-form-item label="商品类型" prop="type">
-                <el-select v-model="form.type" placeholder="请选择商品类型">
-                  <!-- 选项省略 -->
+              <el-form-item label="产品类型" prop="type">
+                <el-select v-model="form.type" placeholder="请选择产品类型">
+                  <el-option
+                    v-for="item in productTypes"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value"
+                  >
+                  </el-option>
                 </el-select>
               </el-form-item>
             </el-card>
@@ -44,20 +50,20 @@
         <el-row :gutter="20" style="margin-top: 10px">
           <el-col :span="12">
             <el-card style="height: 100%">
-              <el-form-item label="商品数量" prop="number">
+              <el-form-item label="商品产品" prop="number">
                 <el-input
                   v-model="form.number"
-                  placeholder="请输入商品数量"
+                  placeholder="请输入产品数量"
                 ></el-input>
               </el-form-item>
             </el-card>
           </el-col>
           <el-col :span="12">
             <el-card style="height: 100%">
-              <el-form-item label="商品价格" prop="price">
+              <el-form-item label="产品价格" prop="price">
                 <el-input
                   v-model="form.price"
-                  placeholder="请输入商品价格"
+                  placeholder="请输入产品价格"
                 ></el-input>
               </el-form-item>
             </el-card>
@@ -66,11 +72,11 @@
         <el-row :gutter="20" style="margin-top: 10px">
           <el-col :span="24">
             <el-card style="height: 100%">
-              <el-form-item label="商品介绍" prop="description">
+              <el-form-item label="产品介绍" prop="description">
                 <el-input
                   type="textarea"
                   :autosize="{ minRows: 2, maxRows: 4 }"
-                  placeholder="请输入内容"
+                  placeholder="请输入产品内容"
                   v-model="form.description"
                   max="30"
                   min="0"
@@ -128,11 +134,11 @@
       >
         <!-- 添加一列用于复选框 -->
         <el-table-column type="selection" width="55"></el-table-column>
-        <el-table-column prop="name" label="商品名称"> </el-table-column>
-        <el-table-column prop="type" label="商品类型"> </el-table-column>
-        <el-table-column prop="number" label="商品数量"></el-table-column>
-        <el-table-column prop="price" label="商品价格"> </el-table-column>
-        <el-table-column prop="description" label="商品介绍"> </el-table-column>
+        <el-table-column prop="name" label="产品名称"> </el-table-column>
+        <el-table-column prop="type" label="产品类型"> </el-table-column>
+        <el-table-column prop="number" label="产品数量"></el-table-column>
+        <el-table-column prop="price" label="产品价格"> </el-table-column>
+        <el-table-column prop="description" label="产品介绍"> </el-table-column>
         <el-table-column label="操作">
           <template slot-scope="scope">
             <el-button
@@ -190,6 +196,14 @@ export default {
         price: [{ required: true, message: "请输入商品价格" }],
         description: [{ required: true, message: "请输入商品介绍" }],
       },
+      // 产品类型
+      productTypes: [
+        { value: "新款电脑", label: "新款电脑" },
+        { value: "保湿面霜", label: "保湿面霜" },
+        { value: "智能手机", label: "智能手机" },
+        { value: "时尚衬衫", label: "时尚衬衫" },
+        { value: "经典小说", label: "经典小说" },
+      ],
       // 表格数据
       tableData: [],
       // 存放id

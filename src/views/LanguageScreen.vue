@@ -7,17 +7,9 @@
         border: var(--border1);
       "
     >
-      <div class="Product" style="background-color: var(--text-color)">
-        其他语言大屏展示
-      </div>
-      <el-table :data="tableData" style="width: 100%">
-        <!-- 设置语言列靠左 -->
-        <el-table-column prop="date" label="语言" width="180" align="left">
-        </el-table-column>
-        <!-- 设置已完成列靠右 -->
-        <el-table-column prop="address" label="已完成" align="right">
-        </el-table-column>
-      </el-table>
+      <dv-border-box-1 :color="['red', 'green']" backgroundColor="blue"
+        >dv-border-box-1</dv-border-box-1
+      >
     </el-card>
   </div>
 </template>

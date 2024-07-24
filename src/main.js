@@ -17,6 +17,9 @@ import ElementUI from "element-ui";
 // 引入Element UI的默认主题样式
 import "element-ui/lib/theme-chalk/index.css";
 Vue.use(ElementUI);
+// 将自动注册所有组件为全局组件
+import dataV from "@jiaminghi/data-view";
+Vue.use(dataV);
 //   添加全局前置守卫
 router.beforeEach((to, from, next) => {
   // 判断是否有token

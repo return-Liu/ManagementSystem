@@ -13,7 +13,7 @@
 
 <!-- 通过事件总线把数据大屏信息传给数据管理 -->
 <script>
-import { eventBus } from "./main"; // 导入事件总线
+import { eventBus } from "../main"; // 导入事件总线
 export default {
   name: "DataManagement",
   data() {

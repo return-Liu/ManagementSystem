@@ -8,7 +8,7 @@
       :model="form"
       :rules="rules"
     >
-      <i class="el-icon-back" @click="returnClick"></i>
+      <i class="el-icon-back" title="返回" @click="returnClick"></i>
       <h3 class="login-title">注册页面</h3>
       <el-form-item label="用户名" prop="username">
         <el-input v-model="form.username" placeholder="请输入账号"></el-input>
@@ -116,6 +116,10 @@ export default {
   border-radius: 15px;
   box-shadow: 0 0 15px rgb(217, 222, 224);
   box-sizing: border-box;
+  .el-icon-back {
+    color: pink;
+    font-size: 20px;
+  }
   .login-title {
     text-align: center;
     margin-bottom: 40px;

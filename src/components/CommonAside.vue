@@ -3,7 +3,7 @@
     class="el-menu-vertical-demo"
     :collapse="isCollapse"
     background-color="#545c64"
-    text-color="#fff"
+    text-color="var(--text-color2)"
     active-text-color="#43b3cf"
   >
     <h3 style="color: var(--text-color1); background-color: var(--bg3)">

@@ -70,10 +70,10 @@
         >
           <div class="message">基本语言详情</div>
           <div class="progress">
-            <template v-for="lang in languages">
-              <span :key="lang.id">{{ lang.name }}</span>
+            <template v-for="(lang, index) in languages">
+              <span :key="lang.name">{{ lang.name }}</span>
               <el-progress
-                :key="lang.id"
+                :key="index"
                 :percentage="lang.percentage"
                 :color="lang.color"
               ></el-progress>
@@ -117,10 +117,10 @@ export default {
     return {
       // 语言列表
       languages: [
-        { id: 1, name: "Vue", percentage: 70, color: "green" },
-        { id: 2, name: "Javascript", percentage: 23.4, color: "yellow" },
-        { id: 3, name: "CSS", percentage: 13, color: "blue" },
-        { id: 4, name: "HTML", percentage: 5, color: "red" },
+        { name: "Vue", percentage: 70, color: "green" },
+        { name: "Javascript", percentage: 23.4, color: "yellow" },
+        { name: "CSS", percentage: 13, color: "blue" },
+        { name: "HTML", percentage: 5, color: "red" },
       ],
       // 头像
       avatarUrl:

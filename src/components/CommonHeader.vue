@@ -22,13 +22,6 @@
       </el-breadcrumb>
     </div>
     <div class="r-content">
-      <!-- 当前的时间 -->
-      <span class="time">{{ time }}</span>
-      <!-- <img
-        class="users"
-        src="../assets/images/789187C2E34DA7A8018BCDCC6B762911.jpg"
-        alt=""
-      /> -->
       <el-dropdown @command="handlerDropdown">
         <span class="el-dropdown-link">
           <span>{{ user }}</span>
@@ -53,18 +46,9 @@ export default {
   data() {
     return {
       user: "欢迎 admin",
-      // 获取当前时间时分秒
-      time: "",
-      // value: "99",
     };
   },
   methods: {
-    updateTime() {
-      // 获取当时的时间
-      const now = new Date();
-      // 格式化为年月日时分秒
-      this.time = `${now.getHours()}:${now.getMinutes()}:${now.getSeconds()}`; // 格式化时间
-    },
     handlerMenu() {
       // 侧边栏的折叠
       this.$store.commit("CollapseMenu");
@@ -111,15 +95,6 @@ export default {
     ...mapState({
       msg: (state) => state.tab.tabsList,
     }),
-  },
-  mounted() {
-    // 页面挂载后立即更新一次时间，并设置定时器每秒更新
-    this.updateTime(); // 页面挂载后立即更新一次时间
-    this.timer = setInterval(this.updateTime, 1000); // 每秒更新时间
-  },
-  // 组件销毁前清除定时器
-  beforeDestroy() {
-    clearInterval(this.timer); // 组件销毁前清除定时器
   },
 };
 </script>

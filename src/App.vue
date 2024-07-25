@@ -7,6 +7,15 @@
 <script>
 export default {
   name: "App",
+  data() {
+    return {
+      theme: localStorage.getItem("theme") || "light",
+    };
+  },
+  mounted() {
+    // 应用主题
+    document.documentElement.setAttribute("data-theme", this.theme);
+  },
 };
 </script>
 <style lang="less">
@@ -19,6 +28,7 @@ p {
 }
 body {
   background-color: var(--bg1);
+  color: var(--text-color);
 }
 // 处理卡片内的样式
 /* 使用:deep()穿透Element UI组件的封装 */

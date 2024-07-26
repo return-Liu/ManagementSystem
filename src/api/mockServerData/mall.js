@@ -45,19 +45,42 @@ function generateProducts(count = 200) {
   const products = [];
   for (let i = 0; i < count; i++) {
     const productType = Mock.Random.pick(productTypes);
+    const productName = generateProductName(productType);
     products.push(
       Mock.mock({
         id: Mock.Random.guid(),
-        // 使用新方法生成商品名称，并考虑类型
-        name: generateProductName(productType),
+        name: productName,
         type: productType,
-        number: Mock.Random.integer(100, 600), // 更正字段名为"number"
+        number: Mock.Random.integer(100, 600),
         price: Mock.Random.integer(10, 5000),
-        description: Mock.Random.csentence(10, 30),
+        // 根据商品类型和名称生成描述
+        description: generateDescription(productName, productType),
       })
     );
   }
   return products;
+}
+
+// 根据商品名称和类型生成描述
+function generateDescription(name, type) {
+  let description = "";
+  switch (type) {
+    case "智能设备":
+      description = `这款${name}采用了先进的智能技术，为您提供卓越的使用体验。`;
+      break;
+    case "文学艺术":
+      description = `这本${name}是文学爱好者不可多得的佳作，深入探讨了人性的复杂性。`;
+      break;
+    case "护肤彩妆":
+      description = `这款${name}适合各种肌肤类型，温和配方，带给您美丽自信。`;
+      break;
+    case "代码工具":
+      description = `这款${name}是开发者的得力助手，提升编程效率，让代码更加优雅。`;
+      break;
+    default:
+      description = `这是一款${name}，具体描述待补充。`;
+  }
+  return description;
 }
 const productList = generateProducts();
 // 统一处理参数提取

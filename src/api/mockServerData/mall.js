@@ -1,52 +1,43 @@
 import Mock from "mockjs";
 // 商品类型列表
 const productTypes = [
-  "电子产品",
-  "服饰",
-  "家居用品",
-  "图书",
-  "美妆个护",
-  "食品饮料",
-  "母婴玩具",
+  "智能设备", // 更新商品类型列表
+  "文学艺术",
+  "护肤彩妆",
+  "代码工具",
 ];
 // 新增方法生成商品名称，考虑类型
-function generateProductName(type) {
-  const adjectiveNounPairs = {
-    电子产品: [
-      ["智能", "新款"],
-      ["手机", "电脑"],
-    ],
-    服饰: [
-      ["时尚", "经典"],
-      ["衬衫", "连衣裙"],
-    ],
-    家居用品: [
-      ["创意", "实用"],
-      ["沙发", "灯具"],
-    ],
-    图书: [
-      ["畅销", "经典"],
-      ["小说", "科普"],
-    ],
-    美妆个护: [
-      ["保湿", "滋养"],
-      ["面霜", "洁面乳"],
-    ],
-    食品饮料: [
-      ["健康", "美味"],
-      ["坚果", "果汁"],
-    ],
-    母婴玩具: [
-      ["安全", "益智"],
-      ["婴儿车", "积木"],
-    ],
-  };
+const adjectiveNounPairs = {
+  智能设备: [
+    ["智能", "高清"],
+    ["摄像头", "音箱"],
+  ],
 
-  const [adjectives, nouns] =
-    adjectiveNounPairs[type] || adjectiveNounPairs["服饰"]; // 默认为服饰
-  const adjective = Mock.Random.pick(adjectives);
-  const noun = Mock.Random.pick(nouns);
-  return `${adjective}${noun}`;
+  文学艺术: [
+    ["畅销", "经典"],
+    ["小说", "传记"],
+  ],
+  护肤彩妆: [
+    ["保湿", "防晒"],
+    ["面膜", "口红"],
+  ],
+  代码工具: [
+    ["代码", "工具"],
+    ["工具", "IDE"],
+  ],
+};
+// 声明新方法生成商品名称，考虑类型
+function generateProductName(type) {
+  // 如果类型不存在，返回"未知类型"
+  if (!adjectiveNounPairs[type]) {
+    return "未知类型";
+  }
+  const [adjectives, nouns] = adjectiveNounPairs[type];
+  const randomAdjective =
+    adjectives[Math.floor(Math.random() * adjectives.length)];
+  const randomNoun = nouns[Math.floor(Math.random() * nouns.length)];
+
+  return `${randomAdjective}${randomNoun}`;
 }
 
 // 生成商品列表数据

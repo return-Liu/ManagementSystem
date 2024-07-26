@@ -9,11 +9,13 @@ export default {
   name: "App",
   data() {
     return {
+      // 获取本地存储的主题
       theme: localStorage.getItem("theme") || "light",
+      // theme: localStorage.getItem("theme"),
     };
   },
   mounted() {
-    // 应用主题
+    // 获取主题进行挂载
     document.documentElement.setAttribute("data-theme", this.theme);
   },
 };

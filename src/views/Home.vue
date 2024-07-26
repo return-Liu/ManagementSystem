@@ -68,7 +68,7 @@
             border: var(--border1);
           "
         >
-          <div class="message">基本语言详情</div>
+          <div class="message">后台管理语言详情</div>
           <div class="progress">
             <template v-for="(lang, index) in languages">
               <span :key="lang.name">{{ lang.name }}</span>

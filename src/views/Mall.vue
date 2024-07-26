@@ -91,7 +91,7 @@
         <el-button @click="cancel">取消</el-button>
         <el-button
           style="color: #fff; background-color: #409eff; border-color: #409eff"
-          click="handlerClick"
+          @click="handlerClick"
           >确定</el-button
         >
       </span>

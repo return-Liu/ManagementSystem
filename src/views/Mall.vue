@@ -89,7 +89,11 @@
       </el-form>
       <span slot="footer" class="dialog-footer">
         <el-button @click="cancel">取消</el-button>
-        <el-button type="primary" @click="handlerClick">确定</el-button>
+        <el-button
+          style="color: #fff; background-color: #409eff; border-color: #409eff"
+          click="handlerClick"
+          >确定</el-button
+        >
       </span>
     </el-dialog>
     <div class="manage-header">

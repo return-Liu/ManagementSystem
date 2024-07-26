@@ -24,7 +24,7 @@
                 class="upload"
               />
             </div>
-            <p class="username">Admin</p>
+            <p class="username">admin</p>
             <p class="useraccess">超级管理员</p>
           </div>
         </div>

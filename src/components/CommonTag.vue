@@ -100,7 +100,7 @@ export default {
   }
   .el-tag {
     cursor: pointer;
-    background-color: var(--bg3);
+    background-color: var(--bg6);
     border: var(--border1);
     color: var(--text-color);
   }

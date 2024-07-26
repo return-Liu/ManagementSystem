@@ -82,7 +82,13 @@
       </span>
     </el-dialog>
     <div class="manage-header">
-      <el-button @click="handleAdd" type="primary"> + 新增 </el-button>
+      <el-button
+        @click="handleAdd"
+        class="el-button el-button--primary"
+        type="primary"
+      >
+        + 新增
+      </el-button>
       <el-button
         type="danger"
         class="danger"
@@ -130,12 +136,14 @@
             <el-button
               size="mini"
               type="primary"
+              class="emit"
               @click="handlerEidt(scope.row)"
               >编辑</el-button
             >
             <el-button
               size="mini"
               type="danger"
+              class="dangers"
               @click="handlerDelete(scope.row)"
               >删除</el-button
             >
@@ -383,14 +391,32 @@ export default {
     justify-content: space-between;
     align-items: center;
     position: relative;
+    .el-button--primary {
+      background-color: var(--bg4);
+      border-color: var(--bg4);
+      color: var(--text-color);
+    }
     .danger {
       position: absolute;
       left: 90px;
+      background-color: var(--bg5);
+      border-color: var(--bg5);
+      color: var(--text-color);
     }
   }
   .common-tabel {
     position: relative;
     height: calc(100% - 62px);
+    .emit {
+      background-color: var(--bg4);
+      border-color: var(--bg4);
+      color: var(--text-color);
+    }
+    .dangers {
+      background-color: var(--bg5);
+      border-color: var(--bg5);
+      color: var(--text-color);
+    }
     .pager {
       position: absolute;
       bottom: 0;
@@ -422,30 +448,30 @@ export default {
 }
 /* 使用 ::v-deep 或 /deep/ 根据你的 Vue 版本 */
 ::v-deep .el-pagination {
-  background-color: var(--bg2); /* 设置背景色为黑色 */
+  background-color: var(--bg6); /* 设置背景色为黑色 */
   color: var(--text-color); /* 设置主要的文字颜色为白色 */
 
   /* 调整分页按钮和链接的样式 */
   .el-pager li {
-    background-color: var(--bg2) !important;
+    background-color: var(--bg6) !important;
     color: var(--text-color);
     border-color: transparent;
   }
   .el-pager li:hover,
   .el-pager li.active {
-    background-color: var(--bg2) !important; /* 鼠标悬停或激活状态下的背景色 */
+    background-color: var(--bg6) !important; /* 鼠标悬停或激活状态下的背景色 */
   }
 
   /* 调整输入框的样式 */
   .el-input__inner {
-    background-color: var(--bg2);
+    background-color: var(--bg6);
     color: var(--text-color1);
     border-color: transparent;
   }
 
   /* 调整按钮的样式 */
   button {
-    background-color: var(--bg2);
+    background-color: var(--bg6);
     color: var(--text-color);
     border-color: transparent;
   }

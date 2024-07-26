@@ -150,6 +150,7 @@
             <el-button
               size="mini"
               type="danger"
+              class="dangers"
               @click="handlerDelete(scope.row)"
               >删除</el-button
             >
@@ -430,6 +431,11 @@ export default {
   display: flex;
   flex-direction: column;
   height: 89%; /* 确保这个容器占据全部可用高度 */
+  .el-button--primary {
+    background-color: var(--bg4);
+    border-color: var(--bg4);
+    color: var(--text-color);
+  }
   .manage-header {
     display: flex;
     justify-content: space-between;
@@ -438,11 +444,19 @@ export default {
     .danger {
       position: absolute;
       left: 90px;
+      background-color: var(--bg5);
+      border-color: var(--bg5);
+      color: var(--text-color);
     }
   }
   .common-table {
     position: relative;
     height: calc(100% - 62px);
+    .dangers {
+      background-color: var(--bg5);
+      border-color: var(--bg5);
+      color: var(--text-color);
+    }
     .pager {
       position: absolute;
       bottom: 0;
@@ -474,28 +488,28 @@ export default {
 }
 /* 使用 ::v-deep 或 /deep/ 根据你的 Vue 版本 */
 ::v-deep .el-pagination {
-  background-color: var(--bg2); /* 设置背景色为黑色 */
+  background-color: var(--bg6); /* 设置背景色为黑色 */
   color: var(--text-color); /* 设置主要的文字颜色为白色 */
 
   /* 调整分页按钮和链接的样式 */
   .el-pager li {
-    background-color: var(--bg2) !important;
+    background-color: var(--bg6) !important;
     color: var(--text-color);
     border-color: transparent;
   }
   .el-pager li:hover,
   .el-pager li.active {
-    background-color: var(--bg2) !important; /* 鼠标悬停或激活状态下的背景色 */
+    background-color: var(--bg6) !important; /* 鼠标悬停或激活状态下的背景色 */
   }
 
   /* 调整输入框的样式 */
   .el-input__inner {
-    background-color: var(--bg2);
+    background-color: var(--bg6);
     color: var(--text-color1);
     border-color: transparent;
   }
   button {
-    background-color: var(--bg2);
+    background-color: var(--bg6);
     color: var(--text-color);
     border-color: transparent;
   }

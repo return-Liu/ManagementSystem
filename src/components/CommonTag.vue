@@ -40,13 +40,8 @@ export default {
       tag: (state) => state.tab.tabsList,
     }),
   },
-  mounted() {
-    // 应用主题
-    document.documentElement.setAttribute("data-theme", this.theme);
-  },
   methods: {
     ...mapMutations(["closeRemove"]),
-
     // 点击tag跳转的功能
     addMsg(item) {
       this.$router.push({ name: item.name });

@@ -1,7 +1,9 @@
 <template>
   <div>
-    <!-- 展示区域 -->
-    <router-view></router-view>
+    <!-- 给路由出口添加过渡效果 -->
+    <transition>
+      <router-view></router-view>
+    </transition>
   </div>
 </template>
 <script>

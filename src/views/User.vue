@@ -58,7 +58,6 @@
                   v-model="form.birth"
                   type="date"
                   placeholder="选择日期"
-                  value-format="yyyy-MM-DD"
                 >
                 </el-date-picker>
               </el-form-item>
@@ -311,7 +310,7 @@ export default {
     handleAdd() {
       this.modelType = 0; // 设置为新增模式
       this.dialogVisible = true; // 显示对话框
-      this.$refs.form.resetFields(); // 重置表单
+      this.$refs.form.resetFields();
     },
     // 添加一个resetForm方法，用于统一重置表单
     resetForm() {

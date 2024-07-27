@@ -440,6 +440,7 @@ export default {
     border-color: var(--bg4);
     color: var(--text-color);
   }
+
   .manage-header {
     display: flex;
     justify-content: space-between;

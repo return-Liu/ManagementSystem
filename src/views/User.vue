@@ -210,29 +210,22 @@ export default {
     // 提交用户表单
     submit() {
       this.$refs.form.validate((valid) => {
-        // console.log(valid, 'valid')
         if (valid) {
-          // 后续对表单数据的处理
-          if (this.modalType === 0) {
+          if (this.modelType === 0) {
+            // 新增
             addUser(this.form).then(() => {
-              // 重新获取列表的接口
               this.getList();
             });
           } else {
+            // 编辑
             editUser(this.form).then(() => {
-              // 重新获取列表的接口
               this.getList();
             });
           }
-
-          // 清空表单的数据
           this.$refs.form.resetFields();
-          // 关闭弹窗
           this.dialogVisible = false;
-          // 验证成功时隐藏警告
-          this.dialogVisible = false;
+          this.alertVisible = false;
         } else {
-          // 验证失败时显示警告
           this.alertVisible = true;
         }
       });
@@ -252,6 +245,9 @@ export default {
       this.modelType = 1;
       // 显示弹窗
       this.dialogVisible = true;
+      // 添加 id 字段到 form 对象中
+      this.form.id = row.id;
+      this.$refs.form.resetFields();
     },
     // 删除功能
     handlerDelete(row) {
@@ -313,8 +309,27 @@ export default {
         });
     },
     handleAdd() {
-      this.modalType = 0;
-      this.dialogVisible = true;
+      this.modelType = 0; // 设置为新增模式
+      this.dialogVisible = true; // 显示对话框
+      this.$refs.form.resetFields(); // 重置表单
+    },
+    // 添加一个resetForm方法，用于统一重置表单
+    resetForm() {
+      this.$nextTick(() => {
+        try {
+          this.$refs.form.resetFields(); // 重置表单字段
+          this.form = {
+            // 重置表单数据模型
+            name: "",
+            age: "",
+            sex: "", // 确保与初始值一致
+            birth: "",
+            address: "",
+          };
+        } catch (error) {
+          console.error("resetForm方法执行时遇到错误:", error);
+        }
+      });
     },
     // 获取列表的数据
     getList() {

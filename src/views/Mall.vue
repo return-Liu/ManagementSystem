@@ -348,10 +348,10 @@ export default {
           this.form = {
             // 重置表单数据模型
             name: "",
-            age: "",
-            sex: "", // 确保与初始值一致
-            birth: "",
-            address: "",
+            type: "",
+            number: "",
+            price: "",
+            description: "",
           };
         } catch (error) {
           console.error("resetForm方法执行时遇到错误:", error);

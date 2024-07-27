@@ -18,7 +18,6 @@ function param2Obj(url) {
 
 let List = [];
 const count = 200;
-
 for (let i = 0; i < count; i++) {
   List.push(
     Mock.mock({
@@ -31,6 +30,8 @@ for (let i = 0; i < count; i++) {
     })
   );
 }
+// 为啥在遍历输出
+console.log("获取用户列表成功", List);
 
 export default {
   /**

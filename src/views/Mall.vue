@@ -222,6 +222,7 @@ export default {
         limit: 10,
       },
       mallForm: {
+        // 搜索时的表单数据
         name: "",
       },
     };
@@ -258,6 +259,7 @@ export default {
       // console.log(this.form);
       // 清空表单
       this.resetForm();
+      // 关闭弹窗
       this.dialogVisible = false;
     },
     cancel() {
@@ -358,7 +360,7 @@ export default {
         }
       });
     },
-    // 获取列表的数据
+    // 调用
     getList() {
       // 获取商品列表
       getMall({ params: { ...this.mallForm, ...this.pageData } }).then(
@@ -373,12 +375,10 @@ export default {
       this.pageData.limit = val;
       this.getList();
     },
-
     handleCurrentChange(val) {
       this.pageData.page = val;
       this.getList();
     },
-
     /*
      * 搜索
      * @param {FUNCTION}
@@ -421,8 +421,8 @@ export default {
     },
   },
 
-  // 挂载将获取列表的数据
-  mounted() {
+  // 在组件创建完成后调用getList方法
+  created() {
     this.getList();
   },
 };

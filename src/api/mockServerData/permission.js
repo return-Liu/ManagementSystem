@@ -91,9 +91,9 @@ export default {
             {
               path: "/mall",
               name: "mall",
-              lable: "商品管理",
+              lable: "产品管理",
               icon: "s-grid",
-              url: "MallManage/MallManage",
+              url: "Mall.vue",
             },
           ],
           token: Mock.Random.guid(),

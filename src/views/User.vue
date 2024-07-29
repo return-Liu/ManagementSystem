@@ -391,8 +391,8 @@ export default {
       });
     },
   },
-  // 挂载将获取列表的数据
-  mounted() {
+  // 当组件创建完成后调用getList方法
+  created() {
     this.getList();
   },
 };

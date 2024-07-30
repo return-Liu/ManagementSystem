@@ -34,8 +34,6 @@
   </div>
 </template>
 <script>
-// import Mock from "mockjs";
-// import cookie from "js-cookie";
 import { getMenu } from "../api";
 export default {
   name: "RegisterManage",
@@ -80,9 +78,6 @@ export default {
       this.$router.push("login");
     },
     register() {
-      // if (this.form.password !== this.form.passwords) {
-      //   this.$message.error("两次密码不一致");
-      // }
       // 判断校验
       this.$refs.form.validate((valid) => {
         if (valid) {
@@ -98,10 +93,6 @@ export default {
           });
         }
       });
-      // this.$message({
-      //   message: "功能占未开放",
-      //   type: "warning",
-      // });
     },
   },
 };

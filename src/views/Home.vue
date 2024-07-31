@@ -212,14 +212,9 @@ export default {
         message: "获取当前登录时间成功",
         type: "success",
       });
+      // 当刷新页面时,获取当前登录时间还在
       // 获取成功时 移除获取当前登录地区的标签
       this.$refs.removetime.remove();
-    },
-    // 查看语言
-    updateLang() {
-      this.$router.push({
-        path: "/languageScreen",
-      });
     },
   },
 };

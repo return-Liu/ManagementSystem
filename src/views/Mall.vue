@@ -315,8 +315,9 @@ export default {
       })
         // 成功回调
         .then(() => {
-          // 使用promise.all来等待所有请求完成
+          // 使用promise.all来等待复选框选中的id
           const promises = this.seles.map((id) => batMall({ id }));
+          // 当所有选中的复选框都成功时 执行then后面的操作 如果有一个失败则执行catch
           Promise.all(promises).then(() => {
             // 在所有请求成功后刷新列表
             this.getList();

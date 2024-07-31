@@ -77,6 +77,10 @@ export default {
       // console.log(theme);
       //将存储主题值到localStorage
       localStorage.setItem("theme", theme);
+      this.$message({
+        message: "主题切换成功",
+        type: "success",
+      });
     },
   },
 };

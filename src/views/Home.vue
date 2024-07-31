@@ -163,28 +163,35 @@ export default {
   },
   methods: {
     handleFileChange(e) {
-      // 获取头像文件
-      const file = e.target.files[0];
-      // 判断文件是否存在 不存在退出
-      if (!file) return;
-      // 创建文件读取对象
-      const reader = new FileReader();
-      // 当文件读取成功
-      reader.onload = () => {
-        // 将头像地址赋值给avatarImg
-        this.avatarUrl = reader.result;
-        //  通过ref获取头像
-        this.$refs.avatarImg.src = this.avatarUrl;
-        // 存储新的头像
-        localStorage.setItem("avatarUrl", this.avatarUrl);
-      };
-      // 读取文件
-      reader.readAsDataURL(file);
-      // 提示信息
-      this.$message({
-        message: "头像更换成功",
-        type: "success",
-      });
+      try {
+        // 获取头像文件
+        const file = e.target.files[0];
+        // 判断文件是否存在 不存在退出
+        if (!file) return;
+        // 创建文件读取对象
+        const reader = new FileReader();
+        // 当文件读取成功
+        reader.onload = () => {
+          // 将头像地址赋值给avatarImg
+          this.avatarUrl = reader.result;
+          //  通过ref获取头像
+          this.$refs.avatarImg.src = this.avatarUrl;
+          // 存储新的头像
+          localStorage.setItem("avatarUrl", this.avatarUrl);
+        };
+        // 读取文件
+        reader.readAsDataURL(file);
+        // 提示信息
+        this.$message({
+          message: "头像更换成功",
+          type: "success",
+        });
+      } catch {
+        this.$message({
+          message: "头像更换失败",
+          type: "error",
+        });
+      }
     },
     // 获取当前登录地区
     updateCity() {

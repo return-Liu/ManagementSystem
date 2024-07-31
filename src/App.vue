@@ -13,7 +13,6 @@ export default {
     return {
       // 获取本地存储的主题
       theme: localStorage.getItem("theme") || "light",
-      // theme: localStorage.getItem("theme"),
     };
   },
   mounted() {

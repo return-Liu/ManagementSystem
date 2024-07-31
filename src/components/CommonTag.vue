@@ -70,17 +70,24 @@ export default {
     //
     // 主题
     switchTheme() {
-      // 设置data-theme的主题
-      document.documentElement.setAttribute("data-theme", this.theme);
-      // 读取并打印设置后的主题值
-      const theme = document.documentElement.getAttribute("data-theme");
-      // console.log(theme);
-      //将存储主题值到localStorage
-      localStorage.setItem("theme", theme);
-      this.$message({
-        message: "主题切换成功",
-        type: "success",
-      });
+      try {
+        // 设置data-theme的主题
+        document.documentElement.setAttribute("data-theme", this.theme);
+        // 读取并打印设置后的主题值
+        const theme = document.documentElement.getAttribute("data-theme");
+        // console.log(theme);
+        //将存储主题值到localStorage
+        localStorage.setItem("theme", theme);
+        this.$message({
+          message: "主题切换成功",
+          type: "success",
+        });
+      } catch (error) {
+        this.$message({
+          message: "主题切换失败",
+          type: "error",
+        });
+      }
     },
   },
 };

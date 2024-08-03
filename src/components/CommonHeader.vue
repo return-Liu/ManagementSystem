@@ -28,7 +28,7 @@
           <i class="el-icon-arrow-down el-icon--right"></i>
         </span>
         <el-dropdown-menu slot="dropdown">
-          <el-dropdown-item @click="hanldermessage">个人中心</el-dropdown-item>
+          <el-dropdown-item command="selfcenter">个人中心</el-dropdown-item>
           <el-dropdown-item command="cancel">退出</el-dropdown-item>
         </el-dropdown-menu>
         <div class="el-icon-full-screen" @click="handlerscreen"></div>
@@ -53,8 +53,12 @@ export default {
       // 侧边栏的折叠
       this.$store.commit("CollapseMenu");
     },
-    // 退出首页
     handlerDropdown(command) {
+      // 个人中心
+      if (command === "selfcenter") {
+        this.$router.push({ name: "personalcenter" });
+      }
+      // 退出首页
       if (command === "cancel") {
         console.log("退出");
         cookie.remove("token");
@@ -67,8 +71,7 @@ export default {
         });
       }
     },
-    // 个人信息功能
-    hanldermessage() {},
+
     // 全屏功能
     handlerscreen() {
       // 判断当前是否全屏

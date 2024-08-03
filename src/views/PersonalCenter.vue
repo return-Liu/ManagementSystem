@@ -15,6 +15,13 @@
             style="color: var(--text-color2)"
             >更换头像</label
           >
+          <label
+            class="View-avatar"
+            ref="View"
+            style="color: var(--text-color2)"
+            @click="handleChange"
+            >查看头像</label
+          >
           <input
             ref="uploadInput"
             id="uploadInput"
@@ -38,6 +45,12 @@ export default {
     };
   },
   methods: {
+    handleChange() {
+      this.$message({
+        message: "功能暂未开放",
+        type: "warning",
+      });
+    },
     handleFileChange(e) {
       try {
         // 获取头像文件
@@ -94,9 +107,18 @@ export default {
   }
   .avatar-box {
     margin-bottom: 20px;
+
     .avatar-title {
       cursor: pointer;
-      margin-left: 44px;
+      margin-left: 5px;
+      margin-top: 20px;
+      display: flex;
+    }
+    .View-avatar {
+      margin-top: -20px;
+      display: flex;
+      cursor: pointer;
+      margin-left: 90px;
     }
   }
 

@@ -1,10 +1,11 @@
 <template>
   <div class="container">
-    <el-card>
+    <el-card style="background-color: var(--bg1); border: var(--border1)">
       <div slot="header" class="clearfix">
         <span>个人信息</span>
       </div>
       <div class="user-info">
+        <div class="avatars">头像</div>
         <img :src="avatarUrl" ref="avatarImg" class="avatar" alt="" />
         <div class="avatar-box">
           <label
@@ -78,9 +79,13 @@ export default {
   width: 500px;
   height: 400px;
   .clearfix {
-    margin-top: 20px;
+    // margin-top: 20px;
+    color: var(--text-color2);
   }
   .user-info {
+    .avatars {
+      color: var(--text-color2);
+    }
     .avatar {
       width: 150px;
       height: 150px;

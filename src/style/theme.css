@@ -3,6 +3,8 @@
   --text-color: #fff;
   --text-color1: #fff;
   --text-color2: #ab9292;
+  --text-color3: #e41f1f;
+  --text-color4: #16de23;
   --bg1: #fff;
   --bg2: #31c0eb;
   --bg3: rgb(84, 92, 100);
@@ -17,6 +19,8 @@ html[data-theme="dark"] {
   --text-color: #5e5757;
   --text-color1: #333;
   --text-color2: #333;
+  --text-color3: #333;
+  --text-color4: #333;
   --bg1: #121111;
   --bg2: #121111;
   --bg3: #121111;

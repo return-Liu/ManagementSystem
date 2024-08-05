@@ -98,9 +98,15 @@
             <el-table-column prop="name" label="待办事项" />
             <el-table-column prop="user" label="用户"> </el-table-column>
             <el-table-column prop="time" label="时间" />
-            <el-table-column prop="status" label="状态"> </el-table-column>
+            <el-table-column prop="status" label="状态">
+              <template v-slot="scope">
+                <span class="green-text">{{ scope.row.status }}</span>
+              </template>
+            </el-table-column>
             <el-table-column prop="operate" label="操作">
-              <span>已完成</span>
+              <template v-slot="scope">
+                <span class="red-text">{{ scope.row.operate }}</span>
+              </template>
             </el-table-column>
           </el-table>
         </el-card>
@@ -142,11 +148,11 @@ export default {
       // 渲染待办事件信息
       event: [
         {
-          name: "写代码",
+          name: "追求极致",
           user: "Admin",
           time: new Date().toLocaleDateString(), // 获取当前日期
-          status: "未完成",
-          operate: "删除",
+          status: "已达标",
+          operate: "已完成",
         },
       ],
     };
@@ -333,5 +339,11 @@ export default {
 ::v-deep .el-table__header-wrapper thead th {
   background-color: var(--bg1);
   border-bottom: var(--border1);
+}
+.green-text {
+  color: var(--text-color3);
+}
+.red-text {
+  color: var(--text-color4);
 }
 </style>

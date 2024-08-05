@@ -28,24 +28,6 @@ export default {
             logoutTime: "2023-04-01 13:00:00", // 退出时间
             userData: generatedData, // 用户数据
           },
-          {
-            userType: "普通用户",
-            loginTime: "2023-04-01 12:00:00",
-            logoutTime: "2023-04-01 13:00:00",
-            userData: generatedData,
-          },
-          {
-            userType: "新用户",
-            loginTime: "2023-04-01 12:00:00",
-            logoutTime: "2023-04-01 13:00:00",
-            userData: generatedData,
-          },
-          {
-            userType: "管理员",
-            loginTime: "2023-04-01 12:00:00",
-            logoutTime: "2023-04-01 13:00:00",
-            userData: generatedData,
-          },
         ],
       },
     };

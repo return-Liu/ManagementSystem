@@ -59,7 +59,7 @@ function generateProducts(count = 200) {
     );
   }
   // 打印商品列表
-  console.log("商品列表获取成功", products);
+  // console.log("商品列表获取成功", products);
   return products;
 }
 

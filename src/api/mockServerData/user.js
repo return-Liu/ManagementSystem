@@ -31,7 +31,7 @@ for (let i = 0; i < count; i++) {
   );
 }
 // 为啥在遍历输出 转换为JSON对象
-console.log("获取用户列表成功", List);
+// console.log("获取用户列表成功", List);
 
 export default {
   /**

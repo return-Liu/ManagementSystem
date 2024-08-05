@@ -8,7 +8,7 @@ export const getListData = () => {
 
 // 获取用户列表
 export const getUser = (params) => {
-  // console.log(params, "params");
+  console.log(params, "params");
   // 返回用户列表
   return http.get("/user/getUser", params);
 };
@@ -34,7 +34,7 @@ export const batUser = (data) => {
 
 // 获取商品列表
 export const getMall = (param) => {
-  // console.log(param, "param");
+  console.log(param, "param");
   return http.get("/mall/getMall", param);
 };
 

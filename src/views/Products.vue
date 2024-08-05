@@ -177,7 +177,7 @@
 <script>
 import { getMall, addMall, editMall, delMall, batMall } from "../api";
 export default {
-  name: "MallManage",
+  name: "ProductsManage",
   data() {
     return {
       alertVisible: false,

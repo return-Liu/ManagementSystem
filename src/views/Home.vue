@@ -131,7 +131,7 @@ export default {
       // 头像
       avatarUrl:
         localStorage.getItem("avatarUrl") ||
-        require("@/assets/images/789187C2E34DA7A8018BCDCC6B762911.jpg"),
+        require("../assets/images/789187C2E34DA7A8018BCDCC6B762911.jpg"),
       time: "无信息",
       city: "无信息",
       // 渲染表格数据

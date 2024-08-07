@@ -8,8 +8,8 @@ const generateListData = () => {
     List.push(
       Mock.mock({
         用户类型: Mock.Random.float(100, 3000, 0, 2), // 生成100到3000之间的浮点数，保留2位小数
-        登录时间: Mock.Random.datetime("yyyy-MM-dd HH:mm:ss"), // 生成随机日期时间
-        退出时间: Mock.Random.datetime("yyyy-MM-dd HH:mm:ss"), // 同上
+        登录时间: Mock.Random.datetime("yyyy-MM-dd HH:mm"), // 生成随机日期时间
+        退出时间: Mock.Random.datetime("yyyy-MM-dd HH:mm"), // 同上
       })
     );
   }
@@ -24,8 +24,8 @@ export default {
         UserData: [
           {
             userType: "管理员", //用户类型
-            loginTime: "2023-04-01 12:00:00", // 登录时间
-            logoutTime: "2023-04-01 13:00:00", // 退出时间
+            loginTime: "2023-04-01 12:40", // 登录时间
+            logoutTime: "2023-04-01 13:30", // 退出时间
             userData: generatedData, // 用户数据
           },
         ],

@@ -107,7 +107,6 @@ export default {
   }
   .avatar-box {
     margin-bottom: 20px;
-
     .avatar-title {
       cursor: pointer;
       margin-left: 5px;
@@ -121,7 +120,6 @@ export default {
       margin-left: 90px;
     }
   }
-
   .prew {
     width: 100px;
     height: 100px;

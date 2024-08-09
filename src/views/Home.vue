@@ -161,7 +161,7 @@ export default {
       ],
     };
   },
-  mounted() {
+  created() {
     // 获取数据
     getListData().then(({ data }) => {
       // 将数据进行解构

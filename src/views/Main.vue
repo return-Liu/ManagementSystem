@@ -32,9 +32,7 @@ export default {
   data() {
     return {};
   },
-  mounted() {
-    // console.log(this.$route.path);
-  },
+
   methods: {
     // 获取路由
     getRouter() {

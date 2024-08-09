@@ -20,8 +20,9 @@
       </el-form-item>
       <el-form-item>
         <el-button type="primary" class="login" @click="login">登录</el-button>
-        <span class="line"></span>
-        <el-button type="primary" @click="register">注册</el-button>
+        <el-button type="primary" class="register" @click="register"
+          >注册</el-button
+        >
       </el-form-item>
     </el-form>
   </div>
@@ -88,12 +89,12 @@ export default {
 <style scoped lang="less">
 .el-form {
   width: 350px;
-  border: 1px solid #ccc;
+  border: var(--bg8);
   margin: 150px auto;
   padding: 35px 35px 25px 35px;
-  background-color: #fff;
+  background-color: var(--bg1);
   border-radius: 15px;
-  box-shadow: 0 0 15px rgb(217, 222, 224);
+  box-shadow: var(--box-shodow1);
   box-sizing: border-box;
   .el-alert {
     width: 300px;
@@ -101,7 +102,7 @@ export default {
   .login-title {
     text-align: center;
     margin-bottom: 40px;
-    background: -webkit-linear-gradient(315deg, #42d392 25%, #647eff);
+    background: var(--bg9);
     background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -111,11 +112,15 @@ export default {
   }
   .login {
     margin-left: 74px;
+    background: var(--bg2);
+    color: var(--text-color1);
+    border-color: var(--border2);
   }
-  .line {
-    margin: 0 20px;
-    width: 25px;
-    border-right: 1px solid #fff;
+  .register {
+    background: var(--bg2);
+    color: var(--text-color1);
+    border-color: var(--border2);
+    margin-left: 48px;
   }
 }
 </style>

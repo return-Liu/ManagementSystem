@@ -24,8 +24,8 @@
                 class="upload"
               />
             </div>
-            <p class="username">admin</p>
-            <p class="useraccess">超级管理员</p>
+            <p class="username">{{ userName }}</p>
+            <p class="useraccess">{{ userType }}</p>
           </div>
         </div>
         <div class="login-message">
@@ -134,6 +134,10 @@ export default {
         require("../assets/images/789187C2E34DA7A8018BCDCC6B762911.jpg"),
       time: "无信息",
       city: "无信息",
+      // 用户类型
+
+      userName: "Admin",
+      userType: "超级管理员",
       // 渲染表格数据
       UserData: [],
       // 渲染表格信息

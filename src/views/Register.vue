@@ -100,21 +100,21 @@ export default {
 <style scoped lang="less">
 .el-form {
   width: 350px;
-  border: 1px solid #ccc;
+  border: var(--bg8);
   margin: 100px auto;
   padding: 35px 35px 25px 35px;
-  background-color: #ffff;
+  background-color: var(--bg1);
   border-radius: 15px;
-  box-shadow: 0 0 15px rgb(217, 222, 224);
+  box-shadow: var(--box-shodow1);
   box-sizing: border-box;
   .el-icon-back {
-    color: pink;
+    color: var(--text-color5);
     font-size: 20px;
   }
   .login-title {
     text-align: center;
     margin-bottom: 40px;
-    background: -webkit-linear-gradient(315deg, #42d392 25%, #647eff);
+    background: var(--bg9);
     background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -124,6 +124,9 @@ export default {
   }
   .el-button {
     margin-left: 110px;
+    background: var(--bg2);
+    color: var(--text-color1);
+    border-color: var(--border2);
   }
 }
 </style>

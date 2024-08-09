@@ -3,8 +3,9 @@ import Mock from "mockjs";
 // 图表数据
 const generateListData = () => {
   // console.log("生成数据");
+  const lenght = 1;
   const List = [];
-  for (let i = 0; i < 1; i++) {
+  for (let i = 0; i < lenght; i++) {
     List.push(
       Mock.mock({
         用户类型: Mock.Random.float(100, 3000, 0, 2), // 生成100到3000之间的浮点数，保留2位小数

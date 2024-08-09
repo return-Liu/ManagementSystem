@@ -15,7 +15,7 @@ export default {
       theme: localStorage.getItem("theme") || "light",
     };
   },
-  mounted() {
+  created() {
     // 获取主题进行挂载
     document.documentElement.setAttribute("data-theme", this.theme);
   },

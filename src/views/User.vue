@@ -231,11 +231,15 @@ export default {
     },
     // 弹窗关闭的时候
     handleClose() {
-      this.$refs.form.resetFields();
+      // 清空表单
+      this.resetForm();
+      // 关闭弹窗
       this.dialogVisible = false;
     },
     cancel() {
       this.handleClose();
+      //  调用resetForm方法 用于统一重置表单
+      this.resetForm();
     },
     handlerEidt(row) {
       // 赋值
@@ -244,9 +248,6 @@ export default {
       this.modelType = 1;
       // 显示弹窗
       this.dialogVisible = true;
-      // 添加 id 字段到 form 对象中
-      this.form.id = row.id;
-      this.$refs.form.resetFields();
     },
     // 删除功能
     handlerDelete(row) {
@@ -310,7 +311,7 @@ export default {
     handleAdd() {
       this.modelType = 0; // 设置为新增模式
       this.dialogVisible = true; // 显示对话框
-      this.$refs.form.resetFields();
+      // this.$refs.form.resetFields();
     },
     // 添加一个resetForm方法，用于统一重置表单
     resetForm() {
@@ -368,8 +369,8 @@ export default {
       // 1.通过 setTimeout 模拟延迟，以模拟搜索请求
       // 2.调用获取列表的方法，并传递搜索参数
       setTimeout(() => {
-        getUser({ params: { ...this.userForm, ...this.pageData } }).then(
-          ({ data }) => {
+        getUser({ params: { ...this.userForm, ...this.pageData } })
+          .then(({ data }) => {
             if (data.list && data.list.length > 0) {
               // 有数据返回，更新表格数据
               this.tableData = data.list;
@@ -381,14 +382,14 @@ export default {
             }
             // 清除加载状态
             this.loading = false;
-          }
-        );
-      }, 2000).catch((error) => {
-        // 真正的请求失败处理
-        this.loading = false;
-        this.$message.error("搜索失败，请稍后重试。");
-        console.error(error.message);
-      });
+          })
+          .catch((error) => {
+            // 真正的请求失败处理
+            this.loading = false;
+            this.$message.error("搜索失败，请稍后重试。");
+            console.error(error.message);
+          });
+      }, 2000);
     },
   },
   // 当组件创建完成后调用getList方法

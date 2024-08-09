@@ -340,7 +340,6 @@ export default {
     hanlderAdd() {
       this.modelType = 0;
       this.dialogVisible = true;
-      //  this.resetForm(); // 打开新增窗口时重置表单
     },
     // 添加一个resetForm方法，用于统一重置表单
     resetForm() {
@@ -398,8 +397,8 @@ export default {
       // 1.通过 setTimeout 模拟延迟，以模拟搜索请求
       // 2.调用获取列表的方法，并传递搜索参数
       setTimeout(() => {
-        getMall({ params: { ...this.mallForm, ...this.pageData } }).then(
-          ({ data }) => {
+        getMall({ params: { ...this.mallForm, ...this.pageData } })
+          .then(({ data }) => {
             if (data.list && data.list.length > 0) {
               // 有数据返回，更新表格数据
               this.tableData = data.list;
@@ -411,14 +410,14 @@ export default {
             }
             // 清除加载状态
             this.loading = false;
-          }
-        );
-      }, 2000).catch((error) => {
-        // 真正的请求失败处理
-        this.loading = false;
-        this.$message.error("搜索失败，请稍后重试。");
-        console.error(error.message);
-      });
+          })
+          .catch((error) => {
+            // 真正的请求失败处理
+            this.loading = false;
+            this.$message.error("搜索失败，请稍后重试。");
+            console.error(error.message);
+          });
+      }, 2000);
     },
   },
 

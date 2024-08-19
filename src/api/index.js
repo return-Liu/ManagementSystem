@@ -23,13 +23,9 @@ export const editUser = (data) => {
   return http.post("/user/edit", data);
 };
 
-// 删除用户
+// 删除和批量删除
 export const delUser = (data) => {
   return http.post("/user/del", data);
-};
-// 批量删除
-export const batUser = (data) => {
-  return http.post("/user/bat", data);
 };
 
 // 获取商品列表
@@ -46,13 +42,9 @@ export const addMall = (data) => {
 export const editMall = (data) => {
   return http.post("/mall/edit", data);
 };
-// 删除商品
+// 删除和批量删除
 export const delMall = (data) => {
   return http.post("/mall/del", data);
-};
-// 批量删除
-export const batMall = (data) => {
-  return http.post("/mall/bat", data);
 };
 
 // 获取动态菜单

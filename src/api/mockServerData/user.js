@@ -15,13 +15,14 @@ function param2Obj(url) {
       '"}'
   );
 }
-
+let idIndex = 0;
 let List = [];
 const count = 200;
 for (let i = 0; i < count; i++) {
+  idIndex++;
   List.push(
     Mock.mock({
-      id: Mock.Random.guid(),
+      id: idIndex,
       name: Mock.Random.cname(),
       addr: Mock.mock("@county(true)"),
       "age|18-60": 1,
@@ -30,9 +31,19 @@ for (let i = 0; i < count; i++) {
     })
   );
 }
-// 为啥在遍历输出 转换为JSON对象
-// console.log("获取用户列表成功", List);
-
+/**
+ * 将 ISO 8601 时间字符串转换为年月日格式
+ * @param {string} isoString - ISO 8601 时间字符串
+ * @returns {string} 年月日格式的日期字符串
+ */
+// 定义一个辅助函数 formatBirthDate 来处理日期格式化：
+function formatBirthDate(isoString) {
+  const date = new Date(isoString);
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
+}
 export default {
   /**
    * 获取列表
@@ -70,12 +81,13 @@ export default {
   createUser: (config) => {
     const { name, addr, age, birth, sex } = JSON.parse(config.body);
     console.log(JSON.parse(config.body));
+    idIndex++;
     List.unshift({
-      id: Mock.Random.guid(),
+      id: idIndex,
       name: name,
       addr: addr,
       age: age,
-      birth: birth,
+      birth: formatBirthDate(birth),
       sex: sex,
     });
     return {
@@ -86,44 +98,21 @@ export default {
     };
   },
   /**
-   * 删除用户
-   * @param id
-   * @return {*}
+   * 删除和批量删除用户
+   * @param {*} config
+   * @return {{code: number, data: {message: string}}
    */
-  deleteUser: (config) => {
+  deleteOrBatch: (config) => {
     const { id } = JSON.parse(config.body);
     if (!id) {
-      return {
-        code: -999,
-        message: "参数不正确",
-      };
-    } else {
-      List = List.filter((u) => u.id !== id);
-      return {
-        code: 20000,
-        message: "删除成功",
-      };
+      return { code: -1, message: "缺少参数" };
     }
-  },
-  /**
-   * 批量删除用户
-   * @param id
-   * @return {*}
-   */
-  batchremove: (config) => {
-    const { id } = JSON.parse(config.body);
-    if (!id) {
-      return {
-        code: -999,
-        message: "参数不正确",
-      };
-    } else {
-      List = List.filter((u) => u.id !== id);
-      return {
-        code: 20000,
-        message: "批量删除成功",
-      };
+    const user = List.findIndex((item) => item.id === id);
+    if (user === -1) {
+      return { code: -1, message: "用户不存在" };
     }
+    // 通过splice方法对列表进行删除
+    List.splice(List.indexOf(user), 1);
   },
   /**
    * 修改用户
@@ -138,7 +127,7 @@ export default {
         u.name = name;
         u.addr = addr;
         u.age = age;
-        u.birth = birth;
+        u.birth = formatBirthDate(birth); // 使用 formatBirthDate 函数格式化日期
         u.sex = sex_num;
         return true;
       }

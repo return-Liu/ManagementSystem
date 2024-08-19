@@ -2,7 +2,6 @@
   <el-menu
     class="el-menu-vertical-demo"
     :collapse="isCollapse"
-    background-color="#545c64"
     text-color="var(--text-color2)"
     active-text-color="#43b3cf"
   >
@@ -83,6 +82,7 @@ export default {
 .el-menu-vertical-demo:not(.el-menu--collapse) {
   width: 200px;
   min-height: 400px;
+  background-color: var(--bg3);
 }
 .el-menu {
   display: flex;

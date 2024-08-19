@@ -175,7 +175,7 @@
   </div>
 </template>
 <script>
-import { getMall, addMall, editMall, delMall, batMall } from "../api";
+import { getMall, addMall, editMall, delMall } from "../api";
 export default {
   name: "ProductsManage",
   data() {
@@ -236,15 +236,17 @@ export default {
             addMall(this.form).then(() => {
               // 重新获取商品列表的接口
               this.getList();
+              this.$message.success("新增成功");
             });
           } else {
             editMall(this.form).then(() => {
               // 重新获取商品列表的接口
               this.getList();
+              this.$message.success("编辑成功");
             });
           }
           // 清空表单
-          this.$refs.form.resetFields();
+          this.resetForm();
           // 关闭弹窗
           this.dialogVisible = false;
           // 验证成功时隐藏警告
@@ -269,12 +271,25 @@ export default {
       this.resetForm();
     },
     handlerEidt(row) {
-      // 赋值
-      this.form = JSON.parse(JSON.stringify(row));
-      // 编辑
-      this.modelType = 1;
-      // 显示弹窗
-      this.dialogVisible = true;
+      this.$confirm("此操作将编辑该文件, 是否继续?", "温馨提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
+      })
+        .then(() => {
+          // 赋值
+          this.form = JSON.parse(JSON.stringify(row));
+          // 编辑
+          this.modelType = 1;
+          // 显示弹窗
+          this.dialogVisible = true;
+        })
+        .catch(() => {
+          this.$message({
+            type: "error",
+            message: "已取消编辑",
+          });
+        });
     },
     handlerDelete(row) {
       this.$confirm("此操作将永久删除该文件, 是否继续?", "提示", {
@@ -304,7 +319,6 @@ export default {
     handleSelect(seles) {
       this.seles = seles.map((item) => item.id);
       // console.log(this.seles);
-      // this.tableData = seles;
     },
     // 批量删除
     hanlderReomve() {
@@ -316,7 +330,7 @@ export default {
         // 成功回调
         .then(() => {
           // 使用promise.all来等待复选框选中的id
-          const promises = this.seles.map((id) => batMall({ id }));
+          const promises = this.seles.map((id) => delMall({ id }));
           // 当所有选中的复选框都成功时 执行then后面的操作 如果有一个失败则执行catch
           Promise.all(promises).then(() => {
             // 在所有请求成功后刷新列表
@@ -338,8 +352,21 @@ export default {
         });
     },
     hanlderAdd() {
-      this.modelType = 0;
-      this.dialogVisible = true;
+      this.$confirm("此操作将新增文件, 是否继续?", "温馨提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
+      })
+        .then(() => {
+          this.modelType = 0;
+          this.dialogVisible = true;
+        })
+        .catch(() => {
+          this.$message({
+            type: "error",
+            message: "已取消新增",
+          });
+        });
     },
     // 添加一个resetForm方法，用于统一重置表单
     resetForm() {
@@ -437,7 +464,7 @@ export default {
   height: 89%; /* 确保这个容器占据全部可用高度 */
   .el-button--primary {
     background-color: var(--bg4);
-    border-color: var(--bg4);
+    border-color: var(--border4);
     color: var(--text-color);
   }
 
@@ -450,7 +477,7 @@ export default {
       position: absolute;
       left: 90px;
       background-color: var(--bg5);
-      border-color: var(--bg5);
+      border-color: var(--border4);
       color: var(--text-color);
     }
   }
@@ -459,7 +486,7 @@ export default {
     height: calc(100% - 62px);
     .dangers {
       background-color: var(--bg5);
-      border-color: var(--bg5);
+      border-color: var(--border4);
       color: var(--text-color);
     }
     .pager {

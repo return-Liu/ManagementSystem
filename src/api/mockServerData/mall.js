@@ -42,13 +42,15 @@ function generateProductName(type) {
 
 // 生成商品列表数据
 function generateProducts(count = 200) {
+  let idIndex = 0;
   const products = [];
   for (let i = 0; i < count; i++) {
     const productType = Mock.Random.pick(productTypes);
     const productName = generateProductName(productType);
+    idIndex++;
     products.push(
       Mock.mock({
-        id: Mock.Random.guid(),
+        id: idIndex,
         name: productName,
         type: productType,
         number: Mock.Random.integer(100, 600),
@@ -146,6 +148,7 @@ export default {
    * @returns {{code: number, data: {message: string}}}
    */
   createProduct: (config) => {
+    let idIndex = 0;
     const { name, type, number, price, description } = extractParams(
       config,
       "POST"
@@ -153,8 +156,10 @@ export default {
     if (!name || !type || !number || !price || !description) {
       return { code: -1, message: "缺少必填项" };
     }
+
+    idIndex++;
     const newProduct = {
-      id: Mock.Random.guid(),
+      id: idIndex,
       name,
       type,
       number,
@@ -169,46 +174,22 @@ export default {
       },
     };
   },
-  /**
-   * 删除商品
-   * @param {Object} config - 请求配置
-   * @returns {{code: number, message: string}}
-   */
-  deleteProduct: (config) => {
-    const { id } = extractParams(config, "POST");
-    if (!id) {
-      return { code: -1, message: "缺少ID参数" };
-    }
-    const index = productList.findIndex((item) => item.id === id);
-    if (index === -1) {
-      return { code: -1, message: "商品不存在" };
-    }
-    productList.splice(index, 1);
-    return {
-      code: 20000,
-      message: "删除成功",
-    };
-  },
 
   /**
-   * 批量删除商品
-   * @param {id}
-   * @returns {*}
+   * 删除和批量删除商品
+   * @param {*} config
+   * @return {{code: number, data: {message: string}}}
    */
-  batchProduct: (config) => {
+  deleteOrBatch: (config) => {
     const { id } = JSON.parse(config.body);
     if (!id) {
       return { code: -1, message: "缺少ID参数" };
     }
-    const index = productList.findIndex((item) => item.id === id);
-    if (index === -1) {
+    const product = productList.find((item) => item.id === id);
+    if (!product) {
       return { code: -1, message: "商品不存在" };
     }
-    productList.splice(index, 1);
-    return {
-      code: 20000,
-      message: "批量删除成功",
-    };
+    productList.splice(productList.indexOf(product), 1);
   },
   /**
    * 更新商品信息

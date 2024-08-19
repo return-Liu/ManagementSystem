@@ -163,7 +163,7 @@
   </div>
 </template>
 <script>
-import { getUser, addUser, editUser, delUser, batUser } from "../api";
+import { getUser, addUser, editUser, delUser } from "../api";
 export default {
   name: "UserManage",
   data() {
@@ -214,14 +214,23 @@ export default {
             // 新增
             addUser(this.form).then(() => {
               this.getList();
+              this.$message({
+                type: "success",
+                message: "新增成功!",
+              });
             });
           } else {
             // 编辑
             editUser(this.form).then(() => {
               this.getList();
+              this.$message({
+                type: "success",
+                message: "编辑成功!",
+              });
             });
           }
-          this.$refs.form.resetFields();
+          // 清空表单数据 以便下次不会影响其他弹窗
+          this.resetForm();
           this.dialogVisible = false;
           this.alertVisible = false;
         } else {
@@ -242,16 +251,29 @@ export default {
       this.resetForm();
     },
     handlerEidt(row) {
-      // 赋值
-      this.form = JSON.parse(JSON.stringify(row));
-      // 编辑
-      this.modelType = 1;
-      // 显示弹窗
-      this.dialogVisible = true;
+      this.$confirm("此操作将编辑该文件, 是否继续?", "温馨提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
+      })
+        .then(() => {
+          // 赋值
+          this.form = JSON.parse(JSON.stringify(row));
+          // 编辑
+          this.modelType = 1;
+          // 显示弹窗
+          this.dialogVisible = true;
+        })
+        .catch(() => {
+          this.$message({
+            type: "error",
+            message: "已取消编辑",
+          });
+        });
     },
     // 删除功能
     handlerDelete(row) {
-      this.$confirm("此操作将永久删除该文件, 是否继续?", "提示", {
+      this.$confirm("此操作将永久删除该文件, 是否继续?", "温馨提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning",
@@ -280,7 +302,7 @@ export default {
     },
     // 批量删除
     hanlderReomve() {
-      this.$confirm("此操作将永久删除该文件, 是否继续?", "提示", {
+      this.$confirm("此操作将永久删除该文件, 是否继续?", "温馨提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning",
@@ -288,7 +310,7 @@ export default {
         // 成功回调
         .then(() => {
           // 使用Promise.all来等待所有请求完成
-          const promises = this.seles.map((id) => batUser({ id }));
+          const promises = this.seles.map((id) => delUser({ id }));
           Promise.all(promises).then(() => {
             // 在所有请求成功后刷新列表
             this.getList();
@@ -309,9 +331,21 @@ export default {
         });
     },
     handleAdd() {
-      this.modelType = 0; // 设置为新增模式
-      this.dialogVisible = true; // 显示对话框
-      // this.$refs.form.resetFields();
+      this.$confirm("此操作将新增文件, 是否继续?", "温馨提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
+      })
+        .then(() => {
+          this.modelType = 0; // 设置为新增模式
+          this.dialogVisible = true; // 显示对话框
+        })
+        .catch(() => {
+          this.$message({
+            type: "error",
+            message: "已取消新增",
+          });
+        });
     },
     // 添加一个resetForm方法，用于统一重置表单
     resetForm() {
@@ -371,6 +405,7 @@ export default {
       setTimeout(() => {
         getUser({ params: { ...this.userForm, ...this.pageData } })
           .then(({ data }) => {
+            // console.log(data.list);
             if (data.list && data.list.length > 0) {
               // 有数据返回，更新表格数据
               this.tableData = data.list;
@@ -408,14 +443,14 @@ export default {
     position: relative;
     .el-button--primary {
       background-color: var(--bg4);
-      border-color: var(--bg4);
+      border-color: var(--border4);
       color: var(--text-color);
     }
     .danger {
       position: absolute;
       left: 90px;
       background-color: var(--bg5);
-      border-color: var(--bg5);
+      border-color: var(--border4);
       color: var(--text-color);
     }
   }
@@ -424,12 +459,12 @@ export default {
     height: calc(100% - 62px);
     .emit {
       background-color: var(--bg4);
-      border-color: var(--bg4);
+      border-color: var(--border4);
       color: var(--text-color);
     }
     .dangers {
       background-color: var(--bg5);
-      border-color: var(--bg5);
+      border-color: var(--border4);
       color: var(--text-color);
     }
     .pager {

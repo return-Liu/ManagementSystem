@@ -12,7 +12,7 @@
               <label
                 ref="uploadLabel"
                 for="uploadInput"
-                style="color: var(--text-color2)"
+                style="color: var(--text-color2); cursor: pointer"
                 >更换头像</label
               >
               <input

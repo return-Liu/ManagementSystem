@@ -18,10 +18,8 @@ Mock.mock(/api\/permissions\/getMenu/, "post", permissions.getMenu);
 Mock.mock("/api/user/add", "post", user.createUser);
 // 编辑
 Mock.mock("/api/user/edit", "post", user.updateUser);
-// 删除
-Mock.mock("/api/user/del", "post", user.deleteUser);
-// 批量删除
-Mock.mock("/api/user/bat", "post", user.batchremove);
+// 删除和批量删除
+Mock.mock("/api/user/del", "post", user.deleteOrBatch);
 // 请求用户列表
 Mock.mock(/api\/user\/getUser/, user.getUserList);
 
@@ -30,9 +28,7 @@ Mock.mock(/api\/user\/getUser/, user.getUserList);
 Mock.mock("/api/mall/add", "post", mall.createProduct);
 // 编辑
 Mock.mock("/api/mall/edit", "post", mall.updateProduct);
-// 删除
-Mock.mock("/api/mall/del", "post", mall.deleteProduct);
-// 批量删除
-Mock.mock("/api/mall/bat", "post", mall.batchProduct);
+// 删除和批量删除
+Mock.mock("/api/mall/del", "post", mall.deleteOrBatch);
 // 请求商品列表
 Mock.mock(/api\/mall\/getMall/, mall.getProductList);

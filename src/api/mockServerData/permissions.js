@@ -39,7 +39,7 @@ export default {
       //    注册成功
 
       return {
-        code: 20000,
+        code: 200,
         data: {
           message: "注册成功",
         },
@@ -52,7 +52,7 @@ export default {
       passwords === "123456"
     ) {
       return {
-        code: 20000,
+        code: 200,
         data: {
           message: "注册成功",
         },

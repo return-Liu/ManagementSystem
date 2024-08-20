@@ -61,7 +61,7 @@ export default {
         if (valid) {
           getMenu(this.form).then(({ data }) => {
             // 根据响应码决定是否显示错误提示及后续操作
-            if (data.code === 20000) {
+            if (data.code === 200) {
               Cookie.set("token", data.data.token);
               // 获取菜单数据 存入store
               this.$store.commit("setMenu", data.data.menu);

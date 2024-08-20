@@ -107,11 +107,10 @@ export default {
     if (!id) {
       return { code: -1, message: "缺少参数" };
     }
-    const user = List.findIndex((item) => item.id === id);
-    if (user === -1) {
+    const user = List.find((item) => item.id === id);
+    if (!user) {
       return { code: -1, message: "用户不存在" };
     }
-    // 通过splice方法对列表进行删除
     List.splice(List.indexOf(user), 1);
   },
   /**

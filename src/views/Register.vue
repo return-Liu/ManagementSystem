@@ -82,7 +82,7 @@ export default {
       this.$refs.form.validate((valid) => {
         if (valid) {
           getMenu(this.form).then((response) => {
-            if (response.data.code === 20000) {
+            if (response.data.code === 200) {
               this.$router.push("login");
               // 成功的逻辑
               this.$message.success("注册成功");

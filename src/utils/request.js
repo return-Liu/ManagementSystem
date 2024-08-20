@@ -1,6 +1,6 @@
 import http from "axios";
 export default http.create({
-  // 通用请求的地址
+  // 默认请求的地址
   baseURL: "/api",
   // 设置请求超时时间
   timeout: 3000,

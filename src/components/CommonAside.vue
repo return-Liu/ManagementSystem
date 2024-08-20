@@ -5,7 +5,7 @@
     text-color="var(--text-color2)"
     active-text-color="#43b3cf"
   >
-    <h3 style="color: var(--text-color1); background-color: var(--bg3)">
+    <h3 style="color: var(--text-color1); background-color: var(--bg7)">
       <!-- <img src="../assets/logo.png" class="logo" /> -->
       {{ isCollapse ? "后台" : "后台管理系统" }}
     </h3>
@@ -82,13 +82,14 @@ export default {
 .el-menu-vertical-demo:not(.el-menu--collapse) {
   width: 200px;
   min-height: 400px;
-  background-color: var(--bg3);
+  background-color: var(--bg7);
 }
 .el-menu {
   display: flex;
   flex-direction: column;
   height: 100vh; /* 使用百分比而不是 calc */
   border-right: 0;
+  background-color: var(--bg7);
   h3 {
     color: #fff;
     text-align: center;

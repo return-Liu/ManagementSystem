@@ -1,7 +1,7 @@
 <template>
   <div class="manage">
     <el-dialog
-      style="background-color: var(--bg1)"
+      style="background: var(--bg1)"
       :title="modelType ? '编辑用户' : '新增用户'"
       :visible.sync="dialogVisible"
       width="50%"
@@ -436,6 +436,7 @@ export default {
 <style lang="less" scoped>
 .manage {
   height: 90%;
+
   .manage-header {
     display: flex;
     justify-content: space-between;

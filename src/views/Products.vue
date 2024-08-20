@@ -1,7 +1,7 @@
 <template>
   <div class="mallMeggage">
     <el-dialog
-      style="background-color: var(--bg1)"
+      style="background: var(--bg1)"
       :title="modelType ? '编辑产品' : '新增产品'"
       :visible.sync="dialogVisible"
       width="50%"

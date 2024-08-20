@@ -3,7 +3,7 @@
     <el-col :span="8" style="padding-right: 10px">
       <el-card
         class="box-card"
-        style="background-color: var(--bg1); border: var(--border1)"
+        style="background-color: var(--bg10); border: var(--border1)"
       >
         <div class="user">
           <img ref="avatarImg" class="users" :src="avatarUrl" />
@@ -44,7 +44,7 @@
         style="
           margin-top: 20px;
           height: 350px;
-          background-color: var(--bg1);
+          background-color: var(--bg10);
           border: var(--border1);
         "
       >
@@ -64,7 +64,7 @@
           style="
             height: 290px;
             width: 100%;
-            background-color: var(--bg1);
+            background-color: var(--bg10);
             border: var(--border1);
           "
         >
@@ -86,7 +86,7 @@
             height: 350px;
             width: 100%;
             margin-top: 20px;
-            background-color: var(--bg1);
+            background-color: var(--bg10);
             border: var(--border1);
           "
         >
@@ -329,19 +329,19 @@ export default {
   .el-card {
     width: 32%;
     margin-bottom: 10px;
-    background-clip: var(--bg1);
+    background-clip: var(--bg10);
   }
 }
 ::v-deep .el-table {
-  background-color: var(--bg1);
+  background-color: var(--bg10);
   border-bottom: var(--border1);
 }
 ::v-deep .el-table__body tr {
-  background-color: var(--bg1);
+  background-color: var(--bg10);
   border-bottom: var(--border1);
 }
 ::v-deep .el-table__header-wrapper thead th {
-  background-color: var(--bg1);
+  background-color: var(--bg10);
   border-bottom: var(--border1);
 }
 .green-text {

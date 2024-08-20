@@ -105,7 +105,7 @@ export default {
 <style lang="less" scoped>
 .header-container {
   padding: 0 20px;
-  background-color: var(--bg7);
+  background-color: var(--bg8);
   height: 60px;
   display: flex;
   align-items: center;

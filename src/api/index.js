@@ -51,3 +51,4 @@ export const delMall = (data) => {
 export const getMenu = (data) => {
   return http.post("/permission/getMenu", data);
 };
+// 图表

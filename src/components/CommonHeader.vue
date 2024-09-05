@@ -27,12 +27,16 @@
           <span>{{ user }}</span>
           <i class="el-icon-arrow-down el-icon--right"></i>
         </span>
-        <el-dropdown-menu slot="dropdown">
+        <el-dropdown-menu class="el-dropdown-menu" slot="dropdown">
           <el-dropdown-item command="selfcenter">个人中心</el-dropdown-item>
           <el-dropdown-item command="cancel">退出</el-dropdown-item>
         </el-dropdown-menu>
-        <div class="el-icon-full-screen" @click="handlerscreen"></div>
-        <div class="el-icon-refresh" @click="hanlderrefresh"></div>
+        <div
+          class="el-icon-full-screen"
+          title="全屏模式"
+          @click="handlerscreen"
+        ></div>
+        <div class="el-icon-refresh" title="刷新" @click="hanlderrefresh"></div>
       </el-dropdown>
     </div>
   </div>
@@ -66,7 +70,8 @@ export default {
         // 清除cookie中的menu
         cookie.remove("menu");
         this.$router.push({ name: "login" });
-        this.$message({
+        this.$notify({
+          title: "提示",
           message: "退出成功",
           type: "success",
         });
@@ -125,6 +130,7 @@ export default {
 .l-content {
   display: flex;
   align-items: center;
+
   /deep/.el-breadcrumb__item {
     .el-breadcrumb__inner {
       font-weight: normal;
@@ -136,6 +142,9 @@ export default {
       .el-breadcrumb__inner {
         color: var(--text-color);
       }
+    }
+    .el-breadcrumb__separator[class*="icon"] {
+      color: var(--text-color9);
     }
   }
 }

@@ -14,7 +14,7 @@ Mock.mock(/api\/permission\/getMenu/, "post", permission.getMenu);
 Mock.mock(/api\/permissions\/getMenu/, "post", permissions.getMenu);
 
 // 定义用户列表的数据
-// 添加
+// 新增
 Mock.mock("/api/user/add", "post", user.createUser);
 // 编辑
 Mock.mock("/api/user/edit", "post", user.updateUser);
@@ -23,8 +23,8 @@ Mock.mock("/api/user/del", "post", user.deleteOrBatch);
 // 请求用户列表
 Mock.mock(/api\/user\/getUser/, user.getUserList);
 
-// 定义商品列表的数据
-// 添加
+// 定义产品列表的数据
+// 新增
 Mock.mock("/api/mall/add", "post", mall.createProduct);
 // 编辑
 Mock.mock("/api/mall/edit", "post", mall.updateProduct);

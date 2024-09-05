@@ -83,6 +83,12 @@ export default {
   width: 200px;
   min-height: 400px;
   background-color: var(--bg7);
+  ::v-deep .el-menu {
+    background-color: var(--bg7);
+  }
+  ::v-deep .el-menu-item-group__title {
+    padding: 0;
+  }
 }
 .el-menu {
   display: flex;
@@ -90,6 +96,10 @@ export default {
   height: 100vh; /* 使用百分比而不是 calc */
   border-right: 0;
   background-color: var(--bg7);
+  .el-menu-item:focus,
+  .el-menu-item:hover {
+    background-color: var(--bg1);
+  }
   h3 {
     color: #fff;
     text-align: center;

@@ -1,6 +1,5 @@
 import Mock from "mockjs";
 
-// 图表数据
 const generateListData = () => {
   // console.log("生成数据");
   const lenght = 1;

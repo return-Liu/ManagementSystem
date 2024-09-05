@@ -1,7 +1,6 @@
 <template>
   <div class="manage">
     <el-dialog
-      style="background: var(--bg1)"
       :title="modelType ? '编辑用户' : '新增用户'"
       :visible.sync="dialogVisible"
       width="50%"
@@ -194,7 +193,7 @@ export default {
       tableData: [],
       // 存放id
       seles: [],
-      modelType: 0, //表示新增的弹窗 0编辑 1新增
+      modelType: 0, //表示新增的弹窗 1编辑 0新增
       total: 0, //当前的总条数
       pageData: {
         page: 1,
@@ -211,21 +210,21 @@ export default {
       this.$refs.form.validate((valid) => {
         if (valid) {
           if (this.modelType === 0) {
-            // 新增
-            addUser(this.form).then(() => {
-              this.getList();
-              this.$message({
-                type: "success",
-                message: "新增成功!",
-              });
-            });
-          } else {
             // 编辑
             editUser(this.form).then(() => {
               this.getList();
               this.$message({
                 type: "success",
                 message: "编辑成功!",
+              });
+            });
+          } else {
+            // 新增
+            addUser(this.form).then(() => {
+              this.getList();
+              this.$message({
+                type: "success",
+                message: "新增成功!",
               });
             });
           }
@@ -391,9 +390,10 @@ export default {
      * @param {FUNCTION}
      * @returns
      */
+    // 使用防抖函数处理搜索
     handlerSearch() {
       if (!this.userForm.name) {
-        this.$message.warning("请输入搜索内容");
+        this.$message.warning("请输入关键字");
         return;
       }
       // 重置之前的错误提示标志（如果有的话）
@@ -405,7 +405,6 @@ export default {
       setTimeout(() => {
         getUser({ params: { ...this.userForm, ...this.pageData } })
           .then(({ data }) => {
-            // console.log(data.list);
             if (data.list && data.list.length > 0) {
               // 有数据返回，更新表格数据
               this.tableData = data.list;
@@ -427,6 +426,7 @@ export default {
       }, 2000);
     },
   },
+
   // 当组件创建完成后调用getList方法
   created() {
     this.getList();
@@ -451,7 +451,7 @@ export default {
       position: absolute;
       left: 90px;
       background-color: var(--bg5);
-      border-color: var(--border4);
+      border-color: var(--border5);
       color: var(--text-color);
     }
   }
@@ -465,7 +465,7 @@ export default {
     }
     .dangers {
       background-color: var(--bg5);
-      border-color: var(--border4);
+      border-color: var(--border5);
       color: var(--text-color);
     }
     .pager {
@@ -483,19 +483,19 @@ export default {
   box-shadow: 0 0 10px #ccc;
 }
 ::v-deep .el-table {
-  background-color: var(--bg1);
+  background-color: var(--bg10);
 }
 
 ::v-deep .el-table__body-wrapper tbody tr {
-  background-color: var(--bg1);
+  background-color: var(--bg10);
 }
 
 ::v-deep .el-table__header {
-  background-color: var(--bg1);
+  background-color: var(--bg10);
 }
 
 ::v-deep .el-table__header th {
-  background-color: var(--bg1);
+  background-color: var(--bg10);
 }
 /* 使用 ::v-deep 或 /deep/ 根据你的 Vue 版本 */
 ::v-deep .el-pagination {

@@ -16,7 +16,7 @@ export default {
     };
   },
   created() {
-    // 获取主题进行挂载
+    //当页面创建时 设置主题
     document.documentElement.setAttribute("data-theme", this.theme);
   },
 };
@@ -28,6 +28,7 @@ h3,
 p {
   margin: 0;
   padding: 0;
+  box-sizing: border-box;
 }
 body {
   background-color: var(--bg1);
@@ -40,4 +41,14 @@ body {
   padding: 20px;
   margin-bottom: 0; /* 避免负margin影响外部布局 */
 }
+// @media (max-width: 768px) {
+//   .el-card {
+//     width: 100%;
+//   }
+// }
+// @media (min-width: 768px) {
+//   .el-card {
+//     width: 500px;
+//   }
+// }
 </style>

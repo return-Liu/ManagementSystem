@@ -33,10 +33,6 @@ export default {
   data() {
     return {
       theme: localStorage.getItem("theme") || "light",
-      // 切换主题的次数
-      swithCount: 0,
-      // 定时器
-      timer: null,
     };
   },
   computed: {
@@ -48,7 +44,10 @@ export default {
     ...mapMutations(["closeRemove"]),
     // 点击tag跳转的功能
     addMsg(item) {
-      this.$router.push({ name: item.name });
+      // 如果点击的tag和当前路由名称相同，则不跳转
+      if (item.name !== this.$route.name) {
+        this.$router.push({ name: item.name });
+      }
     },
     // 点击tag删除的功能
     hanlderClose(item, index) {
@@ -74,43 +73,13 @@ export default {
     //
     // 主题
     switchTheme() {
-      // 假设频繁切换主题，可能会导致浏览器崩溃，所以这里使用try-catch语句来捕获异常，并给出友好提示。
-      try {
-        // 设置data-theme的主题
-        document.documentElement.setAttribute("data-theme", this.theme);
-        // 读取并打印设置后的主题值
-        const theme = document.documentElement.getAttribute("data-theme");
-        // 将存储主题值到localStorage
-        localStorage.setItem("theme", theme);
-        // 更新计数器
-        this.swithCount++;
-        // 当swithCount大于等于5时，不再执行成功回调
-        if (this.swithCount >= 5) {
-          this.$message({
-            message: "切换主题次数过多，请等待几秒后切换",
-            type: "warning",
-          });
-          // 等待3秒后重置计数器
-          this.timer = setTimeout(() => {
-            this.swithCount = 0;
-          }, 3000);
-          // 将获取的主题值清空
-          const theme = document.documentElement.getAttribute("data-theme");
-          document.documentElement.setAttribute("data-theme", "");
-          localStorage.setItem("theme", theme);
-          return;
-        }
-        // 显示成功消息
-        this.$message({
-          message: "切换主题成功",
-          type: "success",
-        });
-      } catch (error) {
-        this.$message({
-          message: "切换主题失败,请稍后再试",
-          type: "error",
-        });
-      }
+      // 设置data-theme的主题
+      document.documentElement.setAttribute("data-theme", this.theme);
+      // 读取并打印设置后的主题值
+      const theme = document.documentElement.getAttribute("data-theme");
+      // 将存储主题值到localStorage
+      localStorage.setItem("theme", theme);
+      return;
     },
   },
 };
@@ -136,6 +105,14 @@ export default {
   .switch {
     position: absolute;
     right: 20px;
+  }
+  .text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    animation: movetext 3s linear infinite;
+    color: var(--text-color5);
   }
 }
 </style>

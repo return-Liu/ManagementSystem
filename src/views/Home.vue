@@ -31,10 +31,12 @@
         <div class="login-message">
           <!-- 获取登录时间和登录地点 -->
           <p style="color: var(--text-color2); cursor: pointer">
+            <i class="el-icon-time"></i>
             当前登录时间:<span>{{ time }}</span>
             <span @click="updateTime" ref="removetime">获取当前登录时间</span>
           </p>
           <p style="color: var(--text-color2); cursor: pointer">
+            <i class="el-icon-location-information"></i>
             当前登录地区:<span>{{ city }}</span>
             <span @click="updateCity" ref="removecity">获取当前登录地区</span>
           </p>
@@ -115,6 +117,8 @@
   </el-row>
 </template>
 <script>
+// 引入Cookie
+// import Cookie from "js-cookie";
 // api
 import { getListData } from "../api";
 export default {
@@ -135,7 +139,6 @@ export default {
       time: "无信息",
       city: "无信息",
       // 用户类型
-
       userName: "Admin",
       userType: "超级管理员",
       // 渲染表格数据
@@ -152,11 +155,11 @@ export default {
       // 渲染待办事件信息
       event: [
         {
-          name: "追求极致",
+          name: "修改个人信息",
           user: "Admin",
-          time: new Date().toLocaleDateString(), // 获取当前日期
-          status: "已达标",
-          operate: "已完成",
+          time: "2023-03-01",
+          status: "已完成",
+          operate: "查看",
         },
       ],
     };
@@ -180,14 +183,14 @@ export default {
         if (!file) return;
         // 创建文件读取对象
         const reader = new FileReader();
-        // 当文件读取成功
+        // 读取文件 当读取成功后
         reader.onload = () => {
           // 将头像地址赋值给avatarImg
           this.avatarUrl = reader.result;
           //  通过ref获取头像
           this.$refs.avatarImg.src = this.avatarUrl;
-          // 存储新的头像
-          localStorage.setItem("avatarUrl", this.avatarUrl);
+          // 设置新的头像 URL 到 cookie 中
+          localStorage.setItem("avatarUrl", this.avatarUrl, { expires: 7 }); // 设置过期时间为 7 天
         };
         // 读取文件
         reader.readAsDataURL(file);
@@ -207,7 +210,8 @@ export default {
     updateCity() {
       // 获取当前登录地区
       this.city = "江西-宜春";
-      this.$message({
+      this.$notify({
+        title: "提示",
         message: "获取当前登录地区成功",
         type: "success",
       });
@@ -218,10 +222,12 @@ export default {
     updateTime() {
       // 获取当前日期
       this.time = new Date().toLocaleDateString();
-      this.$message({
+      this.$notify({
+        title: "提示",
         message: "获取当前登录时间成功",
         type: "success",
       });
+
       // 当刷新页面时,获取当前登录时间还在
       // 获取成功时 移除获取当前登录地区的标签
       this.$refs.removetime.remove();

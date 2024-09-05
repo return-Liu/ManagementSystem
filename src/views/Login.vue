@@ -1,5 +1,5 @@
 <template>
-  <div class="login">
+  <div class="login-page" :class="{ 'login-page': true }">
     <el-form
       ref="form"
       label-width="70px"
@@ -13,16 +13,26 @@
       </el-form-item>
       <el-form-item label="密码" prop="password">
         <el-input
-          type="password"
+          :type="showPassword ? 'text' : 'password'"
+          ref="password"
           v-model="form.password"
           placeholder="请输入密码"
-        ></el-input>
+        >
+        </el-input>
+        <i
+          class="el-icon-view"
+          :class="{
+            'el-icon-view': !showPassword,
+            'el-icon-close': showPassword,
+          }"
+          @click="handlerClick"
+        ></i>
       </el-form-item>
+      <div class="register-box">
+        <span class="register" @click="register">新用户?是否注册</span>
+      </div>
       <el-form-item>
         <el-button type="primary" class="login" @click="login">登录</el-button>
-        <el-button type="primary" class="register" @click="register"
-          >注册</el-button
-        >
       </el-form-item>
     </el-form>
   </div>
@@ -30,15 +40,13 @@
 <script>
 import Cookie from "js-cookie";
 import { getMenu } from "../api";
-
 export default {
   name: "LoginManage",
   data() {
     return {
-      alertVisible: true,
       form: {
-        username: "",
-        password: "",
+        username: "admin",
+        password: "123456",
       },
       rules: {
         username: [
@@ -46,6 +54,7 @@ export default {
         ],
         password: [{ required: true, trigger: "blur", message: "请输入密码" }],
       },
+      showPassword: false, // 添加这个属性来控制密码显示
     };
   },
   created() {
@@ -59,26 +68,45 @@ export default {
     login() {
       this.$refs.form.validate((valid) => {
         if (valid) {
-          getMenu(this.form).then(({ data }) => {
-            // 根据响应码决定是否显示错误提示及后续操作
-            if (data.code === 200) {
-              Cookie.set("token", data.data.token);
-              // 获取菜单数据 存入store
-              this.$store.commit("setMenu", data.data.menu);
-              this.$store.commit("addMenu", this.$router);
-              this.$router.push({ name: "home" });
-              // 登录成功逻辑
-              this.$message({
-                message: "登录成功",
-                type: "success",
+          getMenu(this.form)
+            .then(({ data }) => {
+              // 根据响应码决定是否显示错误提示及后续操作
+              if (data.code === 200) {
+                Cookie.set("token", data.data.token);
+                // 获取菜单数据 存入store
+                this.$store.commit("setMenu", data.data.menu);
+                // 添加动态路由
+                this.$store.commit("addMenu", this.$router);
+                // 当前路由为登录页时，跳转到首页
+                this.$router.push({ name: "home" });
+                // 登录成功逻辑  直接显示登录成功通知
+                this.$notify({
+                  title: "提示",
+                  message: "登录成功",
+                  type: "success",
+                });
+              } else {
+                this.$notify({
+                  title: "警告",
+                  message: "用户名或密码错误",
+                  type: "warning",
+                });
+              }
+            })
+            .catch((error) => {
+              console.error("Error during login:", error);
+              this.$notify({
+                title: "错误",
+                message: "登录过程中发生错误，请稍后再试。",
+                type: "error",
               });
-            } else {
-              // 登录失败逻辑
-              this.$message.error("登录失败，请检查用户名和密码!");
-            }
-          });
+            });
         }
       });
+    },
+    handlerClick() {
+      // 切换密码显示状态
+      this.showPassword = !this.showPassword;
     },
     register() {
       this.$router.push("register");
@@ -86,41 +114,64 @@ export default {
   },
 };
 </script>
+
 <style scoped lang="less">
-.el-form {
-  width: 350px;
-  border: var(--bg8);
-  margin: 150px auto;
-  padding: 35px 35px 25px 35px;
-  background-color: var(--bg1);
-  border-radius: 15px;
-  box-shadow: var(--box-shodow1);
-  box-sizing: border-box;
-  .el-alert {
-    width: 300px;
-  }
-  .login-title {
-    text-align: center;
-    margin-bottom: 40px;
-    background: var(--bg9);
-    background-clip: text;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-  }
-  .el-input {
-    width: 198px;
-  }
-  .login {
-    margin-left: 74px;
-    background: var(--bg2);
-    color: var(--text-color1);
-    border-color: var(--border2);
-  }
-  .register {
-    background: var(--bg2);
-    color: var(--text-color1);
-    border-color: var(--border2);
-    margin-left: 48px;
+.login-page {
+  background: var(--bg11);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100vh;
+
+  .el-form {
+    width: 350px;
+    margin: 0 auto;
+    padding: 35px 35px 25px 35px;
+    border-radius: 15px;
+    background: var(--bg12);
+    box-sizing: border-box;
+    .el-form-item {
+      margin-bottom: 20px;
+    }
+    .el-alert {
+      width: 300px;
+    }
+    .login-title {
+      text-align: center;
+      margin-bottom: 40px;
+      background: var(--bg9);
+      background-clip: text;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .el-input {
+      width: 198px;
+    }
+
+    .login {
+      width: 200px;
+      transform: translateX(69px);
+      background: var(--bg11);
+      color: var(--text-color7);
+      border-color: var(--border6);
+      margin-top: 5px;
+    }
+    .el-icon-view {
+      position: absolute;
+      right: 6px;
+      top: 13px;
+      cursor: pointer;
+    }
+    .register-box {
+      margin-top: -10px;
+      cursor: pointer;
+    }
+    .register {
+      color: var(--text-color8);
+      margin: 0 0 0 180px;
+      font-size: 12px;
+    }
   }
 }
 </style>

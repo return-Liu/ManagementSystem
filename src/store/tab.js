@@ -21,6 +21,7 @@ export default {
     CollapseMenu(state) {
       state.isCollapse = !state.isCollapse;
     },
+    // 跳转对应的tag
     addTabs(state, val) {
       // 请求是否为首页
       if (val.name !== "home") {

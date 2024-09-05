@@ -36,7 +36,7 @@ const routes = [
       // },
       // {
       //   name: "mall",
-      //   path: "mall", // 商品管理
+      //   path: "mall", // 用户管理
       //   component: Mall,
       // },
       // {
@@ -45,12 +45,13 @@ const routes = [
       //   component: DataManagement,
       // },
       // {
-      //   name: "languagescreen",
-      //   path: "languagescreen",
-      //   component: LanguageScreen, //数据大屏
+      //   name: "personalcenter",
+      //   path: "personalcenter",
+      //   component: PersonalCenter, // 个人信息
       // },
     ],
   },
+
   {
     path: "/login", //登录
     name: "login",

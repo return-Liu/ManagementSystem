@@ -45,8 +45,8 @@ export default {
               url: "Products.vue",
             },
             {
-              path: "/user",
-              name: "user",
+              path: "/users",
+              name: "users",
               lable: "用户管理",
               icon: "user-solid",
               url: "User.vue",

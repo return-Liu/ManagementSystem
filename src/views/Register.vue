@@ -1,5 +1,5 @@
 <template>
-  <div class="login">
+  <div class="login" :class="{ 'register-page': true }">
     <el-form
       ref="form"
       label-width="70px"
@@ -28,7 +28,9 @@
         ></el-input>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="register">注册</el-button>
+        <el-button type="primary" class="register" @click="register"
+          >注册</el-button
+        >
       </el-form-item>
     </el-form>
   </div>
@@ -41,9 +43,9 @@ export default {
     return {
       passwordError: false,
       form: {
-        username: "",
-        password: "",
-        passwords: "",
+        username: "admin",
+        password: "123456",
+        passwords: "123456",
       },
       // 校验规则
       rules: {
@@ -82,13 +84,21 @@ export default {
       this.$refs.form.validate((valid) => {
         if (valid) {
           getMenu(this.form).then((response) => {
+            // 当响应状态码为200时，注册成功 如果不为200，则注册失败
             if (response.data.code === 200) {
               this.$router.push("login");
-              // 成功的逻辑
-              this.$message.success("注册成功");
+              this.$notify({
+                title: "提示",
+                message: "注册成功",
+                type: "success",
+              });
             } else {
               // 失败的逻辑
-              this.$message.error("注册失败，请检查用户名和密码!");
+              this.$notify({
+                title: "警告",
+                message: "注册失败",
+                type: "warning",
+              });
             }
           });
         }
@@ -98,17 +108,24 @@ export default {
 };
 </script>
 <style scoped lang="less">
+// 为了确保注册页面(register.vue)不受全局body样式的影响
+.register-page {
+  background: var(--bg11);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100vh;
+}
 .el-form {
   width: 350px;
-  border: var(--bg8);
   margin: 100px auto;
   padding: 35px 35px 25px 35px;
-  background-color: var(--bg1);
+  background: var(--bg12);
   border-radius: 15px;
-  box-shadow: var(--box-shodow1);
   box-sizing: border-box;
   .el-icon-back {
-    color: var(--text-color5);
+    color: var(--text-color7);
     font-size: 20px;
   }
   .login-title {
@@ -122,11 +139,12 @@ export default {
   .el-input {
     width: 198px;
   }
-  .el-button {
-    margin-left: 110px;
-    background: var(--bg2);
-    color: var(--text-color1);
-    border-color: var(--border2);
+  .register {
+    margin: 0 0 0 68px;
+    width: 200px;
+    background: var(--bg11);
+    color: var(--text-color7);
+    border-color: var(--border6);
   }
 }
 </style>

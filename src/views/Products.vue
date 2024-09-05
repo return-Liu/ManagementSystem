@@ -1,7 +1,6 @@
 <template>
   <div class="mallMeggage">
     <el-dialog
-      style="background: var(--bg1)"
       :title="modelType ? '编辑产品' : '新增产品'"
       :visible.sync="dialogVisible"
       width="50%"
@@ -13,13 +12,7 @@
         v-show="alertVisible"
       ></el-alert>
       <!-- 商品的表单信息 -->
-      <el-form
-        ref="form"
-        :rules="rules"
-        :inline="true"
-        :model="form"
-        label-width="80px"
-      >
+      <el-form ref="form" :rules="rules" :model="form" label-width="80px">
         <el-row :gutter="20">
           <el-col :span="12">
             <el-card style="height: 100%">
@@ -50,7 +43,7 @@
         <el-row :gutter="20" style="margin-top: 10px">
           <el-col :span="12">
             <el-card style="height: 100%">
-              <el-form-item label="商品产品" prop="number">
+              <el-form-item label="产品数量" prop="number">
                 <el-input
                   v-model="form.number"
                   placeholder="请输入产品数量"
@@ -91,7 +84,7 @@
         <el-button @click="cancel">取消</el-button>
         <el-button
           style="color: #fff; background-color: #409eff; border-color: #409eff"
-          @click="handlerClick"
+          @click="handleSubmit"
           >确定</el-button
         >
       </span>
@@ -180,12 +173,28 @@ export default {
   name: "ProductsManage",
   data() {
     return {
-      alertVisible: false,
-      dialogVisible: false,
       searchError: false,
+      dialogVisible: false,
+      alertVisible: false,
       // 加载搜索的状态
       loading: false,
       input: "",
+      // 表格数据
+      tableData: [],
+      // 存放id
+      seles: [],
+      modelType: 0, //表示新增的弹窗 1编辑 0新增
+      total: 0, //当前的总条数默认为0
+      pageData: {
+        // 单页
+        page: 1,
+        // 每页10条 
+        limit: 10,
+      },
+      mallForm: {
+        // 搜索时的表单数据
+        name: "",
+      },
       form: {
         description: "",
         name: "",
@@ -193,7 +202,6 @@ export default {
         number: "",
         price: "",
       },
-      // 表单验证规则
       rules: {
         name: [{ required: true, message: "请输入商品名称" }],
         type: [{ required: true, message: "请选择商品类型" }],
@@ -201,58 +209,42 @@ export default {
         price: [{ required: true, message: "请输入商品价格" }],
         description: [{ required: true, message: "请输入商品介绍" }],
       },
-      // 产品类型
       productTypes: [
         { value: "新款电脑", label: "新款电脑" },
         { value: "保湿面霜", label: "保湿面霜" },
         { value: "智能手机", label: "智能手机" },
         { value: "时尚衬衫", label: "时尚衬衫" },
         { value: "经典小说", label: "经典小说" },
+        { value: "智能化", label: "智能化" },
       ],
-      // 表格数据
-      tableData: [],
-      // 存放id
-      seles: [],
-      modelType: 0, //表示新增的弹窗 0编辑 1新增
-      total: 0, //当前的总条数默认为0
-      pageData: {
-        // 单页
-        page: 1,
-        // 每页10条
-        limit: 10,
-      },
-      mallForm: {
-        // 搜索时的表单数据
-        name: "",
-      },
     };
   },
   methods: {
-    handlerClick() {
+    handleSubmit() {
       this.$refs.form.validate((valid) => {
-        //      // 对表单进行校验
         if (valid) {
-          if (this.modelType === 0) {
-            addMall(this.form).then(() => {
-              // 重新获取商品列表的接口
+          if (this.modelType === 1) {
+            editMall(this.form).then(() => {
               this.getList();
-              this.$message.success("新增成功");
+              this.$message({
+                type: "success",
+                message: "编辑成功!",
+              });
             });
           } else {
-            editMall(this.form).then(() => {
-              // 重新获取商品列表的接口
+            addMall(this.form).then(() => {
               this.getList();
-              this.$message.success("编辑成功");
+              this.$message({
+                type: "success",
+                message: "新增成功!",
+              });
             });
           }
-          // 清空表单
+          // 清空表单数据 以便下次不会影响其他弹窗
           this.resetForm();
-          // 关闭弹窗
           this.dialogVisible = false;
-          // 验证成功时隐藏警告
           this.alertVisible = false;
         } else {
-          // 验证失败时显示警告
           this.alertVisible = true;
         }
       });
@@ -327,24 +319,17 @@ export default {
         cancelButtonText: "取消",
         type: "warning",
       })
-        // 成功回调
         .then(() => {
-          // 使用promise.all来等待复选框选中的id
           const promises = this.seles.map((id) => delMall({ id }));
-          // 当所有选中的复选框都成功时 执行then后面的操作 如果有一个失败则执行catch
           Promise.all(promises).then(() => {
-            // 在所有请求成功后刷新列表
             this.getList();
-            // 成功消息提示
             this.$message({
               type: "success",
               message: "批量删除成功",
             });
           });
         })
-        // 失败回调
         .catch(() => {
-          // 失败提示信息
           this.$message({
             type: "error",
             message: "已取消批量删除",
@@ -414,7 +399,7 @@ export default {
     // 列表搜索
     handlerSearch() {
       if (!this.mallForm.name) {
-        this.$message.warning("请输入搜索内容");
+        this.$message.warning("请输入关键字");
         return;
       }
       // 重置之前的错误提示标志（如果有的话）
@@ -477,7 +462,7 @@ export default {
       position: absolute;
       left: 90px;
       background-color: var(--bg5);
-      border-color: var(--border4);
+      border-color: var(--border5);
       color: var(--text-color);
     }
   }
@@ -486,7 +471,7 @@ export default {
     height: calc(100% - 62px);
     .dangers {
       background-color: var(--bg5);
-      border-color: var(--border4);
+      border-color: var(--border5);
       color: var(--text-color);
     }
     .pager {
@@ -504,19 +489,19 @@ export default {
   box-shadow: 0 0 10px #ccc;
 }
 ::v-deep .el-table {
-  background-color: var(--bg1);
+  background-color: var(--bg10);
 }
 
 ::v-deep .el-table__body-wrapper tbody tr {
-  background-color: var(--bg1);
+  background-color: var(--bg10);
 }
 
 ::v-deep .el-table__header {
-  background-color: var(--bg1);
+  background-color: var(--bg10);
 }
 
 ::v-deep .el-table__header th {
-  background-color: var(--bg1);
+  background-color: var(--bg10);
 }
 /* 使用 ::v-deep 或 /deep/ 根据你的 Vue 版本 */
 ::v-deep .el-pagination {

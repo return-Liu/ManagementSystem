@@ -5,6 +5,7 @@ const productTypes = [
   "文学艺术",
   "护肤彩妆",
   "代码工具",
+  "智能化",
 ];
 // 新增方法生成商品名称，考虑类型
 const adjectiveNounPairs = {
@@ -12,7 +13,6 @@ const adjectiveNounPairs = {
     ["智能", "高清"],
     ["摄像头", "音箱"],
   ],
-
   文学艺术: [
     ["畅销", "经典"],
     ["小说", "传记"],
@@ -24,6 +24,10 @@ const adjectiveNounPairs = {
   代码工具: [
     ["代码", "工具"],
     ["工具", "IDE"],
+  ],
+  智能化: [
+    ["智能", "智能化"],
+    ["AI", "智能AI"],
   ],
 };
 // 声明新方法生成商品名称，考虑类型
@@ -81,6 +85,7 @@ function generateDescription(name, type) {
     case "代码工具":
       description = `这款${name}是开发者的得力助手，提升编程效率，让代码更加优雅。`;
       break;
+
     default:
       description = `这是一款${name}，具体描述待补充。`;
   }

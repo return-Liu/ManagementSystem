@@ -1,6 +1,13 @@
 <template>
   <el-row>
-    <el-col :span="8" style="padding-right: 10px">
+    <el-col
+      :xs="24"
+      :sm="24"
+      :md="8"
+      :lg="8"
+      :xl="8"
+      style="padding-right: 10px"
+    >
       <el-card
         class="box-card"
         style="background-color: var(--bg10); border: var(--border1)"
@@ -13,7 +20,7 @@
                 ref="uploadLabel"
                 for="uploadInput"
                 style="color: var(--text-color2); cursor: pointer"
-                >更换头像</label
+                >更新头像</label
               >
               <input
                 ref="uploadInput"
@@ -25,7 +32,16 @@
               />
             </div>
             <p class="username">{{ userName }}</p>
-            <p class="useraccess">{{ userType }}</p>
+            <p class="useraccess" v-show="showAccess" @click="updateUserType">
+              {{ userType }}
+            </p>
+            <input
+              type="text"
+              ref="access"
+              class="access"
+              v-show="showAccessInput"
+              v-model="userType"
+            />
           </div>
         </div>
         <div class="login-message">
@@ -60,7 +76,7 @@
         </el-table>
       </el-card>
     </el-col>
-    <el-col :span="16">
+    <el-col :xs="24" :sm="24" :md="16" :lg="16" :xl="16">
       <div class="num-list">
         <el-card
           style="
@@ -141,6 +157,9 @@ export default {
       // 用户类型
       userName: "Admin",
       userType: "超级管理员",
+      showAccessInput: false,
+      showAccess: true,
+      isFirstClick: true, // 新增标志
       // 渲染表格数据
       UserData: [],
       // 渲染表格信息
@@ -152,6 +171,8 @@ export default {
         // 用户退出时间
         logoutTime: "退出时间",
       },
+      // 更新名字
+
       // 渲染待办事件信息
       event: [
         {
@@ -169,7 +190,7 @@ export default {
     getListData().then(({ data }) => {
       // 将数据进行解构
       const { UserData } = data.data;
-      console.log(data.data);
+      // console.log(data.data);
       //将解构的数据赋值给UserData
       this.UserData = UserData;
     });
@@ -218,6 +239,29 @@ export default {
       // 当刷新页面时 获取的当前登录地区还在
       //  获取成功时 移除获取当前登录地区的标签
       this.$refs.removecity.remove();
+    },
+    // 更新名字
+    updateUserType() {
+      if (this.isFirstClick) {
+        // 第一次点击时显示输入框并隐藏文本
+        this.showAccessInput = true;
+        this.showAccess = false;
+        this.isFirstClick = false;
+      } else {
+        // 提交修改后的用户类型
+        this.submitUserType();
+      }
+    },
+    submitUserType() {
+      // 提交修改后的用户类型
+      this.showAccessInput = false;
+      this.showAccess = true;
+      this.isFirstClick = true;
+      this.$notify({
+        title: "提示",
+        message: "修改用户类型成功",
+        type: "success",
+      });
     },
     updateTime() {
       // 获取当前日期

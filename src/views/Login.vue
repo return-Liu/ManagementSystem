@@ -45,8 +45,8 @@ export default {
   data() {
     return {
       form: {
-        username: "admin",
-        password: "123456",
+        username: "",
+        password: "",
       },
       rules: {
         username: [
@@ -78,7 +78,7 @@ export default {
                 // 添加动态路由
                 this.$store.commit("addMenu", this.$router);
                 // 当前路由为登录页时，跳转到首页
-                this.$router.push({ name: "home" });
+                this.$router.push({ name: "home", path: "/home" });
                 // 登录成功逻辑  直接显示登录成功通知
                 this.$notify({
                   title: "提示",
@@ -89,15 +89,15 @@ export default {
                 this.$notify({
                   title: "警告",
                   message: "用户名或密码错误",
-                  type: "warning",
+                  type: "error",
                 });
               }
             })
             .catch((error) => {
-              console.error("Error during login:", error);
+              console.error("登录失败:", error.message);
               this.$notify({
                 title: "错误",
-                message: "登录过程中发生错误，请稍后再试。",
+                message: "你的网络登录过程中发生错误，请稍后再试。",
                 type: "error",
               });
             });
@@ -109,12 +109,13 @@ export default {
       this.showPassword = !this.showPassword;
     },
     register() {
-      this.$router.push("register");
+      // this.$router.push("register");
+      // this.$message.success("还在开发中,敬请期待");
+      this.$router.push({ name: "register", path: "/register" });
     },
   },
 };
 </script>
-
 <style scoped lang="less">
 .login-page {
   background: var(--bg11);
@@ -123,7 +124,6 @@ export default {
   align-items: center;
   width: 100%;
   height: 100vh;
-
   .el-form {
     width: 350px;
     margin: 0 auto;
@@ -148,7 +148,6 @@ export default {
     .el-input {
       width: 198px;
     }
-
     .login {
       width: 200px;
       transform: translateX(69px);

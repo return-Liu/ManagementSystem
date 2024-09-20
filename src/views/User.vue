@@ -209,7 +209,7 @@ export default {
     submit() {
       this.$refs.form.validate((valid) => {
         if (valid) {
-          if (this.modelType === 0) {
+          if (this.modelType === 1) {
             // 编辑
             editUser(this.form).then(() => {
               this.getList();

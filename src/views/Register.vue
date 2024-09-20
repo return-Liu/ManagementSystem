@@ -36,16 +36,16 @@
   </div>
 </template>
 <script>
-import { getMenu } from "../api";
+import { getRegister } from "../api";
 export default {
   name: "RegisterManage",
   data() {
     return {
       passwordError: false,
       form: {
-        username: "admin",
-        password: "123456",
-        passwords: "123456",
+        username: "",
+        password: "",
+        passwords: "",
       },
       // 校验规则
       rules: {
@@ -83,10 +83,10 @@ export default {
       // 判断校验
       this.$refs.form.validate((valid) => {
         if (valid) {
-          getMenu(this.form).then((response) => {
+          getRegister(this.form).then((response) => {
             // 当响应状态码为200时，注册成功 如果不为200，则注册失败
             if (response.data.code === 200) {
-              this.$router.push("login");
+              this.$router.push({ name: "login", path: "/login" });
               this.$notify({
                 title: "提示",
                 message: "注册成功",
@@ -96,11 +96,12 @@ export default {
               // 失败的逻辑
               this.$notify({
                 title: "警告",
-                message: "注册失败",
-                type: "warning",
+                message: "注册失败,请检查账号或者密码一致",
+                type: "error",
               });
             }
           });
+          console.log(this.form);
         }
       });
     },

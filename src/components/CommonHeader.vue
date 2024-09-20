@@ -61,7 +61,7 @@ export default {
     handlerDropdown(command) {
       // 个人中心
       if (command === "selfcenter") {
-        this.$router.push({ name: "personalcenter" });
+        this.$router.push({ name: "personalcenter", path: "/personalcenter" });
       }
       // 退出首页
       if (command === "cancel") {
@@ -69,7 +69,7 @@ export default {
         cookie.remove("token");
         // 清除cookie中的menu
         cookie.remove("menu");
-        this.$router.push({ name: "login" });
+        this.$router.push({ name: "login", path: "/login" });
         this.$notify({
           title: "提示",
           message: "退出成功",

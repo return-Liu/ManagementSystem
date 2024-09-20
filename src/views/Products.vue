@@ -188,7 +188,7 @@ export default {
       pageData: {
         // 单页
         page: 1,
-        // 每页10条 
+        // 每页10条
         limit: 10,
       },
       mallForm: {
@@ -407,7 +407,7 @@ export default {
       // 设置加载状态，准备进行搜索
       this.loading = true;
       // 1.通过 setTimeout 模拟延迟，以模拟搜索请求
-      // 2.调用获取列表的方法，并传递搜索参数
+      // 2.调用获取列表的方法，并传递搜索参数 （包括表单参数, 分页参数）
       setTimeout(() => {
         getMall({ params: { ...this.mallForm, ...this.pageData } })
           .then(({ data }) => {

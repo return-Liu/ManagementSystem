@@ -8,7 +8,7 @@ export const getListData = () => {
 
 // 获取用户列表
 export const getUser = (params) => {
-  console.log(params, "params");
+  // console.log(params, "params");
   // 返回用户列表
   return http.get("/user/getUser", params);
 };
@@ -49,6 +49,9 @@ export const delMall = (data) => {
 
 // 获取动态菜单
 export const getMenu = (data) => {
-  return http.post("/permission/getMenu", data);
+  return http.post("/login/getMenu", data);
 };
-// 图表
+// 注册
+export const getRegister = (data) => {
+  return http.post("/register/getMenu", data);
+};

@@ -17,7 +17,7 @@ http.interceptors.request.use(
 );
 // 添加响应拦截器
 http.interceptors.response.use((response) => {
-  return response;
+  console.log(response);
 }),
   (error) => {
     // 处理响应错误

@@ -33,6 +33,7 @@ router.beforeEach((to, from, next) => {
     next();
   }
 });
+
 // 创建vue实例
 new Vue({
   router,

@@ -2,16 +2,15 @@ import Mock from "mockjs";
 import home from "./mockServerData/home";
 import user from "./mockServerData/user";
 import mall from "./mockServerData/mall";
-import permission from "./mockServerData/permission";
-import permissions from "./mockServerData/permissions";
+import login from "./mockServerData/login";
+import register from "./mockServerData/register";
 
 // 定义mock请求拦截
 Mock.mock("/api/home/getListData", home.getListData);
-
 // 登录拦截
-Mock.mock(/api\/permission\/getMenu/, "post", permission.getMenu);
+Mock.mock(/api\/login\/getMenu/, "post", login.getMenu);
 // 注册拦截
-Mock.mock(/api\/permissions\/getMenu/, "post", permissions.getMenu);
+Mock.mock(/api\/register\/getMenu/, "post", register.getMenu);
 
 // 定义用户列表的数据
 // 新增

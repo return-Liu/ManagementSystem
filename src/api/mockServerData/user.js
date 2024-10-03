@@ -73,6 +73,7 @@ export default {
       list: pageList,
     };
   },
+
   /**
    * 增加用户
    * @param name, addr, age, birth, sex

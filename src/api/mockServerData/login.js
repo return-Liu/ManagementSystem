@@ -113,6 +113,8 @@ export default {
         data: {
           message: "密码错误",
         },
+        token: Mock.Random.guid(),
+        message: "获取失败",
       };
     }
   },

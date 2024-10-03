@@ -9,6 +9,8 @@ export default http.create({
 http.interceptors.request.use(
   (config) => {
     return config;
+    // 判断登录状态是否有token
+    // 如果有token就带上 没有就跳转到登录界面
   },
   (error) => {
     // 对请求错误做些什么
@@ -17,7 +19,7 @@ http.interceptors.request.use(
 );
 // 添加响应拦截器
 http.interceptors.response.use((response) => {
-  console.log(response);
+  return response;
 }),
   (error) => {
     // 处理响应错误

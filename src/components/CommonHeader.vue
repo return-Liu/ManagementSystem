@@ -6,8 +6,8 @@
         @click="handlerMenu"
         style="
           margin-right: 20px;
-          background-color: var(--bg1);
-          border: var(--border1);
+          background-color: var(--bg11);
+          border: var(--border6);
         "
         size="mini"
       ></el-button>
@@ -32,6 +32,35 @@
           <el-dropdown-item command="cancel">退出</el-dropdown-item>
         </el-dropdown-menu>
         <div
+          class="el-icon-s-operation"
+          @click="drawer = true"
+          title="项目配置"
+        ></div>
+        <el-drawer
+          title="项目配置"
+          :visible.sync="drawer"
+          :direction="direction"
+          :before-close="handleClose"
+        >
+          <span class="System_Theme">
+            <div class="Theme">系统主题</div>
+          </span>
+          <!-- 黑白主题 -->
+          <div class="switch">
+            <el-switch
+              v-model="theme"
+              active-icon-class="el-icon-moon"
+              active-color="#183153"
+              active-value="dark"
+              inactive-icon-class="el-icon-sunny"
+              inactive-color="#73c0fc"
+              inactive-value="light"
+              @change="switchTheme"
+            >
+            </el-switch>
+          </div>
+        </el-drawer>
+        <div
           class="el-icon-full-screen"
           title="全屏模式"
           @click="handlerscreen"
@@ -50,10 +79,31 @@ export default {
   data() {
     return {
       user: "欢迎 admin",
+      drawer: false,
+      direction: "rtl",
+      theme: localStorage.getItem("theme") || "light",
     };
   },
 
   methods: {
+    handleClose(done) {
+      this.$confirm("确认关闭？")
+        .then(() => {
+          this.$notify({
+            title: "项目配置",
+            message: "关闭成功",
+            type: "success",
+          });
+          done();
+        })
+        .catch(() => {
+          this.$notify({
+            title: "项目配置",
+            message: "关闭失败",
+            type: "info",
+          });
+        });
+    },
     handlerMenu() {
       // 侧边栏的折叠
       this.$store.commit("CollapseMenu");
@@ -77,7 +127,20 @@ export default {
         });
       }
     },
-
+    // 主题
+    switchTheme() {
+      // 检查 document.documentElement 是否存在
+      if (document.documentElement) {
+        // 设置 data-theme 的主题
+        document.documentElement.setAttribute("data-theme", this.theme);
+        // 读取并打印设置后的主题值
+        const theme = document.documentElement.getAttribute("data-theme");
+        // 将存储主题值到 localStorage
+        localStorage.setItem("theme", theme);
+      } else {
+        console.error("document.documentElement is null");
+      }
+    },
     // 全屏功能
     handlerscreen() {
       // 判断当前是否全屏
@@ -117,15 +180,10 @@ export default {
   justify-content: space-between;
 
   .title {
-    color: var(--text-color);
+    color: var(--text-color9);
     font-size: 14px;
     padding: 0 10px;
   }
-  // .user {
-  //   width: 40px;
-  //   height: 40px;
-  //   border-radius: 50%;
-  // }
 }
 .l-content {
   display: flex;
@@ -135,12 +193,12 @@ export default {
     .el-breadcrumb__inner {
       font-weight: normal;
       &.is-link {
-        color: rgb(67, 179, 207);
+        color: var(--text-color9);
       }
     }
     &:last-child {
       .el-breadcrumb__inner {
-        color: var(--text-color);
+        color: var(--text-color9);
       }
     }
     .el-breadcrumb__separator[class*="icon"] {
@@ -151,9 +209,7 @@ export default {
 .r-content {
   display: flex;
   align-items: center;
-  .time {
-    color: var(--text-color);
-  }
+
   .users {
     width: 45px;
     height: 45px;
@@ -166,20 +222,49 @@ export default {
     align-items: center;
     cursor: pointer;
     .el-dropdown-link {
-      color: var(--text-color);
+      color: var(--text-color9);
       font-size: 14px;
       padding: 0 17px;
     }
     .el-dropdown-menu {
       background-color: var(--bg1);
     }
+    .el-icon-s-operation {
+      color: var(--text-color9);
+      font-size: 20px;
+      margin-right: 20px;
+    }
+    ::v-deep .el-drawer__header {
+      background: var(--bg10);
+      margin-bottom: 0;
+      height: 50px;
+      line-height: 50px;
+    }
+    ::v-deep .el-drawer__body {
+      flex: 1;
+      overflow: auto;
+      background: var(--bg10);
+      .System_Theme {
+        width: 551px;
+        height: 19px;
+        display: block;
+        text-align: center;
+        padding-top: 10px;
+      }
+    }
+    .el-switch {
+      width: 551px;
+      height: 80px;
+      display: flex;
+      justify-content: center;
+    }
     .el-icon-full-screen {
-      color: var(--text-color);
+      color: var(--text-color9);
       font-size: 20px;
       margin-right: 20px;
     }
     .el-icon-refresh {
-      color: var(--text-color);
+      color: var(--text-color9);
       font-size: 23px;
     }
   }

@@ -30,7 +30,7 @@ export const delUser = (data) => {
 
 // 获取商品列表
 export const getMall = (param) => {
-  console.log(param, "param");
+  // console.log(param, "param");
   return http.get("/mall/getMall", param);
 };
 

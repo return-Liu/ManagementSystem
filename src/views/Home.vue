@@ -3,130 +3,92 @@
     <el-col
       :xs="24"
       :sm="24"
-      :md="8"
-      :lg="8"
-      :xl="8"
+      :md="12"
+      :lg="12"
+      :xl="12"
       style="padding-right: 10px"
     >
-      <el-card
-        class="box-card"
-        style="background-color: var(--bg10); border: var(--border1)"
-      >
-        <div class="user">
-          <img ref="avatarImg" class="users" :src="avatarUrl" />
-          <div class="usermessage">
-            <div class="avatar-box">
-              <label
-                ref="uploadLabel"
-                for="uploadInput"
-                style="color: var(--text-color2); cursor: pointer"
-                >更新头像</label
-              >
-              <input
-                ref="uploadInput"
-                id="uploadInput"
-                type="file"
-                @change="handleFileChange"
-                accept="image/*"
-                class="upload"
-              />
-            </div>
-            <p class="username">{{ userName }}</p>
-            <p class="useraccess" v-show="showAccess" @click="updateUserType">
-              {{ userType }}
-            </p>
+      <el-card class="header">
+        <h6>头像</h6>
+        <!-- 头像 -->
+        <div class="avatar">
+          <img ref="avatarImg" alt="" :src="avatarUrl" class="avatar-img" />
+          <div class="mask">
+            <label for="upload" @click="handleFileChange">更新头像</label>
             <input
-              type="text"
-              ref="access"
-              class="access"
-              v-show="showAccessInput"
-              v-model="userType"
+              id="upload"
+              type="file"
+              class="upload"
+              @change="handleFileChange"
             />
           </div>
-        </div>
-        <div class="login-message">
-          <!-- 获取登录时间和登录地点 -->
-          <p style="color: var(--text-color2); cursor: pointer">
-            <i class="el-icon-time"></i>
-            当前登录时间:<span>{{ time }}</span>
-            <span @click="updateTime" ref="removetime">获取当前登录时间</span>
-          </p>
-          <p style="color: var(--text-color2); cursor: pointer">
-            <i class="el-icon-location-information"></i>
-            当前登录地区:<span>{{ city }}</span>
-            <span @click="updateCity" ref="removecity">获取当前登录地区</span>
-          </p>
+
+          <div class="message">
+            <p>{{ message }}</p>
+            <el-select
+              v-model="selectedCity"
+              placeholder="请选择地区查询当前天气"
+              @change="handlerCity"
+            >
+              <el-option
+                v-for="city in cities"
+                :key="city.value"
+                :label="city.label"
+                :value="city.value"
+              ></el-option>
+            </el-select>
+            <div class="wheater">
+              {{ weatherData }}
+            </div>
+          </div>
+          <div class="right-Information">
+            <span class="To_do"
+              >待办
+              <div class="To_toList">{{ To_toList }}</div>
+            </span>
+            <span class="Project"
+              >项目
+              <div class="Project_List">{{ Project_List }}</div>
+            </span>
+
+            <span class="Team"
+              >团队
+              <div class="Team_list">{{ Team_list }}</div>
+            </span>
+          </div>
         </div>
       </el-card>
-      <el-card
-        style="
-          margin-top: 20px;
-          height: 350px;
-          background-color: var(--bg10);
-          border: var(--border1);
-        "
-      >
-        <el-table :data="UserData" style="width: 100%">
-          <el-table-column
-            v-for="(val, key) in tablelabel"
-            :prop="key"
-            :label="val"
-            :key="key"
-          />
-        </el-table>
-      </el-card>
-    </el-col>
-    <el-col :xs="24" :sm="24" :md="16" :lg="16" :xl="16">
-      <div class="num-list">
-        <el-card
-          style="
-            height: 290px;
-            width: 100%;
-            background-color: var(--bg10);
-            border: var(--border1);
-          "
-        >
-          <div class="message">后台管理语言详情</div>
-          <div class="progress">
-            <template v-for="(lang, index) in languages">
-              <span :key="lang.name">{{ lang.name }}</span>
-              <el-progress
-                :key="index"
-                :percentage="lang.percentage"
-                :color="lang.color"
-              ></el-progress>
-            </template>
+      <div class="main">
+        <el-card class="Project-List">
+          <span class="more-Project_List" @click="handlerMore">更多</span>
+          <span>项目</span>
+          <div class="item-list">
+            <div
+              class="item"
+              v-for="(item, index) in dataList"
+              :key="item.id"
+              :class="{ 'no-border-right': index === 2 || index === 5 }"
+            >
+              <div class="item-title">{{ item.title }}</div>
+              <div class="item-p">{{ item.p }}</div>
+              <div class="item-name">{{ item.name }}</div>
+              <div class="item-time">{{ item.time }}</div>
+            </div>
           </div>
         </el-card>
-        <!-- 待办事件 -->
-        <el-card
-          style="
-            height: 350px;
-            width: 100%;
-            margin-top: 20px;
-            background-color: var(--bg10);
-            border: var(--border1);
-          "
-        >
-          <el-table
-            tooltip-effect="dark"
-            style="width: 100%; height: 335px"
-            :data="event"
-          >
-            <el-table-column prop="name" label="待办事项" />
-            <el-table-column prop="user" label="用户"> </el-table-column>
-            <el-table-column prop="time" label="时间" />
-            <el-table-column prop="status" label="状态">
-              <template v-slot="scope">
-                <span class="green-text">{{ scope.row.status }}</span>
-              </template>
-            </el-table-column>
-            <el-table-column prop="operate" label="操作">
-              <template v-slot="scope">
-                <span class="red-text">{{ scope.row.operate }}</span>
-              </template>
-            </el-table-column>
-          </el-table>
+        <el-card class="Quick-Navigation">
+          <span>快捷导航</span>
+        </el-card>
+        <el-card class="New">
+          <span>最新动态</span>
+          <span class="more-list" @click="handlerMore">更多</span>
+          <div class="new" v-for="item in newList" :key="item.id">
+            {{ item.name }}
+            <div class="time">{{ item.time }}</div>
+          </div>
+        </el-card>
+        <el-card class="card-Img">
+          <img class="img" :src="cardImg" alt="" />
         </el-card>
       </div>
     </el-col>
@@ -136,268 +98,362 @@
 // 引入Cookie
 // import Cookie from "js-cookie";
 // api
+import axios from "axios";
 import { getListData } from "../api";
 export default {
   name: "HomeManage",
   data() {
     return {
-      // 语言列表
-      languages: [
-        { name: "Vue", percentage: 70, color: "green" },
-        { name: "Javascript", percentage: 23.4, color: "yellow" },
-        { name: "CSS", percentage: 13, color: "blue" },
-        { name: "HTML", percentage: 5, color: "red" },
-      ],
-      // 头像
-      avatarUrl:
-        localStorage.getItem("avatarUrl") ||
-        require("../assets/images/789187C2E34DA7A8018BCDCC6B762911.jpg"),
-      time: "无信息",
-      city: "无信息",
-      // 用户类型
-      userName: "Admin",
-      userType: "超级管理员",
-      showAccessInput: false,
-      showAccess: true,
-      isFirstClick: true, // 新增标志
-      // 渲染表格数据
-      UserData: [],
-      // 渲染表格信息
-      tablelabel: {
-        // 用户类型
-        userType: "用户类型",
-        // 用户登录时间
-        loginTime: "登录时间",
-        // 用户退出时间
-        logoutTime: "退出时间",
-      },
-      // 更新名字
-
-      // 渲染待办事件信息
-      event: [
-        {
-          name: "修改个人信息",
-          user: "Admin",
-          time: "2023-03-01",
-          status: "已完成",
-          operate: "查看",
-        },
-      ],
+      //
+      selectedCity: "",
+      // 城市列表
+      // 初始化为空字符串
+      avatarUrl: "",
+      message: "早安, Admin!, 开启您一天的工作吧",
+      weatherData: null,
+      To_toList: "2/10",
+      Project_List: "6",
+      Team_list: "1",
+      dataList: [], // 存放项目动态列表
+      newList: [], // 存放最新动态列表
+      cities: [], // 存放城市列表
+      cardImg: require("../assets/images/3f249db900804332ff6fb17e3426cdc7.webp"),
     };
   },
+
   created() {
     // 获取数据
     getListData().then(({ data }) => {
       // 将数据进行解构
-      const { UserData } = data.data;
-      // console.log(data.data);
-      //将解构的数据赋值给UserData
-      this.UserData = UserData;
+      const { cities, newList, DataList } = data.data;
+      // 将解构newList赋值给空数组newList
+      this.newList = newList;
+      // 将解构赋值DataList给空数组DataList
+      this.dataList = DataList;
+      // 将解构赋值DataList给空数组 cities
+      this.cities = cities;
+      // console.log(this.cities);
     });
+    // 初始化头像 URL
+    this.avatarUrl =
+      localStorage.getItem("avatarUrl") ||
+      "https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png";
+    // 初始化天气数据
+    this.weatherData = localStorage.getItem("weatherData") || "";
   },
   methods: {
+    //公共的天气查询逻辑
+    async Weather(city) {
+      await axios({
+        // 天气数据api
+        url: "https://restapi.amap.com/v3/weather/weatherInfo?key=b219cc978d96ce513e410c5835a84050",
+        params: {
+          // 城市名称
+          city,
+        },
+      })
+        .then((response) => {
+          if (
+            response.status === 200 &&
+            response.data.lives &&
+            response.data.lives.length > 0
+          ) {
+            const liveData = response.data.lives[0];
+            this.weatherData = ` 当前地区:${liveData.city} 今日:${liveData.weather} 实时气温:${liveData.temperature}℃`;
+            localStorage.setItem("weatherData", this.weatherData);
+            this.$notify({
+              title: "天气查询",
+              message: "获取成功",
+              type: "success",
+              duration: 2000,
+            });
+          } else {
+            this.$notify({
+              title: "天气查询",
+              message: "服务器返回了非预期的状态码，请稍后再试",
+              type: "warning",
+              duration: 2000,
+            });
+          }
+        })
+        .catch((error) => {
+          if (error.response) {
+            // 请求已发出，但服务器响应的状态码不在 2xx 范围内
+            this.$notify({
+              title: "天气查询",
+              message: "网络请求错误，请检查您的网络连接",
+              type: "error",
+              duration: 2000,
+            });
+          } else {
+            // 发生了一些问题，导致请求未能发出
+            console.error("Error", error.message);
+            this.$notify({
+              title: "天气查询",
+              message: "天气数据请求异常，请稍后重试",
+              type: "error",
+              duration: 2000,
+            });
+          }
+        });
+    },
+    handlerCity() {
+      const city = this.selectedCity;
+      this.Weather(city);
+    },
     handleFileChange(e) {
       try {
+        // 确保 e.target 和 e.target.files 都存在
+        if (!e.target || !e.target.files || e.target.files.length === 0) {
+          return;
+        }
         // 获取头像文件
         const file = e.target.files[0];
-        // 判断文件是否存在 不存在退出
-        if (!file) return;
         // 创建文件读取对象
         const reader = new FileReader();
-        // 读取文件 当读取成功后
-        reader.onload = () => {
-          // 将头像地址赋值给avatarImg
-          this.avatarUrl = reader.result;
-          //  通过ref获取头像
-          this.$refs.avatarImg.src = this.avatarUrl;
-          // 设置新的头像 URL 到 cookie 中
-          localStorage.setItem("avatarUrl", this.avatarUrl, { expires: 7 }); // 设置过期时间为 7 天
+        // 读取文件，当读取成功后
+        reader.onload = (e) => {
+          // 将头像地址赋值给 avatarUrl
+          this.avatarUrl = e.target.result;
+          // 设置新的头像 URL 到 localStorage 中
+          localStorage.setItem("avatarUrl", this.avatarUrl);
+          // 提示信息
+          this.$message({
+            message: "头像更换成功",
+            type: "success",
+          });
         };
         // 读取文件
         reader.readAsDataURL(file);
-        // 提示信息
-        this.$message({
-          message: "头像更换成功",
-          type: "success",
-        });
-      } catch {
+      } catch (error) {
         this.$message({
           message: "头像更换失败",
           type: "error",
         });
+        console.dir(error);
       }
     },
-    // 获取当前登录地区
-    updateCity() {
-      // 获取当前登录地区
-      this.city = "江西-宜春";
+    handlerMore() {
       this.$notify({
-        title: "提示",
-        message: "获取当前登录地区成功",
-        type: "success",
+        title: "更多",
+        message: "敬请期待",
+        type: "info",
       });
-      // 当刷新页面时 获取的当前登录地区还在
-      //  获取成功时 移除获取当前登录地区的标签
-      this.$refs.removecity.remove();
-    },
-    // 更新名字
-    updateUserType() {
-      if (this.isFirstClick) {
-        // 第一次点击时显示输入框并隐藏文本
-        this.showAccessInput = true;
-        this.showAccess = false;
-        this.isFirstClick = false;
-      } else {
-        // 提交修改后的用户类型
-        this.submitUserType();
-      }
-    },
-    submitUserType() {
-      // 提交修改后的用户类型
-      this.showAccessInput = false;
-      this.showAccess = true;
-      this.isFirstClick = true;
-      this.$notify({
-        title: "提示",
-        message: "修改用户类型成功",
-        type: "success",
-      });
-    },
-    updateTime() {
-      // 获取当前日期
-      this.time = new Date().toLocaleDateString();
-      this.$notify({
-        title: "提示",
-        message: "获取当前登录时间成功",
-        type: "success",
-      });
-
-      // 当刷新页面时,获取当前登录时间还在
-      // 获取成功时 移除获取当前登录地区的标签
-      this.$refs.removetime.remove();
     },
   },
 };
 </script>
 <style lang="less" scoped>
-.user {
-  padding-bottom: 20px;
-  margin-bottom: 20px;
-  border-bottom: 1px solid var(--border1);
+.el-row {
   display: flex;
-  align-items: center;
-  img {
-    margin-right: 40px;
-    width: 150px;
-    height: 150px;
-    border-radius: 50%;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+.el-col {
+  box-sizing: border-box;
+}
+.header {
+  width: 1550px; /* 占满父元素宽度 */
+  height: 110px;
+  background: var(--bg10);
+  border: var(--border1);
+  position: relative;
+  border-radius: 10px;
+  h6 {
+    position: absolute;
+    top: 2px;
+    left: 10px;
+    color: var(--text-color9);
   }
-  .usermessage {
-    .username {
-      color: var(--text-color2);
-      font-size: 32px;
-      margin-bottom: 10px;
-    }
-    .avatar-box {
-      margin-bottom: 20px;
-    }
-    .avatar-title {
-      margin-bottom: 10px;
-    }
-    .prew {
-      width: 100px;
-      height: 100px;
-      object-fit: cover;
+  .avatar {
+    display: flex;
+    align-items: center; /* 垂直居中 */
+    padding-left: 20px; /* 左侧内边距 */
+    .avatar-img {
+      width: 70px;
+      height: 70px;
       border-radius: 50%;
-      margin-bottom: 10px;
+      position: relative;
+    }
+    .mask {
+      position: absolute;
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+      transition: background 0.3s ease;
+    }
+    /* 头像上传样式 */
+    label {
+      width: 70px;
+      height: 70px;
+      line-height: 70px;
+      opacity: 0;
+      color: #7a6c6c;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: opacity 0.3s ease;
+    }
+    .mask:hover label {
+      opacity: 1;
     }
     .upload {
       display: none;
     }
-    .useraccess {
-      color: var(--text-color2);
-      font-size: 20px;
+    .mask:hover {
+      cursor: pointer;
+      background: rgba(0, 0, 0, 0.7);
     }
-  }
-}
-.login-message {
-  p {
-    line-height: 28px;
-    font-size: 14px;
-    color: #999999;
-    margin-top: 5px;
-    span {
-      color: #66666666;
-      margin-left: 60px;
-    }
-  }
-}
-.progress {
-  margin-top: 20px;
-  .el-progress {
-    margin-bottom: 15px;
-  }
-}
-.num-shop {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  .icon {
-    width: 80px;
-    height: 80px;
-    font-size: 30px;
-    line-height: 80px;
-    text-align: center;
-    color: #fff;
-  }
-  .num-text {
-    margin-right: 15px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    .price {
-      font-size: 30px;
-      margin-bottom: 10px;
-      line-height: 30px;
-      height: 30px;
-      text-indent: 85px;
-      &:hover {
-        color: red;
+    .message {
+      font-size: 16px; /* 文字大小 */
+      margin-left: 10px; /* 左侧外边距 */
+      position: relative;
+      .el-select {
+        position: absolute;
+        top: -10px;
+        left: 270px;
+      }
+
+      p {
+        color: var(--text-color9);
+        width: 250px;
       }
     }
+    .right-Information {
+      width: 1550px;
+      display: flex;
+      justify-content: end;
+      span {
+        margin: 10px 20px;
+        color: var(--text-color9);
+        text-align: center;
+        .To_toList,
+        .Project_List,
+        .Team_list {
+          padding-top: 5px;
+        }
+      }
+    }
+    .wheater {
+      font-size: 16px; /* 文字大小 */
+      margin-top: 18px; /* 顶部外边距 */
+      width: 600px;
+      color: var(--text-color9);
+    }
+  }
+}
+.main {
+  width: 1550px;
+  height: 570px;
+  // background: orange;
+  margin-bottom: 0;
+  display: flex;
+  // justify-content: space-between;
+  flex-wrap: wrap;
+  span {
+    display: block;
+    text-align: center;
+    line-height: 50px;
+    color: var(--text-color9);
+  }
+  .Project-List {
+    margin-top: 10px;
+    width: 800px;
+    height: 400px;
+    background: var(--bg10);
+    border: var(--border1);
+    position: relative;
+    .more-Project_List {
+      position: absolute;
+      right: 20px;
+      top: 0;
+      cursor: pointer;
+    }
+    .item-list {
+      width: 800px;
+      height: 200px;
+      outline: 1px solid var(--border3);
+      display: flex;
+      justify-content: space-evenly;
+      flex-wrap: wrap;
+      color: var(--text-color9);
 
-    .info {
-      font-size: 14px;
-      color: #999;
-      text-align: center;
-      text-indent: 75px;
-      &:hover {
-        color: blue;
+      .item {
+        width: 250px;
+        height: 200px;
+        border-right: 1px solid var(--border3);
+        position: relative;
+        .item-title,
+        .item-p {
+          text-align: center;
+          padding-top: 20px;
+        }
+        .item-name {
+          margin-top: 10px;
+          margin-left: 5px;
+        }
+        .item-time {
+          position: absolute;
+          right: 10px;
+          top: 95px;
+        }
+      }
+      .no-border-right {
+        border-right: none;
       }
     }
   }
   .el-card {
-    width: 32%;
-    margin-bottom: 10px;
-    background-clip: var(--bg10);
+    border: 0;
   }
-}
-::v-deep .el-table {
-  background-color: var(--bg10);
-  border-bottom: var(--border1);
-}
-::v-deep .el-table__body tr {
-  background-color: var(--bg10);
-  border-bottom: var(--border1);
-}
-::v-deep .el-table__header-wrapper thead th {
-  background-color: var(--bg10);
-  border-bottom: var(--border1);
-}
-.green-text {
-  color: var(--text-color3);
-}
-.red-text {
-  color: var(--text-color4);
+  .Quick-Navigation {
+    margin-left: 10px;
+    width: 740px;
+    height: 280px;
+    background: var(--bg10);
+    border: var(--border1);
+    margin-top: 10px;
+  }
+  .New {
+    margin-top: 10px;
+    width: 800px;
+    height: 170px;
+    background: var(--bg10);
+    border: var(--border1);
+    position: relative;
+    .more-list {
+      position: absolute;
+      right: 20px;
+      top: 0;
+      cursor: pointer;
+    }
+    .new {
+      text-indent: 50px;
+      border-top: 1px solid var(--border3);
+      color: var(--text-color9);
+      padding-top: 20px;
+    }
+    .time {
+      color: var(--text-color9);
+      padding-top: 20px;
+    }
+  }
+
+  ::v-deep .el-card__body {
+    padding: 0;
+  }
+  .card-Img {
+    margin-top: -110px;
+    width: 740px;
+    height: 290px;
+    background: var(--bg10);
+    border: var(--border1);
+    margin-left: 10px;
+    cursor: pointer;
+    .img {
+      width: 740px;
+      height: 290px;
+    }
+  }
 }
 </style>

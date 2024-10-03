@@ -17,6 +17,7 @@
           ref="password"
           v-model="form.password"
           placeholder="请输入密码"
+          @keyup.enter="login"
         >
         </el-input>
         <i
@@ -29,7 +30,7 @@
         ></i>
       </el-form-item>
       <div class="register-box">
-        <span class="register" @click="register">新用户?是否注册</span>
+        <span class="register" @click="register">已有账号?注册</span>
       </div>
       <el-form-item>
         <el-button type="primary" class="login" @click="login">登录</el-button>
@@ -63,7 +64,18 @@ export default {
       this.alertVisible = false;
     }
   },
+  mounted() {
+    document.addEventListener("keydown", this.onKeyPress);
+  },
+  beforeDestroy() {
+    document.removeEventListener("keydown", this.onKeyPress);
+  },
   methods: {
+    onKeyPress(e) {
+      if (e.key === "Enter") {
+        this.login();
+      }
+    },
     // 登录
     login() {
       this.$refs.form.validate((valid) => {
@@ -77,7 +89,7 @@ export default {
                 this.$store.commit("setMenu", data.data.menu);
                 // 添加动态路由
                 this.$store.commit("addMenu", this.$router);
-                // 当前路由为登录页时，跳转到首页
+                // 当前路由为登录页时 跳转到首页
                 this.$router.push({ name: "home", path: "/home" });
                 // 登录成功逻辑  直接显示登录成功通知
                 this.$notify({
@@ -102,6 +114,7 @@ export default {
               });
             });
         }
+        // 当按下enter时 跳转至首页
       });
     },
     handlerClick() {
@@ -118,7 +131,8 @@ export default {
 </script>
 <style scoped lang="less">
 .login-page {
-  background: var(--bg11);
+  background: url("../assets/images/3f249db900804332ff6fb17e3426cdc7.webp")
+    no-repeat center / cover;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -131,6 +145,7 @@ export default {
     border-radius: 15px;
     background: var(--bg12);
     box-sizing: border-box;
+    position: relative;
     .el-form-item {
       margin-bottom: 20px;
     }

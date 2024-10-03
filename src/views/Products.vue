@@ -450,7 +450,7 @@ export default {
   .el-button--primary {
     background-color: var(--bg4);
     border-color: var(--border4);
-    color: var(--text-color);
+    color: var(--text-color9);
   }
 
   .manage-header {
@@ -462,8 +462,8 @@ export default {
       position: absolute;
       left: 90px;
       background-color: var(--bg5);
-      border-color: var(--border5);
-      color: var(--text-color);
+      border-color: var(--border4);
+      color: var(--text-color9);
     }
   }
   .common-table {
@@ -471,8 +471,8 @@ export default {
     height: calc(100% - 62px);
     .dangers {
       background-color: var(--bg5);
-      border-color: var(--border5);
-      color: var(--text-color);
+      border-color: var(--border4);
+      color: var(--text-color9);
     }
     .pager {
       position: absolute;
@@ -506,12 +506,12 @@ export default {
 /* 使用 ::v-deep 或 /deep/ 根据你的 Vue 版本 */
 ::v-deep .el-pagination {
   background-color: var(--bg6); /* 设置背景色为黑色 */
-  color: var(--text-color); /* 设置主要的文字颜色为白色 */
+  color: var(--text-color9); /* 设置主要的文字颜色为白色 */
 
   /* 调整分页按钮和链接的样式 */
   .el-pager li {
     background-color: var(--bg6) !important;
-    color: var(--text-color);
+    color: var(--text-color9);
     border-color: transparent;
   }
   .el-pager li:hover,
@@ -522,12 +522,12 @@ export default {
   /* 调整输入框的样式 */
   .el-input__inner {
     background-color: var(--bg6);
-    color: var(--text-color1);
+    color: var(--text-color9);
     border-color: transparent;
   }
   button {
     background-color: var(--bg6);
-    color: var(--text-color);
+    color: var(--text-color9);
     border-color: transparent;
   }
 }

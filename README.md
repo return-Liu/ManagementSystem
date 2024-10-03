@@ -8,7 +8,7 @@
 1. 登录注册功能
 2. 菜单栏功能
 3. 权限管理功能
-4. 搜索功能 增删改查与批量操作功能 分页功能 tag 标签功能 面包屑功能 全屏模式功能 刷新模式功能 获取当前地区与当前时间功能
+4. 搜索功能 增删改查与批量操作功能 分页功能 tag 标签功能 面包屑功能 全屏模式功能 刷新模式功能 获取天气功能
 5. 头像上传功能 主题切换功能
 
 ## 演示
@@ -31,7 +31,7 @@ user：只有被赋予权限的页面和按钮才可以看到；
 
 ## 开发
 
-1.git clone https://gitee.com/publishnsodqmodd/merchandise-backend.git(注意:要从develop分支拉取代码)
+1.git clone https://gitee.com/publishnsodqmodd/merchandise-backend.git(注意:要从master分支拉取代码)
 
 2.cd merchandise-backend
 

@@ -10,20 +10,6 @@
     >
       {{ item.lable }}
     </el-tag>
-    <!-- 黑白主题 -->
-    <div class="switch">
-      <el-switch
-        v-model="theme"
-        active-icon-class="el-icon-moon"
-        active-color="#183153"
-        active-value="dark"
-        inactive-icon-class="el-icon-sunny"
-        inactive-color="#73c0fc"
-        inactive-value="light"
-        @change="switchTheme"
-      >
-      </el-switch>
-    </div>
   </div>
 </template>
 <script>
@@ -31,9 +17,7 @@ import { mapState, mapMutations } from "vuex";
 export default {
   name: "CommonTag",
   data() {
-    return {
-      theme: localStorage.getItem("theme") || "light",
-    };
+    return {};
   },
   computed: {
     ...mapState({
@@ -70,24 +54,12 @@ export default {
         });
       }
     },
-    //
-    // 主题
-    switchTheme() {
-      // 设置data-theme的主题
-      document.documentElement.setAttribute("data-theme", this.theme);
-      // 读取并打印设置后的主题值
-      const theme = document.documentElement.getAttribute("data-theme");
-      // 将存储主题值到localStorage
-      localStorage.setItem("theme", theme);
-      return;
-    },
   },
 };
 </script>
 <style lang="less" scoped>
 .tabs {
   padding: 20px;
-  position: relative;
   display: flex;
   background-color: var(--bg1);
 
@@ -100,19 +72,7 @@ export default {
     cursor: pointer;
     background-color: var(--bg6);
     border-color: var(--border4);
-    color: var(--text-color);
-  }
-  .switch {
-    position: absolute;
-    right: 20px;
-  }
-  .text {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    animation: movetext 3s linear infinite;
-    color: var(--text-color5);
+    color: var(--text-color9);
   }
 }
 </style>

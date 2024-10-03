@@ -15,17 +15,37 @@
       </el-form-item>
       <el-form-item label="密码" prop="password">
         <el-input
-          type="password"
+          :type="showPassword ? 'text' : 'passwor'"
           v-model="form.password"
           placeholder="请输入密码"
-        ></el-input>
+          @keyup.enter="register"
+        >
+        </el-input>
+        <i
+          class="el-icon-view"
+          :class="{
+            'el-icon-view': !showPassword,
+            'el-icon-close': showPassword,
+          }"
+          @click="handlerClick"
+        ></i>
       </el-form-item>
       <el-form-item label="密码" prop="passwords">
         <el-input
-          type="password"
+          :type="showPassword ? 'text' : 'passwor'"
           v-model="form.passwords"
           placeholder="请再次输入密码"
-        ></el-input>
+          @keyup.enter="register"
+        >
+        </el-input>
+        <i
+          class="el-icon-view"
+          :class="{
+            'el-icon-view': !showPassword,
+            'el-icon-close': showPassword,
+          }"
+          @click="handlerClick"
+        ></i>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" class="register" @click="register"
@@ -47,6 +67,7 @@ export default {
         password: "",
         passwords: "",
       },
+      showPassword: false, // 添加这个属性来控制密码显示
       // 校验规则
       rules: {
         username: [
@@ -73,11 +94,28 @@ export default {
       },
     };
   },
+  mounted() {
+    document.addEventListener("keydown", this.onKeyPress);
+  },
+  beforeDestroy() {
+    document.removeEventListener("keydown", this.onKeyPress);
+  },
   methods: {
+    onKeyPress(e) {
+      if (e.key === "Enter") {
+        this.register();
+      } else {
+        return;
+      }
+    },
     // 返回
     returnClick() {
       // 跳转回登录页
       this.$router.push("login");
+    },
+    handlerClick() {
+      // 切换密码显示状态
+      this.showPassword = !this.showPassword;
     },
     register() {
       // 判断校验
@@ -111,7 +149,8 @@ export default {
 <style scoped lang="less">
 // 为了确保注册页面(register.vue)不受全局body样式的影响
 .register-page {
-  background: var(--bg11);
+  background: url("../assets/images/3f249db900804332ff6fb17e3426cdc7.webp")
+    no-repeat center / cover;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -125,6 +164,7 @@ export default {
   background: var(--bg12);
   border-radius: 15px;
   box-sizing: border-box;
+  position: relative;
   .el-icon-back {
     color: var(--text-color7);
     font-size: 20px;
@@ -139,6 +179,12 @@ export default {
   }
   .el-input {
     width: 198px;
+  }
+  .el-icon-view {
+    position: absolute;
+    right: 6px;
+    top: 13px;
+    cursor: pointer;
   }
   .register {
     margin: 0 0 0 68px;

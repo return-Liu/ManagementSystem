@@ -41,14 +41,4 @@ body {
   padding: 20px;
   margin-bottom: 0; /* 避免负margin影响外部布局 */
 }
-// @media (max-width: 768px) {
-//   .el-card {
-//     width: 100%;
-//   }
-// }
-// @media (min-width: 768px) {
-//   .el-card {
-//     width: 500px;
-//   }
-// }
 </style>

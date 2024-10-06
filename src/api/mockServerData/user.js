@@ -15,14 +15,13 @@ function param2Obj(url) {
       '"}'
   );
 }
-let idIndex = 0;
+
 let List = [];
 const count = 200;
 for (let i = 0; i < count; i++) {
-  idIndex++;
   List.push(
     Mock.mock({
-      id: idIndex,
+      id: Mock.Random.guid(),
       name: Mock.Random.cname(),
       addr: Mock.mock("@county(true)"),
       "age|18-60": 1,
@@ -80,11 +79,11 @@ export default {
    * @return {{code: number, data: {message: string}}}
    */
   createUser: (config) => {
-    const { name, addr, age, birth, sex } = JSON.parse(config.body);
+    const { id, name, addr, age, birth, sex } = JSON.parse(config.body);
     console.log(JSON.parse(config.body));
-    idIndex++;
+
     List.unshift({
-      id: idIndex,
+      id: id,
       name: name,
       addr: addr,
       age: age,

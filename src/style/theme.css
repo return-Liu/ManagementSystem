@@ -25,13 +25,13 @@
   --border1: #ff7070;
   --border2: #31c0eb;
   --border3: #efe5e5;
-  --border4: #5ad3ad;
+  --border4: #fff;
   --border5: #cb3030;
   --border6: skyblue;
 }
 /* 暗色主题 */
 html[data-theme="dark"] {
-  --text-color: #5e5757;
+  --text-color: #fff;
   --text-color1: #333;
   --text-color7: #31c0eb;
   --text-color9: #fff;

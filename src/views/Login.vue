@@ -182,7 +182,7 @@ export default {
       cursor: pointer;
     }
     .register {
-      color: var(--text-color8);
+      color: var(--text-color7);
       margin: 0 0 0 180px;
       font-size: 12px;
     }

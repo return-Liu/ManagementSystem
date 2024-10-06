@@ -46,15 +46,14 @@ function generateProductName(type) {
 
 // 生成商品列表数据
 function generateProducts(count = 200) {
-  let idIndex = 0;
   const products = [];
   for (let i = 0; i < count; i++) {
     const productType = Mock.Random.pick(productTypes);
     const productName = generateProductName(productType);
-    idIndex++;
+
     products.push(
       Mock.mock({
-        id: idIndex,
+        id: Mock.Random.guid(),
         name: productName,
         type: productType,
         number: Mock.Random.integer(100, 600),
@@ -153,8 +152,7 @@ export default {
    * @returns {{code: number, data: {message: string}}}
    */
   createProduct: (config) => {
-    let idIndex = 0;
-    const { name, type, number, price, description } = extractParams(
+    const { id, name, type, number, price, description } = extractParams(
       config,
       "POST"
     );
@@ -162,9 +160,8 @@ export default {
       return { code: -1, message: "缺少必填项" };
     }
 
-    idIndex++;
     const newProduct = {
-      id: idIndex,
+      id: id,
       name,
       type,
       number,

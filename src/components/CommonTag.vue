@@ -72,7 +72,7 @@ export default {
     cursor: pointer;
     background-color: var(--bg6);
     border-color: var(--border4);
-    color: var(--text-color9);
+    color: var(--text-color);
   }
 }
 </style>

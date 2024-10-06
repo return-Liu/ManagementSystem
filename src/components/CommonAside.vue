@@ -2,10 +2,10 @@
   <el-menu
     class="el-menu-vertical-demo"
     :collapse="isCollapse"
-    text-color="var(--text-color9)"
+    text-color="var(--text-color)"
     active-text-color="#43b3cf"
   >
-    <h3 style="color: var(--text-color9); background-color: var(--bg7)">
+    <h3 style="color: var(--text-color); background-color: var(--bg7)">
       <!-- <img src="../assets/logo.png" class="logo" /> -->
       {{ isCollapse ? "后台" : "后台管理系统" }}
     </h3>

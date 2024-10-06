@@ -31,11 +31,7 @@
           <el-dropdown-item command="selfcenter">个人中心</el-dropdown-item>
           <el-dropdown-item command="cancel">退出</el-dropdown-item>
         </el-dropdown-menu>
-        <div
-          class="el-icon-s-operation"
-          @click="drawer = true"
-          title="项目配置"
-        ></div>
+        <div class="el-icon-film" @click="drawer = true" title="项目配置"></div>
         <el-drawer
           title="项目配置"
           :visible.sync="drawer"
@@ -180,7 +176,7 @@ export default {
   justify-content: space-between;
 
   .title {
-    color: var(--text-color9);
+    color: var(--text-color);
     font-size: 14px;
     padding: 0 10px;
   }
@@ -193,16 +189,16 @@ export default {
     .el-breadcrumb__inner {
       font-weight: normal;
       &.is-link {
-        color: var(--text-color9);
+        color: var(--text-color);
       }
     }
     &:last-child {
       .el-breadcrumb__inner {
-        color: var(--text-color9);
+        color: var(--text-color);
       }
     }
     .el-breadcrumb__separator[class*="icon"] {
-      color: var(--text-color9);
+      color: var(--text-color);
     }
   }
 }
@@ -222,15 +218,15 @@ export default {
     align-items: center;
     cursor: pointer;
     .el-dropdown-link {
-      color: var(--text-color9);
+      color: var(--text-color);
       font-size: 14px;
       padding: 0 17px;
     }
     .el-dropdown-menu {
       background-color: var(--bg1);
     }
-    .el-icon-s-operation {
-      color: var(--text-color9);
+    .el-icon-film {
+      color: var(--text-color);
       font-size: 20px;
       margin-right: 20px;
     }
@@ -259,12 +255,12 @@ export default {
       justify-content: center;
     }
     .el-icon-full-screen {
-      color: var(--text-color9);
+      color: var(--text-color);
       font-size: 20px;
       margin-right: 20px;
     }
     .el-icon-refresh {
-      color: var(--text-color9);
+      color: var(--text-color);
       font-size: 23px;
     }
   }

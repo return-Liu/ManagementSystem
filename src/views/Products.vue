@@ -16,7 +16,7 @@
         <el-row :gutter="20">
           <el-col :span="12">
             <el-card style="height: 100%">
-              <el-form-item label="产品名称" prop="name">
+              <el-form-item label="名称" prop="name">
                 <el-input
                   v-model="form.name"
                   placeholder="请输入产品名称"
@@ -26,7 +26,7 @@
           </el-col>
           <el-col :span="12">
             <el-card style="height: 100%">
-              <el-form-item label="产品类型" prop="type">
+              <el-form-item label="类型" prop="type">
                 <el-select v-model="form.type" placeholder="请选择产品类型">
                   <el-option
                     v-for="item in productTypes"
@@ -43,7 +43,7 @@
         <el-row :gutter="20" style="margin-top: 10px">
           <el-col :span="12">
             <el-card style="height: 100%">
-              <el-form-item label="产品数量" prop="number">
+              <el-form-item label="数量" prop="number">
                 <el-input
                   v-model="form.number"
                   placeholder="请输入产品数量"
@@ -53,7 +53,7 @@
           </el-col>
           <el-col :span="12">
             <el-card style="height: 100%">
-              <el-form-item label="产品价格" prop="price">
+              <el-form-item label="价格" prop="price">
                 <el-input
                   v-model="form.price"
                   placeholder="请输入产品价格"
@@ -65,7 +65,7 @@
         <el-row :gutter="20" style="margin-top: 10px">
           <el-col :span="24">
             <el-card style="height: 100%">
-              <el-form-item label="产品介绍" prop="description">
+              <el-form-item label="介绍" prop="description">
                 <el-input
                   type="textarea"
                   :autosize="{ minRows: 2, maxRows: 4 }"
@@ -131,11 +131,11 @@
       >
         <!-- 添加一列用于复选框 -->
         <el-table-column type="selection" width="55"></el-table-column>
-        <el-table-column prop="name" label="产品名称"> </el-table-column>
-        <el-table-column prop="type" label="产品类型"> </el-table-column>
-        <el-table-column prop="number" label="产品数量"></el-table-column>
-        <el-table-column prop="price" label="产品价格"> </el-table-column>
-        <el-table-column prop="description" label="产品介绍"> </el-table-column>
+        <el-table-column prop="name" label="名称"> </el-table-column>
+        <el-table-column prop="type" label="类型"> </el-table-column>
+        <el-table-column prop="number" label="数量"></el-table-column>
+        <el-table-column prop="price" label="价格"> </el-table-column>
+        <el-table-column prop="description" label="介绍"> </el-table-column>
         <el-table-column label="操作">
           <template slot-scope="scope">
             <el-button
@@ -308,33 +308,46 @@ export default {
     },
 
     // 复选框的选中状态
-    handleSelect(seles) {
+    async handleSelect(seles) {
       this.seles = seles.map((item) => item.id);
       // console.log(this.seles);
     },
     // 批量删除
-    hanlderReomve() {
-      this.$confirm("此操作将永久删除该文件, 是否继续?", "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning",
-      })
-        .then(() => {
+    async hanlderReomve() {
+      try {
+        const confirmResult = await this.$confirm(
+          "此操作将永久删除该文件, 是否继续?",
+          "温馨提示",
+          {
+            confirmButtonText: "确定",
+            cancelButtonText: "取消",
+            type: "warning",
+          }
+        );
+        if (confirmResult === "confirm") {
+          // 使用Promise.all来等待所有请求完成
           const promises = this.seles.map((id) => delMall({ id }));
-          Promise.all(promises).then(() => {
-            this.getList();
-            this.$message({
-              type: "success",
-              message: "批量删除成功",
-            });
+          await Promise.all(promises);
+          // 在所有请求成功后刷新列表
+          this.getList();
+          // 成功信息
+          this.$message({
+            type: "success",
+            message: "批量删除成功",
           });
-        })
-        .catch(() => {
+        } else {
           this.$message({
             type: "error",
             message: "已取消批量删除",
           });
+        }
+      } catch (error) {
+        // 处理请求失败的情况
+        this.$message({
+          type: "error",
+          message: `批量删除失败: ${error.message}`,
         });
+      }
     },
     hanlderAdd() {
       this.$confirm("此操作将新增文件, 是否继续?", "温馨提示", {
@@ -450,7 +463,7 @@ export default {
   .el-button--primary {
     background-color: var(--bg4);
     border-color: var(--border4);
-    color: var(--text-color9);
+    color: var(--text-color);
   }
 
   .manage-header {
@@ -463,7 +476,7 @@ export default {
       left: 90px;
       background-color: var(--bg5);
       border-color: var(--border4);
-      color: var(--text-color9);
+      color: var(--text-color);
     }
   }
   .common-table {
@@ -472,7 +485,7 @@ export default {
     .dangers {
       background-color: var(--bg5);
       border-color: var(--border4);
-      color: var(--text-color9);
+      color: var(--text-color);
     }
     .pager {
       position: absolute;
@@ -491,15 +504,12 @@ export default {
 ::v-deep .el-table {
   background-color: var(--bg10);
 }
-
 ::v-deep .el-table__body-wrapper tbody tr {
   background-color: var(--bg10);
 }
-
 ::v-deep .el-table__header {
   background-color: var(--bg10);
 }
-
 ::v-deep .el-table__header th {
   background-color: var(--bg10);
 }
@@ -507,7 +517,6 @@ export default {
 ::v-deep .el-pagination {
   background-color: var(--bg6); /* 设置背景色为黑色 */
   color: var(--text-color9); /* 设置主要的文字颜色为白色 */
-
   /* 调整分页按钮和链接的样式 */
   .el-pager li {
     background-color: var(--bg6) !important;
@@ -518,7 +527,6 @@ export default {
   .el-pager li.active {
     background-color: var(--bg6) !important; /* 鼠标悬停或激活状态下的背景色 */
   }
-
   /* 调整输入框的样式 */
   .el-input__inner {
     background-color: var(--bg6);

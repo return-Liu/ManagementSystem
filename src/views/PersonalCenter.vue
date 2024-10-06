@@ -13,7 +13,7 @@
             ref="uploadLabel"
             for="uploadInput"
             style="color: var(--text-color2)"
-            >更新头像</label
+            >更换头像</label
           >
           <label
             class="View-avatar"

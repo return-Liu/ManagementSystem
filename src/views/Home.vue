@@ -14,7 +14,7 @@
         <div class="avatar">
           <img ref="avatarImg" alt="" :src="avatarUrl" class="avatar-img" />
           <div class="mask">
-            <label for="upload" @click="handleFileChange">更新头像</label>
+            <label for="upload" @click="handleFileChange">更换头像</label>
             <input
               id="upload"
               type="file"
@@ -22,7 +22,6 @@
               @change="handleFileChange"
             />
           </div>
-
           <div class="message">
             <p>{{ message }}</p>
             <el-select
@@ -78,6 +77,7 @@
         </el-card>
         <el-card class="Quick-Navigation">
           <span>快捷导航</span>
+          <div></div>
         </el-card>
         <el-card class="New">
           <span>最新动态</span>
@@ -88,7 +88,7 @@
           </div>
         </el-card>
         <el-card class="card-Img">
-          <img class="img" :src="cardImg" alt="" />
+          <img class="img" title="小雾人" :src="cardImg" alt="" />
         </el-card>
       </div>
     </el-col>
@@ -138,8 +138,6 @@ export default {
     this.avatarUrl =
       localStorage.getItem("avatarUrl") ||
       "https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png";
-    // 初始化天气数据
-    this.weatherData = localStorage.getItem("weatherData") || "";
   },
   methods: {
     //公共的天气查询逻辑
@@ -153,13 +151,34 @@ export default {
         },
       })
         .then((response) => {
+          console.log(response);
           if (
             response.status === 200 &&
             response.data.lives &&
             response.data.lives.length > 0
           ) {
             const liveData = response.data.lives[0];
-            this.weatherData = ` 当前地区:${liveData.city} 今日:${liveData.weather} 实时气温:${liveData.temperature}℃`;
+            // 添加天气提示
+            let weatherTip = "";
+            switch (liveData.weather) {
+              case "晴":
+                weatherTip = "天气晴朗，适合外出活动哦！";
+                break;
+              case "雨":
+                weatherTip = "今天有雨，请记得带伞！";
+                break;
+              case "雪":
+                weatherTip = "下雪啦，出门请注意保暖！";
+                break;
+              case "多云":
+                weatherTip = " 天气多云，适合出门活动哦！";
+                break;
+              default:
+                weatherTip = "祝您今天有个好心情！";
+                break;
+            }
+            // 将天气提示加入到 weatherData 中
+            this.weatherData = ` 当前地区:${liveData.city} 今日:${liveData.weather} 实时气温:${liveData.temperature}℃ 温馨提示: ${weatherTip}`;
             localStorage.setItem("weatherData", this.weatherData);
             this.$notify({
               title: "天气查询",
@@ -200,6 +219,11 @@ export default {
     handlerCity() {
       const city = this.selectedCity;
       this.Weather(city);
+      // this.$notify({
+      //   title: "天气查询",
+      //   message: "功能测试中",
+      //   type: "info",
+      // });
     },
     handleFileChange(e) {
       try {
@@ -235,7 +259,7 @@ export default {
     },
     handlerMore() {
       this.$notify({
-        title: "更多",
+        title: "最新动态",
         message: "敬请期待",
         type: "info",
       });
@@ -313,7 +337,6 @@ export default {
         top: -10px;
         left: 270px;
       }
-
       p {
         color: var(--text-color9);
         width: 250px;
@@ -368,6 +391,7 @@ export default {
       right: 20px;
       top: 0;
       cursor: pointer;
+      color: var(--text-color7);
     }
     .item-list {
       width: 800px;
@@ -409,7 +433,7 @@ export default {
   .Quick-Navigation {
     margin-left: 10px;
     width: 740px;
-    height: 280px;
+    height: 250px;
     background: var(--bg10);
     border: var(--border1);
     margin-top: 10px;
@@ -426,6 +450,7 @@ export default {
       right: 20px;
       top: 0;
       cursor: pointer;
+      color: var(--text-color7);
     }
     .new {
       text-indent: 50px;
@@ -443,16 +468,16 @@ export default {
     padding: 0;
   }
   .card-Img {
-    margin-top: -110px;
+    margin-top: -140px;
     width: 740px;
-    height: 290px;
+    height: 320px;
     background: var(--bg10);
     border: var(--border1);
     margin-left: 10px;
     cursor: pointer;
     .img {
       width: 740px;
-      height: 290px;
+      height: 320px;
     }
   }
 }

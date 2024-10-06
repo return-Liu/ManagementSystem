@@ -46,14 +46,14 @@ export default {
             {
               path: "/products",
               name: "products",
-              lable: "产品管理",
+              lable: "产品列表",
               icon: "s-grid",
               url: "Products.vue",
             },
             {
               path: "/users",
               name: "users",
-              lable: "用户管理",
+              lable: "用户列表",
               icon: "user-solid",
               url: "User.vue",
             },
@@ -98,7 +98,7 @@ export default {
             {
               path: "/products",
               name: "products",
-              lable: "产品管理",
+              lable: "产品列表",
               icon: "s-grid",
               url: "Products.vue",
             },

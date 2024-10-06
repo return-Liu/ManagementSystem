@@ -295,39 +295,46 @@ export default {
         });
     },
     // 复选框的选中状态
-    handleSelect(seles) {
+    async handleSelect(seles) {
       this.seles = seles.map((item) => item.id);
       // console.log(this.seles);
     },
     // 批量删除
-    hanlderReomve() {
-      this.$confirm("此操作将永久删除该文件, 是否继续?", "温馨提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning",
-      })
-        // 成功回调
-        .then(() => {
+    async hanlderReomve() {
+      try {
+        const confirmResult = await this.$confirm(
+          "此操作将永久删除该文件, 是否继续?",
+          "温馨提示",
+          {
+            confirmButtonText: "确定",
+            cancelButtonText: "取消",
+            type: "warning",
+          }
+        );
+        if (confirmResult === "confirm") {
           // 使用Promise.all来等待所有请求完成
           const promises = this.seles.map((id) => delUser({ id }));
-          Promise.all(promises).then(() => {
-            // 在所有请求成功后刷新列表
-            this.getList();
-            // 成功提示信息
-            this.$message({
-              type: "success",
-              message: "批量删除成功",
-            });
+          await Promise.all(promises);
+          // 在所有请求成功后刷新列表
+          this.getList();
+          // 成功信息
+          this.$message({
+            type: "success",
+            message: "批量删除成功",
           });
-        })
-        // 失败回调
-        .catch(() => {
-          // 失败提示信息
+        } else {
           this.$message({
             type: "error",
             message: "已取消批量删除",
           });
+        }
+      } catch (error) {
+        // 处理请求失败的情况
+        this.$message({
+          type: "error",
+          message: `批量删除失败: ${error.message}`,
         });
+      }
     },
     handleAdd() {
       this.$confirm("此操作将新增文件, 是否继续?", "温馨提示", {
@@ -445,14 +452,14 @@ export default {
     .el-button--primary {
       background-color: var(--bg4);
       border-color: var(--border4);
-      color: var(--text-color9);
+      color: var(--text-color);
     }
     .danger {
       position: absolute;
       left: 90px;
       background-color: var(--bg5);
       border-color: var(--border4);
-      color: var(--text-color9);
+      color: var(--text-color);
     }
   }
   .common-tabel {
@@ -461,7 +468,7 @@ export default {
     .emit {
       background-color: var(--bg4);
       border-color: var(--border4);
-      color: var(--text-color9);
+      color: var(--text-color);
     }
     .dangers {
       background-color: var(--bg5);

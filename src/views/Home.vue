@@ -2,15 +2,20 @@
   <el-row>
     <el-col
       :xs="24"
-      :sm="24"
-      :md="12"
-      :lg="12"
-      :xl="12"
+      :sm="12"
+      :md="8"
+      :lg="6"
+      :xl="4"
       style="padding-right: 10px"
       class="animate__animated animate__fadeIn"
     >
       <el-card class="header">
-        <h6>头像</h6>
+        <h6
+          class="avatar-name"
+          style="color: skyblue; font-family: 'Times New Roman', Times, serif"
+        >
+          头像
+        </h6>
         <!-- 头像 -->
         <div class="avatar">
           <img ref="avatarImg" alt="" :src="avatar" class="avatar-img" />
@@ -23,6 +28,7 @@
               @change="handleFileChange"
             />
           </div>
+
           <div class="message">
             <el-tag>{{ roles }}</el-tag>
             <el-select
@@ -37,24 +43,20 @@
                 :value="city.value"
               ></el-option>
             </el-select>
+            <div class="city" style="margin-left: 370px; margin-top: -25px">
+              <p>
+                天气信息由中国气象局提供<span class="detail-text">
+                  <a
+                    style="text-decoration: none; color: skyblue"
+                    href="https://www.weather.com.cn/"
+                    >详情</a
+                  >
+                </span>
+              </p>
+            </div>
             <div class="wheater">
               {{ weatherData }}
             </div>
-          </div>
-          <div class="right-Information" v-show="roles.includes('超级管理员')">
-            <span class="To_do"
-              >待办
-              <div class="To_toList">{{ To_toList }}</div>
-            </span>
-            <span class="Project"
-              >项目
-              <div class="Project_List">{{ Project_List }}</div>
-            </span>
-
-            <span class="Team"
-              >团队
-              <div class="Team_list">{{ Team_list }}</div>
-            </span>
           </div>
         </div>
       </el-card>
@@ -84,70 +86,207 @@
               v-for="(item, index) in shortcut"
               :key="item.id"
               :class="{ 'no-border-right': index === 4 }"
+              @click="handleClick(item)"
             >
               <div class="list-name">{{ item.name }}</div>
             </div>
           </div>
         </el-card>
+        <el-card
+          v-show="DataList"
+          style="
+            background: var(--bg9);
+            color: var(--text-color9);
+
+            width: 850px;
+            height: 350px;
+            position: fixed;
+            left: 200px;
+            z-index: 999;
+            top: 500px;
+          "
+        >
+          <p class="moreList" style="text-align: center; margin-top: 10px">
+            项目更多列表 尽在处理优化中
+          </p>
+          <i
+            @click="moreClose"
+            class="el-icon-close"
+            style="position: absolute; cursor: pointer; top: 10px; right: 10px"
+          ></i>
+          <div style="overflow-y: scroll; height: 250px" class="Morelist">
+            <div
+              class="list-item"
+              style="margin-top: 40px"
+              v-for="item in DataListMore"
+              :key="item.id"
+            >
+              <div class="item-title">{{ item.title }}</div>
+              <div class="item-p">{{ item.p }}</div>
+              <div class="item-name">{{ item.name }}</div>
+              <div class="time" style="margin-top: 10px">
+                {{ item.time }}
+              </div>
+            </div>
+          </div>
+        </el-card>
         <el-card class="New">
           <span>最新动态</span>
-          <span class="more-list" @click="handlerMore">更多</span>
+          <span class="more-list" @click="handlerMore">更多 </span>
           <div class="new" v-for="item in newList" :key="item.id">
             {{ item.name }}
             <div class="time">{{ item.time }}</div>
           </div>
         </el-card>
-        <el-card class="card-Img">
-          <img class="img" :src="cardImg" />
+        <el-card
+          v-show="moreList"
+          style="
+            background: var(--bg9);
+            color: var(--text-color9);
+            width: 850px;
+            height: 350px;
+            position: fixed;
+            left: 200px;
+            z-index: 999;
+            top: 500px;
+          "
+        >
+          <p class="moreList" style="text-align: center; margin-top: 10px">
+            动态更多列表 尽在处理优化中
+          </p>
+          <i
+            @click="moreClose"
+            class="el-icon-close"
+            style="position: absolute; cursor: pointer; top: 10px; right: 10px"
+          ></i>
+          <div style="overflow-y: scroll; height: 250px" class="Morelist">
+            <div
+              class="list-item"
+              style="margin-top: 20px"
+              v-for="item in newListMore"
+              :key="item.id"
+            >
+              {{ item.name }}
+              <div class="time" style="margin-top: 10px">
+                {{ item.time }}
+              </div>
+            </div>
+          </div>
         </el-card>
+        <el-card class="card-Img" ref="mian">
+          <el-carousel height="388px" direction="vertical" :autoplay="true">
+            <el-carousel-item v-for="item in card" :key="item.id">
+              <img
+                style="width: 690px; height: 389px"
+                :src="item.CardView"
+                class="image"
+              />
+            </el-carousel-item> </el-carousel
+        ></el-card>
       </div>
     </el-col>
   </el-row>
 </template>
 <script>
-// api
 import axios from "axios";
 import { getListData } from "../api";
 export default {
   name: "HomeManage",
   data() {
     return {
-      roles: "", // 添加 roles 属性
+      // 轮播图列表
+      card: [
+        {
+          id: 0,
+          CardView:
+            "	https://img.alicdn.com/imgextra/i3/O1CN01QsTHmn1PNjPfl0ILH_!!6000000001829-2-tps-896-336.png",
+        },
+        {
+          id: 1,
+          CardView:
+            "https://img.alicdn.com/imgextra/i1/O1CN01nqwokR1jdZQRGgX27_!!6000000004571-2-tps-896-336.png",
+        },
+        {
+          id: 2,
+          CardView:
+            "https://img.alicdn.com/imgextra/i3/O1CN010nhTE71WerXP5QAot_!!6000000002814-2-tps-896-336.png",
+        },
+        {
+          id: 3,
+          CardView:
+            "https://img.alicdn.com/imgextra/i1/O1CN01nqwokR1jdZQRGgX27_!!6000000004571-2-tps-896-336.png",
+        },
+      ],
+      // 快捷导航列表
+      shortcut: [
+        { id: 1, name: "首页" },
+        { id: 2, name: "产品管理" },
+        { id: 3, name: "用户管理" },
+        { id: 4, name: "高德地图" },
+        { id: 5, name: "权限管理" },
+      ],
+      // 动态更多列表
+      moreList: false,
+      // 项目更多列表
+      DataList: false,
+      // 角色
+      roles: "",
+      // 地市
       selectedCity: "",
-      // avatar: "",
+      // 头像
       avatar: "",
+      // 天气数据
       weatherData: null,
-      To_toList: "2/10",
-      Project_List: "6",
-      Team_list: "1",
-      dataList: [], // 存放项目动态列表
-      newList: [], // 存放最新动态列表
-      cities: [], // 存放城市列表
-      shortcut: [], // 存放快捷导航列表
-      cardImg: require("../assets/images/v2-5fb13110e1de13d4c11e6e7f5b8026da_r.jpg"),
+      // 项目列表
+      dataList: [],
+      // 最新动态
+      newList: [],
+      // 地区列表
+      cities: [],
+      // 动态更多列表
+      newListMore: [],
+      // 项目更多列表
+      DataListMore: [],
     };
   },
-
+  mounted() {},
   created() {
-    // 获取数据
     getListData().then(({ data }) => {
-      // 将数据进行解构
-      const { cities, newList, DataList, shortcut } = data.data;
-      this.shortcut = shortcut;
-      // 将解构newList赋值给空数组newList
+      const { cities, newList, DataList, newListMore, DataListMore } =
+        data.data;
       this.newList = newList;
-      // 将解构赋值DataList给空数组DataList
       this.dataList = DataList;
-      // 将解构赋值DataList给空数组 cities
       this.cities = cities;
+      this.newListMore = newListMore;
+      this.DataListMore = DataListMore;
     });
-    // 获取用户角色
     this.loadRoles();
-    // 获取用户头像;
     this.loadAvatar();
   },
-
   methods: {
+    handleClick(item) {
+      switch (item.name) {
+        case "产品管理":
+          this.$router.push({ name: "products", path: "/products" });
+          break;
+        case "用户管理":
+          this.$router.push({ name: "users", path: "/users" });
+          break;
+        case "高德地图":
+          this.$router.push({
+            name: "mapintegration",
+            path: "/mapintegration",
+          });
+          break;
+        case "权限管理":
+          this.$router.push({
+            name: "permissionmanagement",
+            path: "/permissionmanagement",
+          });
+          break;
+      }
+    },
+
     loadRoles() {
       const roles = localStorage.getItem("roles") || "用户获取失败";
       this.roles = roles;
@@ -158,27 +297,21 @@ export default {
         "https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png";
       this.avatar = avatar;
     },
-
-    //公共的天气查询逻辑
     async Weather(city) {
       await axios({
-        // 天气数据api
         url: `https://restapi.amap.com/v3/weather/weatherInfo`,
         params: {
-          key: "b219cc978d96ce513e410c5835a84050", // API 密钥
-          // 城市名称
+          key: "b219cc978d96ce513e410c5835a84050",
           city,
         },
       })
         .then((response) => {
-          // console.log(response);
           if (
             response.status === 200 &&
             response.data.lives &&
             response.data.lives.length > 0
           ) {
             const liveData = response.data.lives[0];
-            // 添加天气提示
             let weatherTip = "";
             switch (liveData.weather) {
               case "晴":
@@ -200,22 +333,21 @@ export default {
                 weatherTip = "今天有雾，请注意安全！";
                 break;
               case "雷阵雨":
-                this.weatherTip = "今天有雷阵雨，请注意安全！";
+                weatherTip = "今天有雷阵雨，请注意安全！";
                 break;
               case "暴雨":
-                this.weatherTip = "今天有暴雨，尽量减少外出！";
+                weatherTip = "今天有暴雨，尽量减少外出！";
                 break;
               case "台风":
-                this.weatherTip = "今天有台风，请留在室内！";
+                weatherTip = "今天有台风，请留在室内！";
                 break;
               case "沙尘暴":
-                this.weatherTip = "今天有沙尘暴，请佩戴口罩！";
+                weatherTip = "今天有沙尘暴，请佩戴口罩！";
                 break;
               default:
-                this.weatherTip = "未知天气，请关注最新气象信息！";
+                weatherTip = "未知天气，请关注最新气象信息！";
                 break;
             }
-            // 将天气提示加入到 weatherData 中
             this.weatherData = ` 当前地区:${liveData.city} 今日:${liveData.weather} 实时气温:${liveData.temperature}℃ 温馨提示: ${weatherTip}`;
             this.$notify({
               title: "天气查询",
@@ -234,7 +366,6 @@ export default {
         })
         .catch((error) => {
           if (error.response) {
-            // 请求已发出，但服务器响应的状态码不在 200 范围内
             this.$notify({
               title: "天气查询",
               message: "天气数据请求异常，请稍后重试",
@@ -242,7 +373,6 @@ export default {
               duration: 2000,
             });
           } else {
-            // 发生了一些问题，导致请求未能发出
             console.error("Error", error.message);
             this.$notify({
               title: "天气查询",
@@ -259,7 +389,6 @@ export default {
     },
     handleFileChange(e) {
       try {
-        // 确保 e.target 和 e.target.files 都存在
         if (!e.target || !e.target.files || e.target.files.length === 0) {
           return;
         }
@@ -270,23 +399,17 @@ export default {
           });
           return;
         }
-        // 获取头像文件
         const file = e.target.files[0];
-        // 创建文件读取对象
+        console.log(file);
         const reader = new FileReader();
-        // 读取文件，当读取成功后
         reader.onload = (e) => {
-          // 将头像地址赋值给 avatarUrl
           this.avatar = e.target.result;
-          // 设置新的头像 URL 到 localStorage 中
           localStorage.setItem("avatar", this.avatar);
-          // 提示信息
           this.$message({
             message: "头像更换成功",
             type: "success",
           });
         };
-        // 读取文件
         reader.readAsDataURL(file);
       } catch (error) {
         this.$message({
@@ -297,34 +420,28 @@ export default {
       }
     },
     handlerList() {
-      if (this.roles.includes("访客")) {
+      if (this.roles.includes("普通用户")) {
         this.$notify({
           message: "暂无查看权限",
           type: "warning",
         });
-      } else if (
-        this.roles.includes("超级管理员") ||
-        this.roles.includes("管理员")
-      ) {
-        this.$notify({
-          title: "更多开发中",
-          message: "开发中",
-          type: "success",
-        });
       }
     },
     handlerListMore() {
-      // 调用hanlderList
-      this.handlerList();
+      this.DataList = true;
     },
     handlerMore() {
-      // 调用hanlderList
-      this.handlerList();
+      this.moreList = true;
+    },
+    moreClose() {
+      this.moreList = false;
+      this.DataList = false;
     },
   },
 };
 </script>
 <style lang="less" scoped>
+// 原有样式保持不变
 .el-row {
   display: flex;
   flex-wrap: wrap;
@@ -386,6 +503,7 @@ export default {
       cursor: pointer;
       background: rgba(0, 0, 0, 0.7);
     }
+
     .message {
       font-size: 16px; /* 文字大小 */
       margin-left: 10px; /* 左侧外边距 */
@@ -415,6 +533,13 @@ export default {
         }
       }
     }
+    .city {
+      // 设置宽为30个字符
+      width: 30ch;
+      white-space: nowrap; /* 防止文本换行 */
+      overflow: hidden; /* 隐藏溢出的文本 */
+      animation: typing 2s steps(20) infinite alternate-reverse;
+    }
     .wheater {
       font-size: 16px; /* 文字大小 */
       margin-top: 18px; /* 顶部外边距 */
@@ -429,7 +554,6 @@ export default {
 
   margin-bottom: 0;
   display: flex;
-  // justify-content: space-between;
   flex-wrap: wrap;
   span {
     display: block;
@@ -502,6 +626,7 @@ export default {
       justify-content: space-evenly;
       flex-wrap: wrap;
       color: var(--text-color9);
+      cursor: pointer;
       .list {
         width: 100px;
         height: 100px;
@@ -550,16 +675,110 @@ export default {
   .card-Img {
     margin-top: -220px;
     width: 690px;
-    height: 388px;
+    height: 389px;
     background: var(--bg10);
     border: var(--border1);
     margin-left: 10px;
     cursor: pointer;
     position: relative;
-    .img {
-      width: 690px;
-      height: 388px;
+    .el-carousel__item h3 {
+      color: #475669;
+      font-size: 14px;
+      opacity: 0.75;
+      line-height: 200px;
+      margin: 0;
     }
+    .el-carousel__item:nth-child(2n) {
+      background-color: #99a9bf;
+    }
+    .el-carousel__item:nth-child(2n + 1) {
+      background-color: #d3dce6;
+    }
+  }
+}
+/* 响应式布局 */
+@media (max-width: 768px) {
+  .el-col {
+    width: 100%;
+  }
+  .main {
+    flex-direction: column;
+    align-items: center;
+  }
+  .Project-List,
+  .Quick-Navigation,
+  .New,
+  .card-Img {
+    width: 100%;
+    margin: 10px 0;
+  }
+  .Project-List .item-list {
+    flex-direction: column;
+  }
+  .Project-List .item {
+    width: 100%;
+    border-right: none;
+    border-bottom: 1px solid var(--border3);
+  }
+  .Quick-Navigation .Quick-list {
+    flex-direction: column;
+  }
+  .Quick-Navigation .list {
+    width: 100%;
+    border-right: none;
+    border-bottom: 1px solid var(--border3);
+  }
+  .New .new {
+    text-indent: 20px;
+  }
+  .card-Img {
+    margin-top: 10px;
+  }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+  .el-col {
+    width: 100%;
+  }
+  .main {
+    flex-direction: column;
+    align-items: center;
+  }
+  .Project-List,
+  .Quick-Navigation,
+  .New,
+  .card-Img {
+    width: 100%;
+    margin: 10px 0;
+  }
+  .Project-List .item-list {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+  .Project-List .item {
+    width: 50%;
+    border-right: none;
+    border-bottom: 1px solid var(--border3);
+  }
+  .Quick-Navigation .Quick-list {
+    flex-direction: row;
+  }
+  .Quick-Navigation .list {
+    width: 25%;
+    border-right: 1px solid var(--border3);
+  }
+  .New .new {
+    text-indent: 20px;
+  }
+  .card-Img {
+    margin-top: 10px;
+  }
+}
+// 设置动画
+@keyframes typing {
+  // 宽度从0字符开始
+  from {
+    width: 0ch;
   }
 }
 </style>

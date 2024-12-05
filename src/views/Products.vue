@@ -1,5 +1,5 @@
 <template>
-  <div class="mallMeggage">
+  <div class="mallMeggage animate__animated animate__fadeIn">
     <el-dialog
       :title="modelType ? '编辑产品' : '新增产品'"
       :visible.sync="dialogVisible"
@@ -7,12 +7,18 @@
       :before-close="handleClose"
     >
       <el-alert
-        title="请填写信息再进行确定"
+        title="请输入表单信息"
         type="error"
         v-show="alertVisible"
       ></el-alert>
       <!-- 商品的表单信息 -->
-      <el-form ref="form" :rules="rules" :model="form" label-width="80px">
+      <el-form
+        ref="form"
+        :rules="rules"
+        class="animate__animated animate__backInDown"
+        :model="form"
+        label-width="80px"
+      >
         <el-row :gutter="20">
           <el-col :span="12">
             <el-card style="height: 100%">
@@ -105,15 +111,35 @@
       >
         - 批量删除</el-button
       >
-      <el-form :inline="true" :model="mallForm">
+      <el-button type="primary" class="Im_port" @click="handlerImport"
+        >导入Excel</el-button
+      >
+      <input
+        type="file"
+        ref="fileInput"
+        @change="handleFileChange"
+        style="display: none"
+        accept=".xlsx, .xls"
+      />
+      <el-button type="primary" class="Ex_port" @click="handlerExport()"
+        >导出Excel</el-button
+      >
+      <el-form
+        style="width: 1562px; display: flex; justify-content: flex-end"
+        :inline="true"
+        :model="mallForm"
+      >
         <el-form-item>
           <el-input
             v-model="mallForm.name"
-            placeholder="请输入搜索内容"
+            placeholder="请输入关键字"
+            ref="search"
           ></el-input>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="handlerSearch">搜索</el-button>
+          <el-button icon="el-icon-search" type="primary" @click="handlerSearch"
+            >搜索</el-button
+          >
         </el-form-item>
       </el-form>
     </div>
@@ -138,22 +164,38 @@
         <el-table-column prop="description" label="介绍"> </el-table-column>
         <el-table-column label="操作">
           <template slot-scope="scope">
-            <el-button
+            <span
               size="mini"
               type="primary"
+              class="edit"
               @click="handlerEidt(scope.row)"
-              >编辑</el-button
+              >编辑</span
             >
-            <el-button
+            <span
               size="mini"
               type="danger"
               class="dangers"
               @click="handlerDelete(scope.row)"
-              >删除</el-button
+              >删除</span
+            >
+            <span size="mini" @click="handlerView(scope.row)" class="View"
+              >查看</span
             >
           </template>
         </el-table-column>
       </el-table>
+      <el-card
+        style="background-color: var(--bg10); border: var(--border1)"
+        class="ViewContent"
+        v-show="viewList"
+      >
+        <i
+          @click="viewClose"
+          style="position: absolute; right: 10px; top: 10px"
+          class="el-icon el-icon-close"
+        ></i>
+        产品信息:{{ vieName }}
+      </el-card>
       <div class="pager">
         <el-pagination
           @size-change="handleSizeChange"
@@ -168,17 +210,22 @@
   </div>
 </template>
 <script>
+// import Vue from "vue";
 import { getMall, addMall, editMall, delMall } from "../api";
+import * as XLSX from "xlsx";
 export default {
   name: "ProductsManage",
   data() {
     return {
+      roles: "", // 角色
       searchError: false,
       dialogVisible: false,
       alertVisible: false,
+      // 查看弹窗的数据
+      vieName: "",
+      viewList: false,
       // 加载搜索的状态
       loading: false,
-      input: "",
       // 表格数据
       tableData: [],
       // 存放id
@@ -219,32 +266,191 @@ export default {
       ],
     };
   },
+  mounted() {
+    console.log(XLSX);
+  },
   methods: {
-    handleSubmit() {
-      this.$refs.form.validate((valid) => {
+    // 关闭查看内容
+    viewClose() {
+      this.viewList = false;
+    },
+    // 查看内容
+    handlerView(row) {
+      if (this.roles !== "超级管理员") {
+        this.handlerDialog();
+        return;
+      }
+      this.viewList = true;
+      this.vieName = `
+  产品名称: ${row.name}
+  产品类型: ${row.type}
+  产品数量: ${row.number}
+  产品价格: ${row.price}
+  产品介绍:${row.description}
+`;
+    },
+    // 封装弹窗权限方法
+    handlerDialog() {
+      this.$message({
+        type: "error",
+        message: "亲，您的权限不足",
+      });
+    },
+    // 导入导出权限处理
+    handlerImEx() {
+      if (this.roles !== "超级管理员") {
+        this.handlerDialog();
+        return;
+      }
+    },
+    // 导入excel
+    handlerImport() {
+      // 获取DOM点击事件
+      this.$refs.fileInput.click();
+    },
+    // 导入文件
+    handleFileChange(e) {
+      // 获取文件
+      const file = e.target.files[0];
+      // 如果文件不存在退出
+      if (!file) return;
+      // 创建文件读取对象
+      const reader = new FileReader();
+      // 当文件读取成功
+      reader.onload = (e) => {
+        // 读取文件
+        const data = e.target.result;
+        // 读取二进制文件
+        const workbook = XLSX.read(data, { type: "binary" });
+        // 获取第一个sheet
+        const sheetName = workbook.SheetNames[0];
+        // 获取第一个sheet数据
+        const worksheet = workbook.Sheets[sheetName];
+        // 转为json格式
+        const json = XLSX.utils.sheet_to_json(worksheet);
+        // 输出数据
+        console.log(json);
+        // 验证数据
+        if (
+          json.every(
+            (item) =>
+              item.name &&
+              item.type &&
+              item.number &&
+              item.price &&
+              item.description
+          )
+        ) {
+          // 发送到后端
+          this.importData(json);
+        } else {
+          this.$message.error("数据格式不正确");
+        }
+      };
+      // 读取文件
+      reader.readAsBinaryString(file);
+    },
+    // 异步导入数据
+    async importData(data) {
+      try {
+        // 发送请求
+        await addMall(data);
+        // 如果导入成功
+        this.$message.success("导入成功");
+        console.log("表格数据", this.tableData);
+        // 将导入的数据追加到表格中
+        this.tableData.push(...data);
+        // 重新获取列表数据
+        this.getList();
+      } catch (error) {
+        // 导入失败则显示错误信息
+        this.$message.error("导入失败: " + error.message);
+      }
+    },
+    // 导出excel
+    handlerExport() {
+      // 调用导出方法
+      this.exportExcel();
+    },
+    async exportExcel() {
+      // 判断导出Eecel是否被勾选中
+      if (this.seles.length <= 0) {
+        this.$message({
+          type: "warning",
+          message: "请选择要导出的数据",
+        });
+        return;
+      }
+      try {
+        // 1.检查 XLSX 是否定义：
+        if (!XLSX) {
+          // 2.如果 XLSX 没有定义，抛出一个错误。
+          throw new Error("XLSX is not defined");
+        }
+        // 3.发送请求获取数据
+        const response = await getMall({
+          params: { ...this.mallForm, ...this.pageData },
+        });
+        // 4.获取数据
+        const data = response.data.list;
+        // 5.只导出选中的数据
+        const filterData = data.filter((item) => this.seles.includes(item.id));
+        console.log("选中导出的数据", filterData);
+        // 6.创建工作表
+        const worksheet = XLSX.utils.json_to_sheet(filterData);
+        // 7.创建工作簿
+        const workbook = XLSX.utils.book_new();
+        // 8.将工作表添加到工作簿中，并指定工作表的名称为 "Products"
+        XLSX.utils.book_append_sheet(workbook, worksheet, "Products");
+        // 9.使用 XLSX.writeFile 浏览器原生API
+        XLSX.writeFile(workbook, "products.xlsx");
+      } catch (error) {
+        // 10.捕获错误，并显示错误消息
+        this.$message.error("导出失败: " + error.message);
+      }
+    },
+    async handleSubmit() {
+      this.$refs.form.validate(async (valid) => {
         if (valid) {
           if (this.modelType === 1) {
-            editMall(this.form).then(() => {
+            try {
+              await editMall(this.form);
               this.getList();
               this.$message({
                 type: "success",
                 message: "编辑成功!",
               });
-            });
+              // 清空表单数据 以便下次不会影响其他弹窗
+              this.resetForm();
+              this.dialogVisible = false;
+              this.alertVisible = false;
+            } catch (error) {
+              this.$message({
+                type: "error",
+                message: "编辑失败: " + error.message,
+              });
+            }
           } else {
-            addMall(this.form).then(() => {
+            try {
+              await addMall(this.form);
               this.getList();
               this.$message({
                 type: "success",
                 message: "新增成功!",
               });
-            });
+              // 清空表单数据 以便下次不会影响其他弹窗
+              this.resetForm();
+              this.dialogVisible = false;
+              this.alertVisible = false;
+            } catch (error) {
+              this.$message({
+                type: "error",
+                message: "新增失败: " + error.message,
+              });
+            }
           }
-          // 清空表单数据 以便下次不会影响其他弹窗
-          this.resetForm();
-          this.dialogVisible = false;
-          this.alertVisible = false;
         } else {
+          // 表单验证未通过，显示提示框
           this.alertVisible = true;
         }
       });
@@ -257,63 +463,80 @@ export default {
       this.dialogVisible = false;
     },
     cancel() {
-      // 调用handleClose方法
+      // 关闭弹窗
       this.handleClose();
       //  调用resetForm方法 用于统一重置表单
       this.resetForm();
     },
-    handlerEidt(row) {
-      this.$confirm("此操作将编辑该文件, 是否继续?", "温馨提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning",
-      })
-        .then(() => {
-          // 赋值
-          this.form = JSON.parse(JSON.stringify(row));
-          // 编辑
-          this.modelType = 1;
-          // 显示弹窗
-          this.dialogVisible = true;
-        })
-        .catch(() => {
-          this.$message({
-            type: "error",
-            message: "已取消编辑",
-          });
+    async handlerEidt(row) {
+      if (this.roles !== "超级管理员") {
+        this.handlerDialog();
+        return;
+      }
+      try {
+        await this.$confirm("此操作将编辑该文件, 是否继续?", "温馨提示", {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "warning",
         });
+        // 赋值
+        this.form = JSON.parse(JSON.stringify(row));
+        // 编辑
+        this.modelType = 1;
+        // 显示弹窗
+        this.dialogVisible = true;
+      } catch (error) {
+        this.$message({
+          type: "error",
+          message: "已取消编辑",
+        });
+      }
     },
-    handlerDelete(row) {
-      this.$confirm("此操作将永久删除该文件, 是否继续?", "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning",
-      })
-        .then(() => {
-          delMall({ id: row.id }).then(() => {
-            // 重新获取商品列表的接口
-            this.getList();
-          });
+    // 删除
+    async handlerDelete(row) {
+      if (this.roles !== "超级管理员") {
+        this.handlerDialog();
+        return;
+      }
+      try {
+        await this.$confirm("此操作将永久删除该文件, 是否继续?", "提示", {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "warning",
+        });
+        try {
+          await delMall({ id: row.id });
+          // 重新获取商品列表的接口
+          this.getList();
           this.$message({
             type: "success",
             message: "删除成功!",
           });
-        })
-        .catch(() => {
+        } catch (error) {
           this.$message({
             type: "error",
-            message: "已取消删除",
+            message: "删除失败: " + error.message,
           });
+        }
+      } catch (error) {
+        this.$message({
+          type: "error",
+          message: "已取消删除",
         });
+      }
     },
-
     // 复选框的选中状态
     async handleSelect(seles) {
       this.seles = seles.map((item) => item.id);
-      // console.log(this.seles);
+      console.log(this.seles);
     },
-    // 批量删除
+    // 批量删除 分批处理
     async hanlderReomve() {
+      if (this.roles !== "超级管理员") {
+        this.handlerDialog();
+        return;
+      }
+
       try {
         const confirmResult = await this.$confirm(
           "此操作将永久删除该文件, 是否继续?",
@@ -325,16 +548,36 @@ export default {
           }
         );
         if (confirmResult === "confirm") {
-          // 使用Promise.all来等待所有请求完成
-          const promises = this.seles.map((id) => delMall({ id }));
-          await Promise.all(promises);
-          // 在所有请求成功后刷新列表
+          const batchSize = 10; // 每批处理的数量
+          // 成功的总数
+          let successCount = 0;
+          // 失败的总数
+          let failedCount = 0;
+          // 使用循环方式 遍历每一条复选框 i累加每次批量处理的数量
+          for (let i = 0; i < this.seles.length; i += batchSize) {
+            // 获取当前批次的数据 i是当前批次的开始索引，i+batchSize是当前批次的结束索引
+            const batch = this.seles.slice(i, i + batchSize);
+            // 等待所有请求 将新数组中的每个id转换为一个删除请求
+            const results = await Promise.all(
+              batch.map((id) => delMall({ id }))
+            );
+            // 统计成功和失败的数量
+            successCount += results.filter((result) => result).length;
+            failedCount += results.filter((result) => !result).length;
+          }
+          // 刷新列表
           this.getList();
-          // 成功信息
-          this.$message({
-            type: "success",
-            message: "批量删除成功",
-          });
+          if (failedCount > 0) {
+            this.$message({
+              type: "warning",
+              message: `批量删除完成，成功 ${successCount} 项，失败 ${failedCount} 项`,
+            });
+          } else {
+            this.$message({
+              type: "success",
+              message: "批量删除成功",
+            });
+          }
         } else {
           this.$message({
             type: "error",
@@ -349,22 +592,28 @@ export default {
         });
       }
     },
-    hanlderAdd() {
-      this.$confirm("此操作将新增文件, 是否继续?", "温馨提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning",
-      })
-        .then(() => {
-          this.modelType = 0;
-          this.dialogVisible = true;
-        })
-        .catch(() => {
-          this.$message({
-            type: "error",
-            message: "已取消新增",
-          });
+    async hanlderAdd() {
+      if (this.roles !== "超级管理员") {
+        this.handlerDialog();
+        return;
+      }
+
+      try {
+        await this.$confirm("此操作将新增文件, 是否继续?", "温馨提示", {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "warning",
         });
+        // 显示新增
+        this.modelType = 0;
+        // 显示弹窗
+        this.dialogVisible = true;
+      } catch {
+        this.$message({
+          type: "error",
+          message: "已取消新增",
+        });
+      }
     },
     // 添加一个resetForm方法，用于统一重置表单
     resetForm() {
@@ -410,49 +659,59 @@ export default {
      * @returns
      */
     // 列表搜索
-    handlerSearch() {
+    async handlerSearch() {
       if (!this.mallForm.name) {
         this.$message.warning("请输入关键字");
+        return;
+      }
+      // 判断是否输入非法字符
+      const illegalCharacters = /[^\w\s\u4e00-\u9fa5]/;
+      if (illegalCharacters.test(this.mallForm.name)) {
+        this.$message.error("请输入合法字符");
         return;
       }
       // 重置之前的错误提示标志（如果有的话）
       this.searchError = false;
       // 设置加载状态，准备进行搜索
       this.loading = true;
-      // 1.通过 setTimeout 模拟延迟，以模拟搜索请求
-      // 2.调用获取列表的方法，并传递搜索参数 （包括表单参数, 分页参数）
-      setTimeout(() => {
-        getMall({ params: { ...this.mallForm, ...this.pageData } })
-          .then(({ data }) => {
-            if (data.list && data.list.length > 0) {
-              // 有数据返回，更新表格数据
-              this.tableData = data.list;
-              this.total = data.count || 0;
-              this.$message.success("搜索成功！");
-            } else {
-              // 没有数据匹配搜索条件，非错误情况，给予用户无结果提示
-              this.$message.info("没有找到匹配的记录。");
-            }
-            // 清除加载状态
-            this.loading = false;
-          })
-          .catch((error) => {
-            // 真正的请求失败处理
-            this.loading = false;
-            this.$message.error("搜索失败，请稍后重试。");
-            console.error(error.message);
-          });
-      }, 2000);
+      try {
+        // 模拟延迟，以模拟搜索请求
+        await new Promise((reslove) => setTimeout(reslove, 2000));
+        // 调用获取列表的方法，并传递搜索参数 （包括表单参数, 分页参数）
+        const response = await getMall({
+          params: { ...this.mallForm, ...this.pageData },
+        });
+        // 判断响应中data里的列表或大于0
+        if (response.data.list && response.data.list.length > 0) {
+          console.log(response.data.list);
+
+          // 有数据就返回数据 更新表格数据
+          this.tableData = response.data.list;
+          this.total = response.data.count || 0;
+          this.$message.success("搜索成功！");
+        } else {
+          // 没有数据匹配搜索条件，非错误情况，给予用户无结果提示
+          this.$message.info("没有找到匹配的记录。");
+        }
+      } catch (error) {
+        // 真正的请求失败处理
+        this.loading = false;
+        this.$message.error("搜索失败，请稍后重试。");
+        console.error(error.message);
+      } finally {
+        // 清除加载状态
+        this.loading = false;
+      }
     },
   },
-
-  // 在组件创建完成后调用getList方法
   created() {
     this.getList();
+    this.roles = localStorage.getItem("roles");
+    console.log(this.roles);
   },
 };
 </script>
-<style scoped lang="less">
+<style lang="less" scoped>
 .el-alert {
   margin-bottom: 10px;
 }
@@ -463,9 +722,8 @@ export default {
   .el-button--primary {
     background-color: var(--bg4);
     border-color: var(--border4);
-    color: var(--text-color);
+    color: var(--text-color1);
   }
-
   .manage-header {
     display: flex;
     justify-content: space-between;
@@ -476,16 +734,50 @@ export default {
       left: 90px;
       background-color: var(--bg5);
       border-color: var(--border4);
-      color: var(--text-color);
+      color: var(--text-color1);
     }
+    .Im_port {
+      position: absolute;
+      left: 220px;
+      background-color: var(--bg4);
+      border-color: var(--border4);
+      color: var(--text-color1);
+    }
+    .Ex_port {
+      position: absolute;
+      left: 350px;
+      background-color: var(--bg4);
+      border-color: var(--border4);
+      color: var(--text-color1);
+    }
+  }
+  ::v-deep .el-table td.el-table__cell div {
+    width: 260px;
+  }
+  ::v-deep .el-button + .el-button {
+    margin-left: 5px;
   }
   .common-table {
     position: relative;
     height: calc(100% - 62px);
+    .edit,
+    .View {
+      color: skyblue;
+      margin-left: 30px;
+    }
     .dangers {
-      background-color: var(--bg5);
-      border-color: var(--border4);
-      color: var(--text-color);
+      color: rgb(196, 67, 67);
+      margin-left: 30px;
+    }
+    .ViewContent {
+      background-color: rgba(0, 0, 0, 0.8);
+      width: 800px;
+      height: 100px;
+      color: var(--text-color1);
+      padding: 10px;
+      opacity: 0.8;
+      position: relative;
+      top: 10px;
     }
     .pager {
       position: absolute;
@@ -497,7 +789,7 @@ export default {
 .el-card {
   cursor: pointer;
 }
-// 鼠标经过卡片 显示高亮效果
+/* // 鼠标经过卡片 显示高亮效果 */
 .el-card:hover {
   box-shadow: 0 0 10px #ccc;
 }

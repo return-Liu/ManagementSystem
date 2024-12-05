@@ -1,13 +1,22 @@
 <!DOCTYPE html>
+<!-- 禁止浏览器缓存 -->
 <html data-theme="dark" lang="en">
   <head>
+    <!-- 编码为 utf-8 -->
     <meta charset="utf-8" />
+    <!-- 禁止IE使用兼容模式 -->
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <!-- 移动端适配以宽屏显示 禁止缩放 -->
     <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <!-- 引入图标 -->
     <link rel="icon" href="<%= BASE_URL %>image.png" />
+    <!-- 引入高德地图 -->
+    <script src="https://webapi.amap.com/maps?v=1.4.15&key=b219cc978d96ce513e410c5835a84050"></script>
+    <!-- 标题 -->
     <title>后台管理系统</title>
   </head>
   <body>
+    <!-- 主要容器 -->
     <div id="app"></div>
   </body>
 </html>

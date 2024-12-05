@@ -40,7 +40,7 @@ export default {
     });
     this.$router.afterEach((to, from) => {
       // 记录路由切换信息。
-      console.log("路由切换", to, from);
+      console.log("路由切换", "从", to, "到", from);
       this.loadDuration = 500; // 重置默认加载时间
       // 启动加载动画
       this.startLoadingAnimation();

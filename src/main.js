@@ -8,10 +8,9 @@ import router from "./router";
 import store from "./store";
 // 引入mock
 import "./api/mock";
-// 引入主题样式
-import "./sass_style/theme.scss";
-// 引入sass星空
+// 引入scss主题样式与scss星空
 import "./sass_style/StarrySky.scss";
+import "./sass_style/theme.scss";
 // 引入cookie
 import cookie from "js-cookie";
 // 全局引入 element ui库

@@ -10,14 +10,21 @@
     >
       {{ item.lable }}
     </el-tag>
+    <div class="message-title">
+      <span v-show="roles.includes('普通用户')">{{ messages }}</span>
+    </div>
   </div>
 </template>
 <script>
+import cookie from "js-cookie";
 import { mapState, mapMutations } from "vuex";
 export default {
   name: "CommonTag",
   data() {
-    return {};
+    return {
+      roles: "",
+      messages: "",
+    };
   },
   computed: {
     ...mapState({
@@ -54,6 +61,19 @@ export default {
         });
       }
     },
+    loadMessages() {
+      const messages = localStorage.getItem("messages") || "用户信息获取失败";
+      this.messages = messages;
+    },
+    loadRoles() {
+      const roles = localStorage.getItem("roles") || "用户获取失败";
+      this.roles = roles;
+    },
+  },
+  created() {
+    this.roles = cookie.get("roles");
+    this.loadMessages();
+    this.loadRoles();
   },
 };
 </script>
@@ -71,8 +91,13 @@ export default {
   .el-tag {
     cursor: pointer;
     background-color: var(--bg6);
-    border-color: var(--border4);
-    color: var(--text-color);
+    border-color: var(--border7);
+    color: var(--text-color1);
+  }
+  .message-title {
+    position: fixed;
+    right: 20px;
+    color: var(--text-color1);
   }
 }
 </style>

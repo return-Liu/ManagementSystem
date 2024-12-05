@@ -2,11 +2,15 @@
   <el-menu
     class="el-menu-vertical-demo"
     :collapse="isCollapse"
-    text-color="var(--text-color)"
+    text-color="var(--text-color1)"
     active-text-color="#43b3cf"
+    :style="{ backgroundColor: bgc }"
   >
-    <h3 style="color: var(--text-color); background-color: var(--bg7)">
-      <!-- <img src="../assets/logo.png" class="logo" /> -->
+    <h3
+      :style="{
+        backgroundColor: bgc,
+      }"
+    >
       {{ isCollapse ? "后台" : "后台管理系统" }}
     </h3>
     <el-menu-item
@@ -25,59 +29,68 @@
     >
       <template slot="title">
         <i :class="`el-icon-${item.icon}`"></i>
-        <span slot="title">{{ item.lable }}</span>
+        <span style="color: var(--text-color7)" slot="title">{{
+          item.lable
+        }}</span>
       </template>
-      <el-menu-item-group v-for="subItem in item.children" :key="subItem.path">
-        <el-menu-item @click="clickMenu(subItem)" :index="subItem.path">{{
-          subItem.lable
-        }}</el-menu-item>
+      <el-menu-item-group
+        :style="{ backgroundColor: bgc }"
+        v-for="subItem in item.children"
+        :key="subItem.path"
+      >
+        <el-menu-item @click="clickMenu(subItem)" :index="subItem.path">
+          {{ subItem.lable }}
+        </el-menu-item>
       </el-menu-item-group>
     </el-submenu>
   </el-menu>
 </template>
+
 <script>
 import cookie from "js-cookie";
 export default {
   name: "CommonAside",
   data() {
-    return {};
+    return {
+      bgc: "var(--bg7)", // 设置初始值
+    };
+  },
+  created() {
+    // 监听父组件的事件
+    this.$root.$on("updateSidebarBackground", (newBgc) => {
+      console.log(newBgc);
+      // 更新背景颜色
+      this.bgc = newBgc;
+    });
   },
   methods: {
-    // 点击菜单
     clickMenu(item) {
-      // 当页面的路由与我们跳转的路由不一致时,才允许跳转
       if (
         this.$route.path !== item.path &&
         !(this.$route.path === "/home" && item.path === "/")
       ) {
-        // 跳转
         this.$router.push(item.path);
       }
-      // 添加tab
       this.$store.commit("addTabs", item);
     },
   },
   computed: {
-    // 没有子菜单
     noChildrenMenu() {
       return this.menuData.filter((item) => !item.children);
     },
-    // 有子菜单
     hasChildrenMenu() {
       return this.menuData.filter((item) => item.children);
     },
-    // 菜单数据
     menuData() {
-      // 判断当前数据 如果cookie没有 则从store中获取
       return JSON.parse(cookie.get("menu")) || this.$store.state.tab.menu;
     },
-    // 菜单展开收起
     isCollapse() {
       return this.$store.state.tab.isCollapse;
     },
   },
 };
 </script>
+
 <style lang="less" scoped>
 .el-menu-vertical-demo:not(.el-menu--collapse) {
   width: 200px;
@@ -96,10 +109,13 @@ export default {
   height: 100vh; /* 使用百分比而不是 calc */
   border-right: 0;
   background-color: var(--bg7);
+
   .el-menu-item:focus,
-  .el-menu-item:hover {
-    background-color: var(--bg1);
+  .el-menu-item:hover,
+  .el-menu-item:active {
+    background-color: var(--bg9);
   }
+
   h3 {
     text-align: center;
     line-height: 48px;

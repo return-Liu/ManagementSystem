@@ -17,51 +17,201 @@
           v-for="item in msg"
           :key="item.path"
           :to="{ path: item.path }"
+          @click="handlerBreadcrumb(item)"
           >{{ item.lable }}</el-breadcrumb-item
         >
       </el-breadcrumb>
     </div>
     <div class="r-content">
-      <el-dropdown @command="handlerDropdown">
+      <div
+        class="iconfont icon-tubiao-"
+        style="font-size: 20px; cursor: pointer"
+        @click="drawer = true"
+        title="布局设置"
+      ></div>
+      <el-drawer
+        title="布局设置"
+        :visible.sync="drawer"
+        :direction="direction"
+        :before-close="handleClose"
+      >
+        <span class="Overall-Style-Settings">
+          <div
+            class="Style-Settings"
+            style="display: flex; justify-content: center; color: #000"
+          >
+            主题风格设置
+          </div>
+          <div
+            class="Style"
+            style="
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              height: 35px;
+              color: white;
+              margin-top: 30px;
+            "
+          >
+            <div class="container" @click="selectItem('left')">
+              <div class="aside-left"></div>
+              <div class="content">
+                <i v-if="selectedItem === 'left'" class="el-icon-check"></i>
+              </div>
+            </div>
+            <div class="container" @click="selectItem('right')">
+              <div class="aside-right"></div>
+              <div class="content">
+                <i v-if="selectedItem === 'right'" class="el-icon-check"></i>
+              </div>
+            </div>
+            <div class="container-header" @click="selectItem('top-black')">
+              <div class="content-header">
+                <i
+                  v-if="selectedItem === 'top-black'"
+                  class="el-icon-check"
+                ></i>
+              </div>
+            </div>
+            <div class="container-header" @click="selectItem('top-white')">
+              <div class="content-headers">
+                <i
+                  v-if="selectedItem === 'top-white'"
+                  class="el-icon-check"
+                ></i>
+              </div>
+            </div>
+          </div>
+        </span>
+        <span class="System_Theme">
+          <div
+            class="Theme"
+            style="
+              display: flex;
+              justify-content: center;
+              color: #000;
+              margin-top: 60px;
+            "
+          >
+            主题色
+          </div>
+        </span>
+        <!-- 黑白主题 -->
+        <div class="switch">
+          <el-switch
+            style="display: flex; justify-content: center; margin-top: 30px"
+            v-model="theme"
+            active-icon-class="el-icon-moon"
+            active-color="#183153"
+            active-value="dark"
+            inactive-icon-class="el-icon-sunny"
+            inactive-color="#73c0fc"
+            inactive-value="light"
+            @change="switchTheme"
+          >
+          </el-switch>
+        </div>
+        <div
+          class="line"
+          style="
+            width: 500px;
+            height: 1px;
+            background-color: #ccc;
+            margin-top: 30px;
+          "
+        ></div>
+        <span>
+          <div
+            class="Navigation-Mode"
+            style="
+              margin-top: 30px;
+              color: #000;
+              display: flex;
+              justify-content: space-around;
+            "
+          >
+            <div class="Navigation">导航模式</div>
+          </div>
+          <div
+            class="Content_Header"
+            style="
+              margin-top: 30px;
+              color: #000;
+              display: flex;
+              justify-content: center;
+            "
+          >
+            <div class="Header">固定Header</div>
+            <div class="Switch" style="margin-left: 100px">
+              <el-switch v-model="value1" active-color="#409EFF"></el-switch>
+            </div>
+          </div>
+          <div
+            class=""
+            style="
+              margin-top: 30px;
+              color: #000;
+              display: flex;
+              justify-content: center;
+            "
+          >
+            <div class="">显示LOGO</div>
+            <div class="" style="margin-left: 110px">
+              <el-switch v-model="value2" active-color="#409EFF"></el-switch>
+            </div>
+          </div>
+        </span>
+        <div
+          class="line"
+          style="
+            width: 500px;
+            height: 1px;
+            background-color: #ccc;
+            margin-top: 30px;
+          "
+        ></div>
+        <span>
+          <div
+            class="Other_Settings"
+            style="
+              margin-top: 30px;
+              color: #000;
+              display: flex;
+              justify-content: space-around;
+            "
+          >
+            <div class="Settings">其他设置</div>
+          </div>
+
+          <div
+            class=""
+            style="
+              margin-top: 30px;
+              color: #000;
+              display: flex;
+              justify-content: center;
+            "
+          >
+            <div class="Color-Deficiency-Mode">色弱模式</div>
+            <div class="Switch" style="margin-left: 115px">
+              <el-switch v-model="value3" active-color="#409EFF"></el-switch>
+            </div>
+          </div>
+        </span>
+      </el-drawer>
+      <el-dropdown
+        @command="handlerDropdown"
+        style="padding: 0 20px; color: var(--text-color1)"
+      >
         <span class="el-dropdown-link">
-          <span>{{ user }}</span>
+          <!-- 显示用户角色 -->
+          <span> {{ roles }}</span>
           <i class="el-icon-arrow-down el-icon--right"></i>
         </span>
-        <el-dropdown-menu class="el-dropdown-menu" slot="dropdown">
+        <el-dropdown-menu slot="dropdown">
           <el-dropdown-item command="selfcenter">个人中心</el-dropdown-item>
           <el-dropdown-item command="cancel">退出</el-dropdown-item>
         </el-dropdown-menu>
-        <div class="el-icon-film" @click="drawer = true" title="项目配置"></div>
-        <el-drawer
-          title="项目配置"
-          :visible.sync="drawer"
-          :direction="direction"
-          :before-close="handleClose"
-        >
-          <span class="System_Theme">
-            <div class="Theme">系统主题</div>
-          </span>
-          <!-- 黑白主题 -->
-          <div class="switch">
-            <el-switch
-              v-model="theme"
-              active-icon-class="el-icon-moon"
-              active-color="#183153"
-              active-value="dark"
-              inactive-icon-class="el-icon-sunny"
-              inactive-color="#73c0fc"
-              inactive-value="light"
-              @change="switchTheme"
-            >
-            </el-switch>
-          </div>
-        </el-drawer>
-        <div
-          class="el-icon-full-screen"
-          title="全屏模式"
-          @click="handlerscreen"
-        ></div>
-        <div class="el-icon-refresh" title="刷新" @click="hanlderrefresh"></div>
       </el-dropdown>
     </div>
   </div>
@@ -70,23 +220,67 @@
 // 引入vuex
 import { mapState } from "vuex";
 import cookie from "js-cookie";
+// 引入防抖函数处理主题切换频率
+import { debounce } from "lodash";
 export default {
   name: "CommonHeader",
   data() {
     return {
-      user: "欢迎 admin",
+      // 存储主题切换的频繁次数
+      ThemeCount: "", // 初始化为0
+      avatar: "",
+      selectedItem: null, // 默认不选中任何项
+      // 存储是否固定Header
+      value1: false,
+      // 存储是否显示LOGO
+      value2: false,
+      // 存储是否开启色弱模式
+      value3: false,
+      roles: "", // 存储用户角色
       drawer: false,
       direction: "rtl",
-      theme: localStorage.getItem("theme") || "light",
+      theme: localStorage.getItem("theme"),
+      // 设置默认选中的头部风格
+      selectedItems: "left",
     };
   },
-
+  created() {
+    this.loadRoles();
+    this.selectedItem = this.selectedItems;
+  },
   methods: {
+    selectItem(item) {
+      this.selectedItem = item;
+      // 设置头部风格
+      const header_container = document.querySelector(".header-container");
+      if (item === "top-black") {
+        header_container.style.backgroundColor = "rgb(48, 70, 92)";
+      } else if (item === "top-white") {
+        header_container.style.backgroundColor = "#606266";
+      }
+      // 设置侧边栏风格
+      if (item === "left") {
+        // 触发父组件的事件
+        this.$root.$emit("updateSidebarBackground", "rgb(48, 70, 92)");
+      } else if (item === "right") {
+        // 触发父组件的事件
+        this.$root.$emit("updateSidebarBackground", "#606266");
+      }
+      this.$message({
+        type: "success",
+        message: "主题风格设置成功",
+        duration: 1500,
+      });
+    },
+    loadRoles() {
+      const roles = localStorage.getItem("roles") || "获取用户失败 请登录重试";
+      this.roles = roles;
+    },
     handleClose(done) {
       this.$confirm("确认关闭？")
         .then(() => {
           this.$notify({
-            title: "项目配置",
+            title: "全局配置",
             message: "关闭成功",
             type: "success",
           });
@@ -104,27 +298,70 @@ export default {
       // 侧边栏的折叠
       this.$store.commit("CollapseMenu");
     },
+
     handlerDropdown(command) {
-      // 个人中心
-      if (command === "selfcenter") {
-        this.$router.push({ name: "personalcenter", path: "/personalcenter" });
+      switch (command) {
+        case "selfcenter":
+          this.handleSelfCenter();
+          break;
+        case "cancel":
+          this.handleLogout();
+          break;
       }
-      // 退出首页
-      if (command === "cancel") {
-        console.log("退出");
-        cookie.remove("token");
-        // 清除cookie中的menu
-        cookie.remove("menu");
-        this.$router.push({ name: "login", path: "/login" });
-        this.$notify({
-          title: "提示",
-          message: "退出成功",
-          type: "success",
+    },
+    handleSelfCenter() {
+      if (this.roles.includes("超级管理员")) {
+        this.$router.push({ name: "personalcenter" });
+      } else {
+        this.$message({
+          message: "您没有权限查看个人中心",
+          type: "warning",
         });
       }
     },
-    // 主题
-    switchTheme() {
+    handleLogout() {
+      cookie.remove("token");
+      // 清除cookie中的menu
+      cookie.remove("menu");
+      this.$router.push({ name: "login" });
+
+      this.$notify({
+        title: "提示",
+        message: `退出成功 欢迎下次回来 ${this.roles}`,
+        type: "success",
+      });
+    },
+    // 主题切换
+    switchTheme: debounce(function () {
+      // 检查主题的频繁次数
+      this.ThemeCount++;
+      if (this.ThemeCount >= 3) {
+        this.$message({
+          message: "请你慢一点 继续操作",
+          type: "warning",
+        });
+        return;
+      }
+      // 执行主题切换的逻辑
+      // 重置计数器
+      setTimeout(() => {
+        this.ThemeCount = 0;
+      }, 3000); // 例如，60秒后重置计数器
+      //  不在执行后面操作
+      if (!this.roles.includes("超级管理员")) {
+        this.$notify({
+          title: "提示",
+          message: "切换主题失败 权限不足",
+          type: "warning",
+        });
+        return;
+      } else {
+        this.$message({
+          title: "提示",
+          message: "主题切换成功",
+          type: "success",
+        });
+      }
       // 检查 document.documentElement 是否存在
       if (document.documentElement) {
         // 设置 data-theme 的主题
@@ -133,30 +370,8 @@ export default {
         const theme = document.documentElement.getAttribute("data-theme");
         // 将存储主题值到 localStorage
         localStorage.setItem("theme", theme);
-      } else {
-        console.error("document.documentElement is null");
       }
-    },
-    // 全屏功能
-    handlerscreen() {
-      // 判断当前是否全屏
-      if (document.fullscreenElement) {
-        // 退出全屏 (如果当前是全屏状态)
-        document.exitFullscreen();
-      } else {
-        // 全屏 （即当前不是全屏状态）
-        document.documentElement.requestFullscreen();
-      }
-    },
-    // 刷新功能
-    hanlderrefresh() {
-      // 利用路由的go方法重定向导当前页面 0表示不改变路由地址 只是重新加载当前页面
-      this.$router.go(0);
-      this.$message({
-        message: "刷新成功",
-        type: "success",
-      });
-    },
+    }),
   },
   computed: {
     // 面包屑
@@ -174,9 +389,8 @@ export default {
   display: flex;
   align-items: center;
   justify-content: space-between;
-
   .title {
-    color: var(--text-color);
+    color: var(--text-color1);
     font-size: 14px;
     padding: 0 10px;
   }
@@ -184,85 +398,137 @@ export default {
 .l-content {
   display: flex;
   align-items: center;
-
   /deep/.el-breadcrumb__item {
     .el-breadcrumb__inner {
       font-weight: normal;
       &.is-link {
-        color: var(--text-color);
+        color: var(--text-color1);
       }
     }
     &:last-child {
       .el-breadcrumb__inner {
-        color: var(--text-color);
+        color: var(--text-color1);
       }
     }
     .el-breadcrumb__separator[class*="icon"] {
-      color: var(--text-color);
+      color: var(--text-color1);
     }
   }
 }
 .r-content {
   display: flex;
   align-items: center;
-
-  .users {
-    width: 45px;
-    height: 45px;
-    border-radius: 50%;
-    margin-left: 20px;
-    cursor: pointer;
+  .Style {
+    display: flex;
+    justify-content: center;
   }
-  .el-dropdown {
+  .container {
+    width: 60px;
+    height: 50px;
+    background-color: #ebeef5;
+    border-radius: 5px;
+    position: relative;
+    margin-top: 30px;
+    margin-left: 50px;
+  }
+  .aside-left {
+    background-color: rgb(48, 70, 92);
+  }
+  .aside-right {
+    background-color: #606266;
+  }
+  .header {
+    height: 15px;
+    width: 60px;
+    background-color: rgb(48, 70, 92);
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+  }
+  .aside-left,
+  .aside-right {
+    height: 50px;
+    width: 20px;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+  }
+  .content {
+    width: 40px;
+    height: 35px;
+    background-color: #e4e7ed;
+    position: absolute;
+    bottom: 0;
+    left: 20px;
+    border-bottom-right-radius: 5px;
+  }
+  .content .el-icon-check {
+    display: flex;
+    justify-content: center;
+    color: blue;
+    align-items: center;
+    line-height: 40px;
+  }
+  .container-header {
+    width: 60px;
+    height: 50px;
+    background-color: #e4e7ed;
+    border-radius: 5px;
+    margin-top: 30px;
+    margin-left: 50px;
+  }
+  .content-header .el-icon-check,
+  .content-headers .el-icon-check {
+    display: flex;
+    justify-content: center;
+    color: blue;
+    align-items: center;
+    line-height: 70px;
+  }
+  .content-headers {
+    height: 15px;
+    width: 60px;
+    background-color: #606266;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+  }
+  .content-header {
+    height: 15px;
+    width: 60px;
+    background-color: rgb(48, 70, 92);
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+  }
+  .Theme-Color div {
+    width: 30px;
+    height: 30px;
+    border-radius: 5px;
+  }
+  .color-block {
+    width: 30px;
+    height: 30px;
+    border-radius: 5px;
     display: flex;
     align-items: center;
+    justify-content: center;
     cursor: pointer;
-    .el-dropdown-link {
-      color: var(--text-color);
+    i {
+      color: #fff;
       font-size: 14px;
-      padding: 0 17px;
-    }
-    .el-dropdown-menu {
-      background-color: var(--bg1);
-    }
-    .el-icon-film {
-      color: var(--text-color);
-      font-size: 20px;
-      margin-right: 20px;
-    }
-    ::v-deep .el-drawer__header {
-      background: var(--bg10);
-      margin-bottom: 0;
-      height: 50px;
-      line-height: 50px;
-    }
-    ::v-deep .el-drawer__body {
-      flex: 1;
-      overflow: auto;
-      background: var(--bg10);
-      .System_Theme {
-        width: 551px;
-        height: 19px;
-        display: block;
-        text-align: center;
-        padding-top: 10px;
-      }
-    }
-    .el-switch {
-      width: 551px;
-      height: 80px;
-      display: flex;
-      justify-content: center;
-    }
-    .el-icon-full-screen {
-      color: var(--text-color);
-      font-size: 20px;
-      margin-right: 20px;
-    }
-    .el-icon-refresh {
-      color: var(--text-color);
-      font-size: 23px;
     }
   }
 }
+.el-dropdown {
+  .el-dropdown-link {
+    color: var(--text-color1);
+    font-size: 14px;
+    padding: 0 20px;
+  }
+}
+/* 添加的 .fixed-header 类 */
+// .fixed-header {
+//   position: fixed;
+//   top: 0;
+//   left: 0;
+//   right: 0;
+//   z-index: 999;
+// }
 </style>

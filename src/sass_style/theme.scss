@@ -1,0 +1,62 @@
+// theme.scss
+@import "variables";
+
+// 默认亮色主题
+:root {
+  --text-color: #{$text-color};
+  --text-color1: #{$text-color1};
+  --text-color2: #{$text-color2};
+  --text-color3: #{$text-color3};
+  --text-color4: #{$text-color4};
+  --text-color5: #{$text-color5};
+  --text-color6: #{$text-color6};
+  --text-color7: #{$text-color7};
+  --text-color8: #{$text-color8};
+  --text-color9: #{$text-color9};
+  --bg1: #{$bg1};
+  --bg2: #{$bg2};
+  --bg3: #{$bg3};
+  --bg4: #{$bg4};
+  --bg5: #{$bg5};
+  --bg6: #{$bg6};
+  --bg7: #{$bg7};
+  --bg8: #{$bg8};
+  --bg9: #{$bg9};
+  --bg10: #{$bg10};
+  --bg11: #{$bg11};
+  --bg12: #{$bg12};
+  --border1: #{$border1};
+  --border2: #{$border2};
+  --border3: #{$border3};
+  --border4: #{$border4};
+  --border5: #{$border5};
+  --border6: #{$border6};
+  --border7: #{$border7};
+}
+
+// 暗色主题
+html[data-theme="dark"] {
+  --text-color: #{$text-color};
+  --text-color1: var(--text-color);
+  --text-color7: #31c0eb;
+  --text-color9: #{$text-color};
+  --bg1: #0b0909;
+  --bg2: #050505;
+  --bg3: #121111;
+  --bg4: var(--bg3);
+  --bg5: var(--bg3);
+  --bg6: var(--bg3);
+  --bg7: var(--bg3);
+  --bg8: var(--bg3);
+  --bg9: -webkit-linear-gradient(315deg, #42d392 25%, #647eff);
+  --bg10: var(--bg3);
+  --bg11: #{$text-color};
+  --bg12: -webkit-linear-gradient(rgba(219, 15, 234, 0.5), rgb(20, 197, 241));
+  --border1: #2a2845;
+  --border2: #1f1b1b;
+  --border3: #2d2929;
+  --border4: #333;
+  --border5: var(--border5);
+  --border6: #{$text-color};
+  --border7: #333;
+}

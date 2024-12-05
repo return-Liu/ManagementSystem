@@ -1,4 +1,5 @@
 import cookie from "js-cookie";
+
 export default {
   state: {
     // 用于控制菜单的展开还是收起
@@ -47,11 +48,14 @@ export default {
     },
     // 组件动态路由
     addMenu(state, router) {
+      // console.log("addMenu called with state:", state); // 动态路由数据
       if (!cookie.get("menu")) return;
       const menu = JSON.parse(cookie.get("menu"));
       state.menu = menu;
+      // console.log("Parsed menu:", menu); // 解析后的菜单数据
+
       // 处理动态路由的数据
-      let menuarray = []; //声明一个空数组
+      let menuarray = []; // 声明一个空数组
       // 有子菜单
       menu.forEach((item) => {
         if (item.children) {
@@ -67,13 +71,11 @@ export default {
           menuarray.push(item);
         }
       });
+
       // 动态路由的添加
       menuarray.forEach((item) => {
         router.addRoute("Main", item);
       });
     },
-  },
-  getters: {
-    // 判断当前是用户登录还是管理员登录
   },
 };

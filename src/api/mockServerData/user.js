@@ -1,4 +1,12 @@
+// 主要修改点
+// createProduct 方法
+// deleteOrBatch 方法
+// updataProduct 方法
+// 使用 JSON.parse(JSON.stringify(productList))
+// 进行深拷贝，避免 Vue 的响应式系统对数组的包装。
+
 import Mock from "mockjs";
+import Vue from "vue";
 
 // get请求从config.url获取参数，post从config.body中获取参数
 function param2Obj(url) {
@@ -67,7 +75,7 @@ export default {
       (item, index) => index < limit * page && index >= limit * (page - 1)
     );
     return {
-      code: 20000,
+      code: 200,
       count: mockList.length,
       list: pageList,
     };
@@ -79,21 +87,29 @@ export default {
    * @return {{code: number, data: {message: string}}}
    */
   createUser: (config) => {
-    const { id, name, addr, age, birth, sex } = JSON.parse(config.body);
-    console.log(JSON.parse(config.body));
-
-    List.unshift({
-      id: id,
-      name: name,
-      addr: addr,
-      age: age,
-      birth: formatBirthDate(birth),
-      sex: sex,
-    });
+    const { name, addr, age, birth, sex } = JSON.parse(config.body);
+    // console.log(JSON.parse(config.body));
+    const id = Mock.Random.guid();
+    const newUser = {
+      id,
+      name,
+      addr,
+      age,
+      birth: formatBirthDate(birth), // 使用 formatBirthDate 函数格式化日期
+      sex,
+    };
+    // 使用 JSON.parse(JSON.stringify()) 深拷贝避免 Vue 的响应式系统干扰
+    const deepCopyList = JSON.parse(JSON.stringify(List));
+    deepCopyList.unshift(newUser);
+    // console.log("用户数据", ...deepCopyList, "总", List.length + "条");
+    // 使用splice删除从0索引开始 清空List 将...deepCopyList展开依次添加到List
+    List.splice(0, List.length, ...deepCopyList);
+    console.log("新增用户", newUser);
     return {
-      code: 20000,
+      code: 200,
       data: {
         message: "添加成功",
+        id: id,
       },
     };
   },
@@ -112,6 +128,14 @@ export default {
       return { code: -1, message: "用户不存在" };
     }
     List.splice(List.indexOf(user), 1);
+    console.log("删除用户", user);
+    return {
+      code: 200,
+      data: {
+        message: "删除成功",
+        id: id,
+      },
+    };
   },
   /**
    * 修改用户
@@ -121,20 +145,25 @@ export default {
   updateUser: (config) => {
     const { id, name, addr, age, birth, sex } = JSON.parse(config.body);
     const sex_num = parseInt(sex);
-    List.some((u) => {
-      if (u.id === id) {
-        u.name = name;
-        u.addr = addr;
-        u.age = age;
-        u.birth = formatBirthDate(birth); // 使用 formatBirthDate 函数格式化日期
-        u.sex = sex_num;
-        return true;
-      }
-    });
+    const updataUser = {
+      id: id,
+      name: name,
+      addr: addr,
+      age: age,
+      birth: formatBirthDate(birth),
+      sex: sex_num,
+    };
+    console.log("修改用户", updataUser);
+    const index = List.findIndex((item) => item.id === id);
+    console.log(index);
+    if (index !== -1) {
+      Vue.set(List, index, updataUser);
+    }
     return {
-      code: 20000,
+      code: 200,
       data: {
         message: "编辑成功",
+        id: id,
       },
     };
   },

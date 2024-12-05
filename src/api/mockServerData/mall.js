@@ -1,12 +1,8 @@
 import Mock from "mockjs";
+
 // 商品类型列表
-const productTypes = [
-  "智能设备", // 更新商品类型列表
-  "文学艺术",
-  "护肤彩妆",
-  "代码工具",
-  "智能化",
-];
+const productTypes = ["智能设备", "文学艺术", "护肤彩妆", "代码工具", "智能化"];
+
 // 新增方法生成商品名称，考虑类型
 const adjectiveNounPairs = {
   智能设备: [
@@ -30,9 +26,9 @@ const adjectiveNounPairs = {
     ["AI", "智能AI"],
   ],
 };
+
 // 声明新方法生成商品名称，考虑类型
 function generateProductName(type) {
-  // 如果类型不存在，返回"未知类型"
   if (!adjectiveNounPairs[type]) {
     return "未知类型";
   }
@@ -58,13 +54,10 @@ function generateProducts(count = 200) {
         type: productType,
         number: Mock.Random.integer(100, 600),
         price: Mock.Random.integer(10, 5000),
-        // 根据商品类型和名称生成描述
         description: generateDescription(productName, productType),
       })
     );
   }
-  // 打印商品列表
-  // console.log("商品列表获取成功", products);
   return products;
 }
 
@@ -84,13 +77,14 @@ function generateDescription(name, type) {
     case "代码工具":
       description = `这款${name}是开发者的得力助手，提升编程效率，让代码更加优雅。`;
       break;
-
     default:
       description = `这是一款${name}，具体描述待补充。`;
   }
   return description;
 }
+
 const productList = generateProducts();
+
 // 统一处理参数提取
 function extractParams(config, method = "GET") {
   return method === "GET" ? param2Obj(config.url) : JSON.parse(config.body);
@@ -122,37 +116,35 @@ export default {
     const params = extractParams(config, "GET");
     const { name = "", page = 1, limit = 20 } = params;
 
-    // 确保 name 是有效的字符串，避免不必要的错误
     if (typeof name !== "string") {
       throw new Error("Invalid name parameter. Expected a string.");
     }
 
-    // 过滤逻辑，只保留 name 或 type 匹配的商品
     const filteredList = productList.filter(
       (item) =>
-        name.trim() === "" || // 如果name为空或者全是空白，则不过滤，返回所有
+        name.trim() === "" ||
         item.name.toLowerCase().includes(name.toLowerCase()) ||
         item.type.toLowerCase().includes(name.toLowerCase())
     );
 
-    // 分页处理
     const startIndex = (page - 1) * limit;
     const endIndex = startIndex + limit;
     const pageList = filteredList.slice(startIndex, endIndex);
 
     return {
-      code: 20000,
-      count: filteredList.length, // 总计数
-      list: pageList, // 当前页数据
+      code: 200,
+      count: filteredList.length,
+      list: pageList,
     };
   },
+
   /**
    * 新增商品
    * @param {Object} config - 请求配置
-   * @returns {{code: number, data: {message: string}}}
+   * @returns {{code: number, data: {message: string, id: string}}}
    */
   createProduct: (config) => {
-    const { id, name, type, number, price, description } = extractParams(
+    const { name, type, number, price, description } = extractParams(
       config,
       "POST"
     );
@@ -160,27 +152,32 @@ export default {
       return { code: -1, message: "缺少必填项" };
     }
 
+    const id = Mock.Random.guid();
     const newProduct = {
-      id: id,
+      id,
       name,
       type,
       number,
       price,
       description,
     };
-    productList.unshift(newProduct);
+    // 使用深拷贝避免 Vue 的响应式系统干扰
+    const deepCopyProductList = JSON.parse(JSON.stringify(productList));
+    deepCopyProductList.unshift(newProduct);
+    productList.splice(0, productList.length, ...deepCopyProductList);
+    console.log("新增商品:", newProduct);
     return {
-      code: 20000,
+      code: 200,
       data: {
         message: "添加成功",
+        id: id,
       },
     };
   },
-
   /**
    * 删除和批量删除商品
-   * @param {*} config
-   * @return {{code: number, data: {message: string}}}
+   * @param {Object} config - 请求配置
+   * @returns {{code: number, data: {message: string, id: string}}}
    */
   deleteOrBatch: (config) => {
     const { id } = JSON.parse(config.body);
@@ -192,11 +189,22 @@ export default {
       return { code: -1, message: "商品不存在" };
     }
     productList.splice(productList.indexOf(product), 1);
+
+    console.log("删除商品:", product);
+
+    return {
+      code: 200,
+      data: {
+        message: "删除成功",
+        id: id,
+      },
+    };
   },
+
   /**
    * 更新商品信息
    * @param {Object} config - 请求配置
-   * @returns {{code: number, data: {message: string}}}
+   * @returns {{code: number, data: {message: string, id: string}}}
    */
   updateProduct: (config) => {
     const { id, name, type, number, price, description } = extractParams(
@@ -210,15 +218,21 @@ export default {
     if (!product) {
       return { code: -1, message: "商品不存在" };
     }
-    if (name) product.name = name;
-    if (type) product.type = type;
+
+    // 更新商品信息
+    if (name !== undefined) product.name = name;
+    if (type !== undefined) product.type = type;
     if (number !== undefined) product.number = number;
     if (price !== undefined) product.price = price;
-    if (description) product.description = description;
+    if (description !== undefined) product.description = description;
+
+    console.log("更新商品:", { id, name, type, number, price, description });
+
     return {
-      code: 20000,
+      code: 200,
       data: {
         message: "编辑成功",
+        id: id,
       },
     };
   },

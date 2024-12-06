@@ -35,7 +35,7 @@
         :direction="direction"
         :before-close="handleClose"
       >
-        <span class="Overall-Style-Settings">
+        <span class="Overall-Style-Settings" :class="{ disabled: value3 }">
           <div
             class="Style-Settings"
             style="display: flex; justify-content: center; color: #000"
@@ -83,7 +83,7 @@
             </div>
           </div>
         </span>
-        <span class="System_Theme">
+        <span class="System_Theme" :class="{ disabled: value3 }">
           <div
             class="Theme"
             style="
@@ -107,6 +107,7 @@
             inactive-icon-class="el-icon-sunny"
             inactive-color="#73c0fc"
             inactive-value="light"
+            :disabled="isDisabled"
             @change="switchTheme"
           >
           </el-switch>
@@ -147,6 +148,7 @@
                 v-model="value1"
                 @change="switchHeader"
                 active-color="#409EFF"
+                :disabled="isDisabled"
               ></el-switch>
             </div>
           </div>
@@ -165,7 +167,10 @@
                 v-model="value2"
                 @change="switchLogo"
                 active-color="#409EFF"
-              ></el-switch>
+                :disabled="isDisabled"
+              >
+                ></el-switch
+              >
             </div>
           </div>
         </span>
@@ -254,6 +259,8 @@ export default {
       theme: localStorage.getItem("theme"),
       // 设置默认选中的头部风格
       selectedItems: "left",
+      // 禁用开关
+      isDisabled: false, // 新增属性
     };
   },
   created() {
@@ -307,15 +314,17 @@ export default {
     // 色弱模式
     switchDeficiency() {
       this.$root.$emit("updateSidebarDeficiency", this.value3);
-      if (this.value3 == true) {
+      this.isDisabled = this.value3; // 根据色弱模式状态更新禁用状态
+      if (this.value3) {
         this.$message({
-          message: "色弱模式已开启",
+          message: "色弱模式已开启 部分主题开启禁用状态 注意用眼",
           type: "success",
         });
       }
+
       if (this.value3 == false) {
         this.$message({
-          message: "色弱模式已关闭",
+          message: "色弱模式已关闭 部分主题解除禁用状态",
           type: "success",
         });
       }
@@ -388,10 +397,11 @@ export default {
       // 清除cookie中的menu
       cookie.remove("menu");
       this.$router.push({ name: "login" });
-
+      // 清除tabs
+      this.$store.commit("CLEAR_TABS_LIST");
       this.$notify({
         title: "提示",
-        message: `退出成功 欢迎下次回来 ${this.roles}`,
+        message: `退出成功`,
         type: "success",
       });
     },
@@ -428,6 +438,7 @@ export default {
       }
       // 检查 document.documentElement 是否存在
       if (document.documentElement) {
+        console.log("当前主题:", this.theme); // 添加日志
         // 设置 data-theme 的主题
         document.documentElement.setAttribute("data-theme", this.theme);
         // 读取并打印设置后的主题值
@@ -448,6 +459,10 @@ export default {
 </script>
 
 <style lang="less" scoped>
+.disabled {
+  pointer-events: none; /* 禁用所有鼠标事件 */
+  opacity: 0.5; /* 可选：降低透明度以表示禁用状态 */
+}
 .header-container {
   padding: 0 20px;
   background-color: var(--bg8);

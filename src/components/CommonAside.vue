@@ -5,10 +5,12 @@
     text-color="var(--text-color1)"
     active-text-color="#43b3cf"
     :style="{ backgroundColor: bgc }"
+    :class="{ 'color-deficiency-mode': value3 }"
   >
     <h3
       :style="{
         backgroundColor: bgc,
+        display: logo ? 'block' : 'none', // 根据 logo 值控制显示
       }"
     >
       {{ isCollapse ? "后台" : "后台管理系统" }}
@@ -53,14 +55,30 @@ export default {
   data() {
     return {
       bgc: "var(--bg7)", // 设置初始值
+      logo: true, // 设置初始值
+      value3: "",
     };
   },
   created() {
     // 监听父组件的事件
     this.$root.$on("updateSidebarBackground", (newBgc) => {
-      console.log(newBgc);
+      // console.log(newBgc);
       // 更新背景颜色
       this.bgc = newBgc;
+    });
+    // 监听父组件的事件
+    this.$root.$on("updateSidebarLogo", (newLogo) => {
+      // 控制LOGO显示
+      this.logo = newLogo;
+    });
+    this.$root.$on("updateSidebarDeficiency", (newDeficiency) => {
+      // 控制色弱模式
+      this.value3 = newDeficiency;
+      if (newDeficiency) {
+        document.body.classList.add("color-deficiency-mode");
+      } else {
+        document.body.classList.remove("color-deficiency-mode");
+      }
     });
   },
   methods: {
@@ -92,6 +110,10 @@ export default {
 </script>
 
 <style lang="less" scoped>
+.color-deficiency-mode {
+  filter: invert(70%) sepia(8%) saturate(150%) hue-rotate(310deg)
+    brightness(110%) contrast(110%);
+}
 .el-menu-vertical-demo:not(.el-menu--collapse) {
   width: 200px;
   min-height: 400px;
@@ -121,6 +143,7 @@ export default {
     line-height: 48px;
     font-size: 16px;
     font-weight: 400;
+    color: var(--text-color1);
   }
 }
 </style>

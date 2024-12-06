@@ -143,11 +143,15 @@
           >
             <div class="Header">固定Header</div>
             <div class="Switch" style="margin-left: 100px">
-              <el-switch v-model="value1" active-color="#409EFF"></el-switch>
+              <el-switch
+                v-model="value1"
+                @change="switchHeader"
+                active-color="#409EFF"
+              ></el-switch>
             </div>
           </div>
           <div
-            class=""
+            class="Display-The-LOGO"
             style="
               margin-top: 30px;
               color: #000;
@@ -155,9 +159,13 @@
               justify-content: center;
             "
           >
-            <div class="">显示LOGO</div>
+            <div class="The-LOGO">显示LOGO</div>
             <div class="" style="margin-left: 110px">
-              <el-switch v-model="value2" active-color="#409EFF"></el-switch>
+              <el-switch
+                v-model="value2"
+                @change="switchLogo"
+                active-color="#409EFF"
+              ></el-switch>
             </div>
           </div>
         </span>
@@ -194,7 +202,11 @@
           >
             <div class="Color-Deficiency-Mode">色弱模式</div>
             <div class="Switch" style="margin-left: 115px">
-              <el-switch v-model="value3" active-color="#409EFF"></el-switch>
+              <el-switch
+                v-model="value3"
+                @change="switchDeficiency"
+                active-color="#409EFF"
+              ></el-switch>
             </div>
           </div>
         </span>
@@ -233,7 +245,7 @@ export default {
       // 存储是否固定Header
       value1: false,
       // 存储是否显示LOGO
-      value2: false,
+      value2: true,
       // 存储是否开启色弱模式
       value3: false,
       roles: "", // 存储用户角色
@@ -254,9 +266,9 @@ export default {
       // 设置头部风格
       const header_container = document.querySelector(".header-container");
       if (item === "top-black") {
-        header_container.style.backgroundColor = "rgb(48, 70, 92)";
+        header_container.style.backgroundColor = "#2F273B";
       } else if (item === "top-white") {
-        header_container.style.backgroundColor = "#606266";
+        header_container.style.backgroundColor = "#77CB29";
       }
       // 设置侧边栏风格
       if (item === "left") {
@@ -264,13 +276,66 @@ export default {
         this.$root.$emit("updateSidebarBackground", "rgb(48, 70, 92)");
       } else if (item === "right") {
         // 触发父组件的事件
-        this.$root.$emit("updateSidebarBackground", "#606266");
+        this.$root.$emit("updateSidebarBackground", "#4CE4CD");
       }
       this.$message({
         type: "success",
         message: "主题风格设置成功",
         duration: 1500,
       });
+    },
+    // 固定头部栏
+    switchHeader() {
+      const isHeader = document.querySelector(".header-container");
+      if (isHeader) {
+        if (this.value1 == true) {
+          isHeader.style.position = "static";
+          this.$message({
+            type: "success",
+            message: "已开启固定头部栏",
+            duration: 1500,
+          });
+        } else {
+          this.$message({
+            type: "success",
+            message: "已取消固定头部栏",
+            duration: 1500,
+          });
+        }
+      }
+    },
+    // 色弱模式
+    switchDeficiency() {
+      this.$root.$emit("updateSidebarDeficiency", this.value3);
+      if (this.value3 == true) {
+        this.$message({
+          message: "色弱模式已开启",
+          type: "success",
+        });
+      }
+      if (this.value3 == false) {
+        this.$message({
+          message: "色弱模式已关闭",
+          type: "success",
+        });
+      }
+    },
+    // 显示Logo
+    switchLogo() {
+      this.$root.$emit("updateSidebarLogo", this.value2);
+      if (this.value2 == false) {
+        this.$message({
+          type: "success",
+          message: "Logo隐藏成功",
+          duration: 1500,
+        });
+      } else {
+        this.$message({
+          type: "success",
+          message: "Logo显示成功",
+          duration: 1500,
+        });
+      }
     },
     loadRoles() {
       const roles = localStorage.getItem("roles") || "获取用户失败 请登录重试";
@@ -280,7 +345,7 @@ export default {
       this.$confirm("确认关闭？")
         .then(() => {
           this.$notify({
-            title: "全局配置",
+            title: "布局设置",
             message: "关闭成功",
             type: "success",
           });
@@ -288,7 +353,7 @@ export default {
         })
         .catch(() => {
           this.$notify({
-            title: "项目配置",
+            title: "布局设置",
             message: "关闭失败",
             type: "info",
           });
@@ -298,7 +363,6 @@ export default {
       // 侧边栏的折叠
       this.$store.commit("CollapseMenu");
     },
-
     handlerDropdown(command) {
       switch (command) {
         case "selfcenter":
@@ -373,6 +437,7 @@ export default {
       }
     }),
   },
+
   computed: {
     // 面包屑
     ...mapState({
@@ -381,6 +446,7 @@ export default {
   },
 };
 </script>
+
 <style lang="less" scoped>
 .header-container {
   padding: 0 20px;
@@ -425,7 +491,7 @@ export default {
   .container {
     width: 60px;
     height: 50px;
-    background-color: #ebeef5;
+    background-color: #eeeaf3;
     border-radius: 5px;
     position: relative;
     margin-top: 30px;
@@ -435,14 +501,7 @@ export default {
     background-color: rgb(48, 70, 92);
   }
   .aside-right {
-    background-color: #606266;
-  }
-  .header {
-    height: 15px;
-    width: 60px;
-    background-color: rgb(48, 70, 92);
-    border-top-left-radius: 5px;
-    border-top-right-radius: 5px;
+    background-color: #4ce4cd;
   }
   .aside-left,
   .aside-right {
@@ -454,7 +513,7 @@ export default {
   .content {
     width: 40px;
     height: 35px;
-    background-color: #e4e7ed;
+    background-color: #eeeaf3;
     position: absolute;
     bottom: 0;
     left: 20px;
@@ -470,7 +529,7 @@ export default {
   .container-header {
     width: 60px;
     height: 50px;
-    background-color: #e4e7ed;
+    background-color: #eeeaf3;
     border-radius: 5px;
     margin-top: 30px;
     margin-left: 50px;
@@ -486,14 +545,14 @@ export default {
   .content-headers {
     height: 15px;
     width: 60px;
-    background-color: #606266;
+    background-color: #77cb29;
     border-top-left-radius: 5px;
     border-top-right-radius: 5px;
   }
   .content-header {
     height: 15px;
     width: 60px;
-    background-color: rgb(48, 70, 92);
+    background-color: #2f273b;
     border-top-left-radius: 5px;
     border-top-right-radius: 5px;
   }
@@ -523,12 +582,4 @@ export default {
     padding: 0 20px;
   }
 }
-/* 添加的 .fixed-header 类 */
-// .fixed-header {
-//   position: fixed;
-//   top: 0;
-//   left: 0;
-//   right: 0;
-//   z-index: 999;
-// }
 </style>

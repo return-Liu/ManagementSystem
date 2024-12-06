@@ -82,7 +82,7 @@
                 size="mini"
                 type="primary"
                 class="edit"
-                @click="handlerEidt(scope.row)"
+                @click="handlereidt(scope.row)"
                 >编辑</span
               >
               <span
@@ -208,7 +208,7 @@ export default {
         }
       });
     },
-    handlerEdit(row) {
+    handlereidt(row) {
       this.$confirm("此操作将编辑权限, 是否继续?", "温馨提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",

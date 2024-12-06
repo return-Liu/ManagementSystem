@@ -4,6 +4,8 @@ export default {
   state: {
     // 用于控制菜单的展开还是收起
     isCollapse: false,
+    // // 用于控制是否显示logo
+    // isLogo: true,
     tabsList: [
       // 面包屑数据
       {
@@ -18,6 +20,10 @@ export default {
     menu: [],
   },
   mutations: {
+    // // 修改logo显示或者隐藏
+    // isLogo(state) {
+    //   state.isLogo = !state.isCollapse;
+    // },
     // 修改菜单展开收起方法
     CollapseMenu(state) {
       state.isCollapse = !state.isCollapse;

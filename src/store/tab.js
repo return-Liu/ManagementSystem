@@ -20,10 +20,18 @@ export default {
     menu: [],
   },
   mutations: {
-    // // 修改logo显示或者隐藏
-    // isLogo(state) {
-    //   state.isLogo = !state.isCollapse;
-    // },
+    // 清空标签列表
+    CLEAR_TABS_LIST(state) {
+      state.tabsList = [
+        {
+          path: "/",
+          name: "home",
+          lable: "首页",
+          icon: "s-home",
+          url: "Home/Home",
+        },
+      ];
+    },
     // 修改菜单展开收起方法
     CollapseMenu(state) {
       state.isCollapse = !state.isCollapse;

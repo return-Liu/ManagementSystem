@@ -12,6 +12,7 @@
   </div>
 </template>
 <script>
+// import axios from "axios";
 export default {
   name: "MapintegrationManage",
   data() {
@@ -39,6 +40,14 @@ export default {
         // 设置地图中心点
         center: [116.397428, 39.90923], // 北京
       });
+      // axios({
+      //   url: "https://webapi.amap.com/maps?v=1.4.15",
+      //   params: {
+      //     key: "b219cc978d96ce513e410c5835a84050",
+      //   },
+      // }).then((response) => {
+      //   console.log(response);
+      // });
       // 创建标记实例
       const marker = new AMap.Marker({
         // 设置标记的坐标
@@ -49,12 +58,14 @@ export default {
       map.add(marker);
       // 判断当前网络状态是否显示地图
       // 如果成功 则显示地图 失败则提示
-      navigator.onLine
-        ? this.$message({
-            message: "当前网络可用",
-            type: "success",
-          })
-        : this.$message.error("当前网络不可用");
+      navigator.onLine;
+      this.$message({
+        message: "当前网络可用",
+        type: "success",
+      });
+
+      // console.log("网络状态", nav);
+
       // 监听地图加载完成事件
       map.on("complete", () => {
         // 地图加载完成后，显示地图

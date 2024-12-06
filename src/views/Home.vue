@@ -391,11 +391,19 @@ export default {
         if (!e.target || !e.target.files || e.target.files.length === 0) {
           return;
         }
+        if (this.roles === "用户获取失败") {
+          this.$message({
+            message: "用户获取失败 请重新登录",
+            type: "warning",
+          });
+          return;
+        }
         if (!this.roles.includes("超级管理员")) {
           this.$message({
             message: "您没有权限更换头像",
             type: "warning",
           });
+
           return;
         }
         const file = e.target.files[0];

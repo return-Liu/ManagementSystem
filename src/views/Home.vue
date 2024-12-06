@@ -249,7 +249,6 @@ export default {
       DataListMore: [],
     };
   },
-  mounted() {},
   created() {
     getListData().then(({ data }) => {
       const { cities, newList, DataList, newListMore, DataListMore } =

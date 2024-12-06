@@ -441,6 +441,10 @@ export default {
 };
 </script>
 <style lang="less" scoped>
+.color-deficiency-mode {
+  filter: invert(70%) sepia(8%) saturate(150%) hue-rotate(310deg)
+    brightness(110%) contrast(110%);
+}
 // 原有样式保持不变
 .el-row {
   display: flex;

@@ -54,8 +54,8 @@ export default {
           { value: "银川市", label: "银川" },
           { value: "呼和浩特市", label: "呼和浩特" },
           { value: "包头市", label: "包头" },
-          { value: "十堰市", label: "十堰" },
           { value: "奉新县", label: "奉新" },
+          { value: "青云谱", label: "青云谱" },
           { value: "后续会增加更多地区", label: "后续会增加更多地区" },
         ],
         // 项目列表

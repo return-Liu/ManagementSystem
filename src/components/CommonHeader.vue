@@ -252,7 +252,7 @@ export default {
       // 存储是否显示LOGO
       value2: true,
       // 存储是否开启色弱模式
-      value3: false,
+      value3: localStorage.getItem("deficiency") === "true",
       roles: "", // 存储用户角色
       drawer: false,
       direction: "rtl",
@@ -320,6 +320,7 @@ export default {
           message: "色弱模式已开启 部分主题开启禁用状态 注意用眼",
           type: "success",
         });
+        localStorage.setItem("deficiency", "true"); // 保存为字符串
       }
 
       if (this.value3 == false) {
@@ -327,6 +328,7 @@ export default {
           message: "色弱模式已关闭 部分主题解除禁用状态",
           type: "success",
         });
+        localStorage.setItem("deficiency", "false"); // 保存为字符串
       }
     },
     // 显示Logo

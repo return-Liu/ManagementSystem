@@ -1,5 +1,8 @@
 <template>
-  <div class="mallMeggage animate__animated animate__fadeIn">
+  <div
+    class="mallMeggage animate__animated animate__fadeIn"
+    :class="{ 'color-deficiency-mode': value3 }"
+  >
     <el-dialog
       :title="modelType ? '编辑产品' : '新增产品'"
       :visible.sync="dialogVisible"
@@ -217,6 +220,7 @@ export default {
   name: "ProductsManage",
   data() {
     return {
+      value3: localStorage.getItem("deficiency"),
       roles: "", // 角色
       searchError: false,
       dialogVisible: false,
@@ -708,10 +712,23 @@ export default {
     this.getList();
     this.roles = localStorage.getItem("roles");
     console.log(this.roles);
+    this.$root.$on("updateSidebarDeficiency", (newDeficiency) => {
+      // 控制色弱模式
+      this.value3 = newDeficiency;
+      if (newDeficiency) {
+        document.body.classList.add("color-deficiency-mode");
+      } else {
+        document.body.classList.remove("color-deficiency-mode");
+      }
+    });
   },
 };
 </script>
 <style lang="less" scoped>
+.color-deficiency-mode {
+  filter: invert(70%) sepia(8%) saturate(150%) hue-rotate(310deg)
+    brightness(110%) contrast(110%);
+}
 .el-alert {
   margin-bottom: 10px;
 }

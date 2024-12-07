@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="container" :class="{ 'color-deficiency-mode': value3 }">
     <el-card style="background-color: var(--bg10); border: var(--border1)">
       <div slot="header" class="clearfix">
         <span>个人信息</span>
@@ -55,10 +55,22 @@ export default {
   name: "PersonalCenter",
   data() {
     return {
+      value3: localStorage.getItem("deficiency"),
       avatar: localStorage.getItem("avatar"),
       isFullScreen: false,
       roles: localStorage.getItem("roles"),
     };
+  },
+  created() {
+    this.$root.$on("updateSidebarDeficiency", (newDeficiency) => {
+      // 控制色弱模式
+      this.value3 = newDeficiency;
+      if (newDeficiency) {
+        document.body.classList.add("color-deficiency-mode");
+      } else {
+        document.body.classList.remove("color-deficiency-mode");
+      }
+    });
   },
   methods: {
     handleChange() {
@@ -102,6 +114,10 @@ export default {
 };
 </script>
 <style scoped lang="less">
+.color-deficiency-mode {
+  filter: invert(70%) sepia(8%) saturate(150%) hue-rotate(310deg)
+    brightness(110%) contrast(110%);
+}
 .el-card {
   width: 500px;
   height: 400px;

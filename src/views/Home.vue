@@ -9,7 +9,7 @@
       style="padding-right: 10px"
       class="animate__animated animate__fadeIn"
     >
-      <el-card class="header">
+      <el-card class="header" :class="{ 'color-deficiency-mode': value3 }">
         <h6
           class="avatar-name"
           style="color: skyblue; font-family: 'Times New Roman', Times, serif"
@@ -61,7 +61,10 @@
         </div>
       </el-card>
       <div class="main">
-        <el-card class="Project-List">
+        <el-card
+          class="Project-List"
+          :class="{ 'color-deficiency-mode': value3 }"
+        >
           <span class="more-Project_List" @click="handlerListMore">更多</span>
           <span>项目</span>
           <div class="item-list">
@@ -78,7 +81,10 @@
             </div>
           </div>
         </el-card>
-        <el-card class="Quick-Navigation">
+        <el-card
+          class="Quick-Navigation"
+          :class="{ 'color-deficiency-mode': value3 }"
+        >
           <span>快捷导航</span>
           <div class="Quick-list">
             <div
@@ -93,6 +99,7 @@
           </div>
         </el-card>
         <el-card
+          :class="{ 'color-deficiency-mode': value3 }"
           v-show="DataList"
           style="
             background: var(--bg9);
@@ -130,7 +137,7 @@
             </div>
           </div>
         </el-card>
-        <el-card class="New">
+        <el-card class="New" :class="{ 'color-deficiency-mode': value3 }">
           <span>最新动态</span>
           <span class="more-list" @click="handlerMore">更多 </span>
           <div class="new" v-for="item in newList" :key="item.id">
@@ -139,6 +146,7 @@
           </div>
         </el-card>
         <el-card
+          :class="{ 'color-deficiency-mode': value3 }"
           v-show="moreList"
           style="
             background: var(--bg9);
@@ -194,6 +202,7 @@ export default {
   name: "HomeManage",
   data() {
     return {
+      value3: localStorage.getItem("deficiency"),
       // 轮播图列表
       card: [
         {
@@ -259,6 +268,15 @@ export default {
       this.newListMore = newListMore;
       this.DataListMore = DataListMore;
     });
+    this.$root.$on("updateSidebarDeficiency", (newDeficiency) => {
+      // 控制色弱模式
+      this.value3 = newDeficiency;
+      if (newDeficiency) {
+        document.body.classList.add("color-deficiency-mode");
+      } else {
+        document.body.classList.remove("color-deficiency-mode");
+      }
+    });
     this.loadRoles();
     this.loadAvatar();
   },
@@ -316,10 +334,10 @@ export default {
               case "晴":
                 weatherTip = "天气晴朗，适合外出活动哦！";
                 break;
-              case "雨":
+              case "小雨":
                 weatherTip = "今天有雨，请记得带伞！";
                 break;
-              case "雪":
+              case "小雪":
                 weatherTip = "下雪啦，出门请注意保暖！";
                 break;
               case "多云":

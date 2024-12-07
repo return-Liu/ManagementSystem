@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="container" :class="{ 'color-deficiency-mode': value3 }">
     <el-dialog
       :visible.sync="dialogVisible"
       width="50%"
@@ -40,7 +40,9 @@
       </el-form>
     </el-dialog>
     <el-card>
-      <div slot="header" class="Permissions-Management">权限管理</div>
+      <div slot="header" class="Permissions-Management" style="color: #fff">
+        权限管理
+      </div>
       <div class="main">
         <el-button
           type="primary"
@@ -104,6 +106,7 @@ export default {
   name: "PermissionsManagement",
   data() {
     return {
+      value3: localStorage.getItem("deficiency"),
       dialogVisible: false,
       form: {
         name: "",
@@ -128,6 +131,15 @@ export default {
   },
   created() {
     this.tableData = JSON.parse(localStorage.getItem("tableData")) || [];
+    this.$root.$on("updateSidebarDeficiency", (newDeficiency) => {
+      // 控制色弱模式
+      this.value3 = newDeficiency;
+      if (newDeficiency) {
+        document.body.classList.add("color-deficiency-mode");
+      } else {
+        document.body.classList.remove("color-deficiency-mode");
+      }
+    });
   },
   methods: {
     // 封装日期函数
@@ -248,6 +260,10 @@ export default {
 };
 </script>
 <style lang="less" scoped>
+.color-deficiency-mode {
+  filter: invert(70%) sepia(8%) saturate(150%) hue-rotate(310deg)
+    brightness(110%) contrast(110%);
+}
 .container {
   width: 100%;
   height: 100%;

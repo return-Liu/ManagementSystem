@@ -4,7 +4,6 @@
     <router-view></router-view>
   </div>
 </template>
-
 <script>
 export default {
   name: "App",
@@ -17,7 +16,6 @@ export default {
       loadingTimer: null,
       // 默认加载时间
       loadDuration: 500,
-      value3: "",
     };
   },
   created() {

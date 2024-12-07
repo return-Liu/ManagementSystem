@@ -56,7 +56,7 @@ export default {
     return {
       bgc: "var(--bg7)", // 设置初始值
       logo: true, // 设置初始值
-      value3: localStorage.getItem("deficiency"),
+      value3: localStorage.getItem("deficiency") === "true",
     };
   },
   created() {

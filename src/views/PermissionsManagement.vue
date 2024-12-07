@@ -40,7 +40,7 @@
       </el-form>
     </el-dialog>
     <el-card>
-      <div slot="header" class="Permissions-Management" style="color: #fff">
+      <div slot="header" class="Permissions-Management" style="color: #000">
         权限管理
       </div>
       <div class="main">
@@ -261,8 +261,11 @@ export default {
 </script>
 <style lang="less" scoped>
 .color-deficiency-mode {
-  filter: invert(70%) sepia(8%) saturate(150%) hue-rotate(310deg)
-    brightness(110%) contrast(110%);
+  --bg10: #f5f5f5; /* 更柔和的背景颜色 */
+  --text-color9: #000000; /* 更深的文字颜色 */
+  --border1: rgba(0, 0, 0, 0.2); /* 更明显的边框颜色 */
+  --border3: rgba(0, 0, 0, 0.2); /* 更明显的边框颜色 */
+  --highlight-color: #ffcc00; /* 高亮颜色 */
 }
 .container {
   width: 100%;

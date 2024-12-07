@@ -266,6 +266,7 @@ export default {
   created() {
     this.loadRoles();
     this.selectedItem = this.selectedItems;
+    this.switchDeficiency();
   },
   methods: {
     selectItem(item) {

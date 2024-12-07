@@ -202,7 +202,7 @@ export default {
   name: "HomeManage",
   data() {
     return {
-      value3: localStorage.getItem("deficiency"),
+      value3: localStorage.getItem("deficiency") === "true",
       // 轮播图列表
       card: [
         {
@@ -256,6 +256,20 @@ export default {
       newListMore: [],
       // 项目更多列表
       DataListMore: [],
+      // 封装天气列表
+      weatherDataArray: [
+        { id: "晴", tip: "天气晴朗，适合外出活动哦！" },
+        { id: "小雨", tip: "今天有雨，请记得带伞！" },
+        { id: "小雪", tip: "下雪啦，出门请注意保暖！" },
+        { id: "多云", tip: "天气多云，适合出门活动哦！" },
+        { id: "阴", tip: "今天阴天，注意防晒哦！" },
+        { id: "雾", tip: "今天有雾，请注意安全！" },
+        { id: "雷阵雨", tip: "今天有雷阵雨，请注意安全！" },
+        { id: "暴雨", tip: "今天有暴雨，尽量减少外出！" },
+        { id: "台风", tip: "今天有台风，请留在室内！" },
+        { id: "沙尘暴", tip: "今天有沙尘暴，请佩戴口罩！" },
+        { id: "default", tip: "未知天气，请关注最新气象信息！" },
+      ],
     };
   },
   created() {
@@ -329,42 +343,11 @@ export default {
             response.data.lives.length > 0
           ) {
             const liveData = response.data.lives[0];
-            let weatherTip = "";
-            switch (liveData.weather) {
-              case "晴":
-                weatherTip = "天气晴朗，适合外出活动哦！";
-                break;
-              case "小雨":
-                weatherTip = "今天有雨，请记得带伞！";
-                break;
-              case "小雪":
-                weatherTip = "下雪啦，出门请注意保暖！";
-                break;
-              case "多云":
-                weatherTip = " 天气多云，适合出门活动哦！";
-                break;
-              case "阴":
-                weatherTip = "今天阴天，注意防晒哦！";
-                break;
-              case "雾":
-                weatherTip = "今天有雾，请注意安全！";
-                break;
-              case "雷阵雨":
-                weatherTip = "今天有雷阵雨，请注意安全！";
-                break;
-              case "暴雨":
-                weatherTip = "今天有暴雨，尽量减少外出！";
-                break;
-              case "台风":
-                weatherTip = "今天有台风，请留在室内！";
-                break;
-              case "沙尘暴":
-                weatherTip = "今天有沙尘暴，请佩戴口罩！";
-                break;
-              default:
-                weatherTip = "未知天气，请关注最新气象信息！";
-                break;
-            }
+            let weatherTip =
+              // 先查找对应天气 找不到就默认值
+              this.weatherDataArray.find((item) => item.id === liveData.weather)
+                ?.tip ||
+              this.weatherDataArray.find((item) => item.id === "default").tip;
             this.weatherData = ` 当前地区:${liveData.city} 今日:${liveData.weather} 实时气温:${liveData.temperature}℃ 温馨提示: ${weatherTip}`;
             this.$notify({
               title: "天气查询",
@@ -467,8 +450,11 @@ export default {
 </script>
 <style lang="less" scoped>
 .color-deficiency-mode {
-  filter: invert(70%) sepia(8%) saturate(150%) hue-rotate(310deg)
-    brightness(110%) contrast(110%);
+  --bg10: #f5f5f5; /* 更柔和的背景颜色 */
+  --text-color9: #000000; /* 更深的文字颜色 */
+  --border1: rgba(0, 0, 0, 0.2); /* 更明显的边框颜色 */
+  --border3: rgba(0, 0, 0, 0.2); /* 更明显的边框颜色 */
+  --highlight-color: #ffcc00; /* 高亮颜色 */
 }
 // 原有样式保持不变
 .el-row {

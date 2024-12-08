@@ -97,20 +97,59 @@
           </div>
         </span>
         <!-- 黑白主题 -->
-        <div class="switch">
-          <el-switch
-            style="display: flex; justify-content: center; margin-top: 30px"
-            v-model="theme"
-            active-icon-class="el-icon-moon"
-            active-color="#183153"
-            active-value="dark"
-            inactive-icon-class="el-icon-sunny"
-            inactive-color="#73c0fc"
-            inactive-value="light"
-            :disabled="isDisabled"
-            @change="switchTheme"
-          >
-          </el-switch>
+        <div class="switch" style="color: #000">
+          <div class="switch-theme">
+            <div
+              class="ocs-theme"
+              :class="{ active: theme === 'system' }"
+              @click="setTheme('system')"
+            >
+              <p>
+                <span>夜间模式跟随系统</span>
+                <el-switch
+                  style="margin-left: 50px"
+                  @change="switchOcs"
+                  active-color="#409EFF"
+                  v-model="isNightMode"
+                ></el-switch>
+              </p>
+            </div>
+            <div v-if="!isNightMode">
+              <div
+                class="light-theme"
+                :class="{ active: theme === 'light' }"
+                @click="setTheme('light')"
+              >
+                <p>
+                  <span>日间模式</span>
+                  <i v-if="theme === 'light'" class="el-icon-check"></i>
+                </p>
+              </div>
+              <div
+                class="dark-theme"
+                :class="{ active: theme === 'dark' }"
+                @click="setTheme('dark')"
+              >
+                <p>
+                  <span>夜间模式</span>
+                  <i v-if="theme === 'dark'" class="el-icon-check"></i>
+                </p>
+              </div>
+            </div>
+
+            <!-- 自定义主题时间 -->
+            <div
+              class="custom-theme"
+              :class="{ active: theme === 'custom' }"
+              @click="setTheme('custom')"
+            >
+              <p>
+                <span>自定义主题</span>
+                <span style="margin-left: 90px">敬请期待</span>
+              </p>
+              <!-- 选择时间 -->
+            </div>
+          </div>
         </div>
         <div
           class="line"
@@ -234,56 +273,47 @@
   </div>
 </template>
 <script>
-// 引入vuex
 import { mapState } from "vuex";
 import cookie from "js-cookie";
-// 引入防抖函数处理主题切换频率
-import { debounce } from "lodash";
+
 export default {
   name: "CommonHeader",
   data() {
     return {
-      // 存储主题切换的频繁次数
-      ThemeCount: "", // 初始化为0
+      ThemeCount: "",
       avatar: "",
-      selectedItem: null, // 默认不选中任何项
-      // 存储是否固定Header
+      selectedItem: null,
       value1: false,
-      // 存储是否显示LOGO
       value2: true,
-      // 存储是否开启色弱模式
       value3: localStorage.getItem("deficiency") === "true",
-      roles: "", // 存储用户角色
+      roles: "",
       drawer: false,
+      isNightMode: false,
       direction: "rtl",
-      theme: localStorage.getItem("theme"),
-      // 设置默认选中的头部风格
+      theme: localStorage.getItem("theme") || "light",
       selectedItems: "left",
-      // 禁用开关
-      isDisabled: false, // 新增属性
+      isDisabled: false,
     };
   },
   created() {
     this.loadRoles();
     this.selectedItem = this.selectedItems;
     this.switchDeficiency();
+    const theme = localStorage.getItem("theme") || "light";
+    this.setTheme(theme);
   },
   methods: {
     selectItem(item) {
       this.selectedItem = item;
-      // 设置头部风格
       const header_container = document.querySelector(".header-container");
       if (item === "top-black") {
         header_container.style.backgroundColor = "#2F273B";
       } else if (item === "top-white") {
         header_container.style.backgroundColor = "#77CB29";
       }
-      // 设置侧边栏风格
       if (item === "left") {
-        // 触发父组件的事件
         this.$root.$emit("updateSidebarBackground", "rgb(48, 70, 92)");
       } else if (item === "right") {
-        // 触发父组件的事件
         this.$root.$emit("updateSidebarBackground", "#4CE4CD");
       }
       this.$message({
@@ -292,7 +322,6 @@ export default {
         duration: 1500,
       });
     },
-    // 固定头部栏
     switchHeader() {
       const isHeader = document.querySelector(".header-container");
       if (isHeader) {
@@ -312,27 +341,24 @@ export default {
         }
       }
     },
-    // 色弱模式
     switchDeficiency() {
       this.$root.$emit("updateSidebarDeficiency", this.value3);
-      this.isDisabled = this.value3; // 根据色弱模式状态更新禁用状态
+      this.isDisabled = this.value3;
       if (this.value3) {
         this.$message({
           message: "色弱模式已开启 部分主题开启禁用状态 注意用眼",
           type: "success",
         });
-        localStorage.setItem("deficiency", "true"); // 保存为字符串
+        localStorage.setItem("deficiency", "true");
       }
-
       if (this.value3 == false) {
         this.$message({
           message: "色弱模式已关闭 部分主题解除禁用状态",
           type: "success",
         });
-        localStorage.setItem("deficiency", "false"); // 保存为字符串
+        localStorage.setItem("deficiency", "false");
       }
     },
-    // 显示Logo
     switchLogo() {
       this.$root.$emit("updateSidebarLogo", this.value2);
       if (this.value2 == false) {
@@ -372,7 +398,6 @@ export default {
         });
     },
     handlerMenu() {
-      // 侧边栏的折叠
       this.$store.commit("CollapseMenu");
     },
     handlerDropdown(command) {
@@ -397,10 +422,8 @@ export default {
     },
     handleLogout() {
       cookie.remove("token");
-      // 清除cookie中的menu
       cookie.remove("menu");
       this.$router.push({ name: "login" });
-      // 清除tabs
       this.$store.commit("CLEAR_TABS_LIST");
       this.$notify({
         title: "提示",
@@ -408,52 +431,47 @@ export default {
         type: "success",
       });
     },
-    // 主题切换
-    switchTheme: debounce(function () {
-      // 检查主题的频繁次数
-      this.ThemeCount++;
-      if (this.ThemeCount >= 3) {
-        this.$message({
-          message: "请你慢一点 继续操作",
-          type: "warning",
-        });
-        return;
-      }
-      // 执行主题切换的逻辑
-      // 重置计数器
-      setTimeout(() => {
-        this.ThemeCount = 0;
-      }, 3000); // 例如，60秒后重置计数器
-      //  不在执行后面操作
-      if (!this.roles.includes("超级管理员")) {
-        this.$notify({
-          title: "提示",
-          message: "切换主题失败 权限不足",
-          type: "warning",
-        });
-        return;
+    switchOcs() {
+      // 判断跟随主题是true还是false
+      if (this.isNightMode == true) {
+        // 调用跟随系统主题函数
+        this.applySystemTheme();
       } else {
-        this.$message({
-          title: "提示",
-          message: "主题切换成功",
-          type: "success",
-        });
+        // false改为日出模式
+        this.setTheme("light");
       }
-      // 检查 document.documentElement 是否存在
-      if (document.documentElement) {
-        console.log("当前主题:", this.theme); // 添加日志
-        // 设置 data-theme 的主题
-        document.documentElement.setAttribute("data-theme", this.theme);
-        // 读取并打印设置后的主题值
-        const theme = document.documentElement.getAttribute("data-theme");
-        // 将存储主题值到 localStorage
-        localStorage.setItem("theme", theme);
+    },
+    setTheme(Theme) {
+      this.theme = Theme;
+      if (Theme === "dark") {
+        document.documentElement.setAttribute("data-theme", "dark");
+        localStorage.setItem("theme", "dark");
+        this.$message({ message: "夜间模式主题已开启", type: "success" });
+      } else if (Theme === "system") {
+        localStorage.setItem("theme", "system");
+        this.$message({ message: "跟随系统模式主题已开启", type: "success" });
+      } else {
+        document.documentElement.setAttribute("data-theme", "light");
+        localStorage.setItem("theme", "light");
+        this.$message({ message: "日出模式主题已开启", type: "success" });
       }
-    }),
-  },
+      // 默认选中 light 模式
+      if (Theme === "light") {
+        this.selectedItem = "light";
+      }
+    },
 
+    applySystemTheme() {
+      const prefersDarkScheme = window.matchMedia(
+        "(prefers-color-scheme: dark)"
+      ).matches;
+      document.documentElement.setAttribute(
+        "data-theme",
+        prefersDarkScheme ? "dark" : "light"
+      );
+    },
+  },
   computed: {
-    // 面包屑
     ...mapState({
       msg: (state) => state.tab.tabsList,
     }),
@@ -578,6 +596,27 @@ export default {
     width: 30px;
     height: 30px;
     border-radius: 5px;
+  }
+  .switch {
+    overflow: hidden;
+    margin-top: 30px;
+  }
+  .switch-theme {
+    margin-left: 235px;
+    width: 300px;
+    height: 130px;
+  }
+  .switch div p {
+    height: 20px;
+    margin-top: 10px;
+  }
+  .switch div .el-icon-check {
+    position: relative;
+    top: -20px;
+    left: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
   .color-block {
     width: 30px;

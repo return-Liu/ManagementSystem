@@ -196,6 +196,20 @@
   </el-row>
 </template>
 <script>
+// 封装天气列表
+const WEATHER_TIPS = {
+  晴: "天气晴朗，适合外出活动哦！",
+  小雨: "今天有雨，请记得带伞！",
+  小雪: "下雪啦，出门请注意保暖！",
+  多云: "天气多云，适合出门活动哦！",
+  阴: "今天阴天，注意防晒哦！",
+  雾: "今天有雾，请注意安全！",
+  雷阵雨: "今天有雷阵雨，请注意安全！",
+  暴雨: "今天有暴雨，尽量减少外出！",
+  台风: "今天有台风，请留在室内！",
+  沙尘暴: "今天有沙尘暴，请佩戴口罩！",
+  default: "未知天气，请关注最新气象信息！",
+};
 import axios from "axios";
 import { getListData } from "../api";
 export default {
@@ -256,20 +270,8 @@ export default {
       newListMore: [],
       // 项目更多列表
       DataListMore: [],
-      // 封装天气列表
-      weatherDataArray: [
-        { id: "晴", tip: "天气晴朗，适合外出活动哦！" },
-        { id: "小雨", tip: "今天有雨，请记得带伞！" },
-        { id: "小雪", tip: "下雪啦，出门请注意保暖！" },
-        { id: "多云", tip: "天气多云，适合出门活动哦！" },
-        { id: "阴", tip: "今天阴天，注意防晒哦！" },
-        { id: "雾", tip: "今天有雾，请注意安全！" },
-        { id: "雷阵雨", tip: "今天有雷阵雨，请注意安全！" },
-        { id: "暴雨", tip: "今天有暴雨，尽量减少外出！" },
-        { id: "台风", tip: "今天有台风，请留在室内！" },
-        { id: "沙尘暴", tip: "今天有沙尘暴，请佩戴口罩！" },
-        { id: "default", tip: "未知天气，请关注最新气象信息！" },
-      ],
+      // 天气信息
+      weatherDataArray: WEATHER_TIPS,
     };
   },
   created() {
@@ -343,11 +345,10 @@ export default {
             response.data.lives.length > 0
           ) {
             const liveData = response.data.lives[0];
-            let weatherTip =
-              // 先查找对应天气 找不到就默认值
-              this.weatherDataArray.find((item) => item.id === liveData.weather)
-                ?.tip ||
-              this.weatherDataArray.find((item) => item.id === "default").tip;
+            const weatherTip =
+              // 要么获取到对应的提示，要么返回默认提示
+              this.weatherDataArray[liveData.weather] ||
+              this.weatherDataArray.default;
             this.weatherData = ` 当前地区:${liveData.city} 今日:${liveData.weather} 实时气温:${liveData.temperature}℃ 温馨提示: ${weatherTip}`;
             this.$notify({
               title: "天气查询",
@@ -558,7 +559,7 @@ export default {
     .wheater {
       font-size: 16px; /* 文字大小 */
       margin-top: 18px; /* 顶部外边距 */
-      width: 620px;
+      width: 630px;
       color: var(--text-color9);
     }
   }

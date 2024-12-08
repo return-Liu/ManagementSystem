@@ -5,7 +5,6 @@
     text-color="var(--text-color1)"
     active-text-color="#43b3cf"
     :style="{ backgroundColor: bgc }"
-    ref="menu"
     :class="{ 'color-deficiency-mode': value3 }"
   >
     <h3

@@ -298,9 +298,6 @@ export default {
   created() {
     this.loadRoles();
     this.selectedItem = this.selectedItems;
-    this.switchDeficiency();
-    const theme = localStorage.getItem("theme") || "light";
-    this.setTheme(theme);
   },
   methods: {
     selectItem(item) {
@@ -453,11 +450,7 @@ export default {
       } else {
         document.documentElement.setAttribute("data-theme", "light");
         localStorage.setItem("theme", "light");
-        this.$message({ message: "日出模式主题已开启", type: "success" });
-      }
-      // 默认选中 light 模式
-      if (Theme === "light") {
-        this.selectedItem = "light";
+        this.$message({ message: "日间模式主题已开启", type: "success" });
       }
     },
 

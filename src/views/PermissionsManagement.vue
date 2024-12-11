@@ -106,7 +106,7 @@ export default {
   name: "PermissionsManagement",
   data() {
     return {
-      value3: localStorage.getItem("deficiency"),
+      value3: localStorage.getItem("deficiency") === "true",
       dialogVisible: false,
       form: {
         name: "",

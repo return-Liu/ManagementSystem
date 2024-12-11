@@ -35,7 +35,7 @@
         :direction="direction"
         :before-close="handleClose"
       >
-        <span class="Overall-Style-Settings" :class="{ disabled: value3 }">
+        <div class="Overall-Style-Settings" :class="{ disabled: value3 }">
           <div
             class="Style-Settings"
             style="display: flex; justify-content: center; color: #000"
@@ -82,22 +82,31 @@
               </div>
             </div>
           </div>
-        </span>
-        <span class="System_Theme" :class="{ disabled: value3 }">
+        </div>
+        <div
+          class="line"
+          style="
+            width: 500px;
+            height: 1px;
+            background-color: #ccc;
+            margin-top: 60px;
+          "
+        ></div>
+        <div class="System_Theme" :class="{ disabled: value3 }">
           <div
             class="Theme"
             style="
               display: flex;
               justify-content: center;
               color: #000;
-              margin-top: 60px;
+              margin-top: 30px;
             "
           >
-            主题色
+            色彩模式
           </div>
-        </span>
+        </div>
         <!-- 黑白主题 -->
-        <div class="switch" style="color: #000">
+        <div :class="{ disabled: value3 }" class="switch" style="color: #000">
           <div class="switch-theme">
             <div
               class="ocs-theme"
@@ -105,23 +114,18 @@
               @click="setTheme('system')"
             >
               <p>
-                <span>夜间模式跟随系统</span>
-                <el-switch
-                  style="margin-left: 50px"
-                  @change="switchOcs"
-                  active-color="#409EFF"
-                  v-model="isNightMode"
-                ></el-switch>
+                <span>暗黑模式跟随系统</span>
+                <i v-if="theme === 'system'" class="el-icon-check"></i>
               </p>
             </div>
-            <div v-if="!isNightMode">
+            <div>
               <div
                 class="light-theme"
                 :class="{ active: theme === 'light' }"
                 @click="setTheme('light')"
               >
                 <p>
-                  <span>日间模式</span>
+                  <span>明亮模式</span>
                   <i v-if="theme === 'light'" class="el-icon-check"></i>
                 </p>
               </div>
@@ -131,23 +135,10 @@
                 @click="setTheme('dark')"
               >
                 <p>
-                  <span>夜间模式</span>
+                  <span>暗黑模式</span>
                   <i v-if="theme === 'dark'" class="el-icon-check"></i>
                 </p>
               </div>
-            </div>
-
-            <!-- 自定义主题时间 -->
-            <div
-              class="custom-theme"
-              :class="{ active: theme === 'custom' }"
-              @click="setTheme('custom')"
-            >
-              <p>
-                <span>自定义主题</span>
-                <span style="margin-left: 90px">敬请期待</span>
-              </p>
-              <!-- 选择时间 -->
             </div>
           </div>
         </div>
@@ -160,7 +151,7 @@
             margin-top: 30px;
           "
         ></div>
-        <span>
+        <div>
           <div
             class="Navigation-Mode"
             style="
@@ -173,6 +164,7 @@
             <div class="Navigation">导航模式</div>
           </div>
           <div
+            :class="{ disabled: value3 }"
             class="Content_Header"
             style="
               margin-top: 30px;
@@ -192,6 +184,7 @@
             </div>
           </div>
           <div
+            :class="{ disabled: value3 }"
             class="Display-The-LOGO"
             style="
               margin-top: 30px;
@@ -212,7 +205,7 @@
               >
             </div>
           </div>
-        </span>
+        </div>
         <div
           class="line"
           style="
@@ -222,7 +215,7 @@
             margin-top: 30px;
           "
         ></div>
-        <span>
+        <div>
           <div
             class="Other_Settings"
             style="
@@ -253,17 +246,21 @@
               ></el-switch>
             </div>
           </div>
-        </span>
+        </div>
+        <div v-if="loading" class="loading-overlay">
+          <span class="loading-text">模式切换中</span>
+          <div class="loading-spinner"></div>
+        </div>
       </el-drawer>
       <el-dropdown
         @command="handlerDropdown"
         style="padding: 0 20px; color: var(--text-color1)"
       >
-        <span class="el-dropdown-link">
+        <div class="el-dropdown-link">
           <!-- 显示用户角色 -->
           <span> {{ roles }}</span>
           <i class="el-icon-arrow-down el-icon--right"></i>
-        </span>
+        </div>
         <el-dropdown-menu slot="dropdown">
           <el-dropdown-item command="selfcenter">个人中心</el-dropdown-item>
           <el-dropdown-item command="cancel">退出</el-dropdown-item>
@@ -275,20 +272,18 @@
 <script>
 import { mapState } from "vuex";
 import cookie from "js-cookie";
-
 export default {
   name: "CommonHeader",
   data() {
     return {
-      ThemeCount: "",
-      avatar: "",
+      // 色彩模式加载
+      loading: false,
       selectedItem: null,
       value1: false,
       value2: true,
       value3: localStorage.getItem("deficiency") === "true",
       roles: "",
       drawer: false,
-      isNightMode: false,
       direction: "rtl",
       theme: localStorage.getItem("theme") || "light",
       selectedItems: "left",
@@ -298,6 +293,7 @@ export default {
   created() {
     this.loadRoles();
     this.selectedItem = this.selectedItems;
+    this.loadAvatar();
   },
   methods: {
     selectItem(item) {
@@ -417,6 +413,12 @@ export default {
         });
       }
     },
+    loadAvatar() {
+      const avatar =
+        localStorage.getItem("avatar") ||
+        "https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png";
+      this.avatar = avatar;
+    },
     handleLogout() {
       cookie.remove("token");
       cookie.remove("menu");
@@ -428,32 +430,29 @@ export default {
         type: "success",
       });
     },
-    switchOcs() {
-      // 判断跟随主题是true还是false
-      if (this.isNightMode == true) {
-        // 调用跟随系统主题函数
-        this.applySystemTheme();
-      } else {
-        // false改为日出模式
-        this.setTheme("light");
-      }
-    },
     setTheme(Theme) {
-      this.theme = Theme;
-      if (Theme === "dark") {
-        document.documentElement.setAttribute("data-theme", "dark");
-        localStorage.setItem("theme", "dark");
-        this.$message({ message: "夜间模式主题已开启", type: "success" });
-      } else if (Theme === "system") {
-        localStorage.setItem("theme", "system");
-        this.$message({ message: "跟随系统模式主题已开启", type: "success" });
-      } else {
-        document.documentElement.setAttribute("data-theme", "light");
-        localStorage.setItem("theme", "light");
-        this.$message({ message: "日间模式主题已开启", type: "success" });
-      }
+      this.loading = true; // 设置加载状态
+      setTimeout(() => {
+        this.theme = Theme;
+        if (Theme === "dark") {
+          console.log("当前模式为: " + Theme);
+          document.documentElement.setAttribute("data-theme", "dark");
+          localStorage.setItem("theme", "dark");
+        } else if (Theme === "system") {
+          this.applySystemTheme();
+          localStorage.setItem("theme", "system");
+        } else {
+          document.documentElement.setAttribute("data-theme", "light");
+          localStorage.setItem("theme", "light");
+        }
+        this.loading = false; // 清除加载状态
+        this.$notify({
+          title: "色彩模式",
+          message: "切换成功",
+          type: "success",
+        });
+      }, 3000); // 假设加载过程需要3秒
     },
-
     applySystemTheme() {
       const prefersDarkScheme = window.matchMedia(
         "(prefers-color-scheme: dark)"
@@ -473,6 +472,36 @@ export default {
 </script>
 
 <style lang="less" scoped>
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: #000;
+  opacity: 0.7;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+.loading-text {
+  position: fixed;
+  left: 52%;
+}
+.loading-spinner {
+  border: 4px solid rgba(0, 0, 0, 0.1);
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border-left-color: #09f;
+  animation: spin 1s linear infinite;
+}
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
 .disabled {
   pointer-events: none; /* 禁用所有鼠标事件 */
   opacity: 0.5; /* 可选：降低透明度以表示禁用状态 */

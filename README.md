@@ -28,9 +28,12 @@
 
 github 与 gitee 两种远程地址拉取代码
 1.git clone https://github.com/return-Liu/ManagementSystem.git(注意:要从main分支拉取代码)
+
 1.git clone https://gitee.com/publishnsodqmodd/merchandise-backend.git(注意:要从master分支拉取代码)
+
 2.cd ManagementSystem
 2.cd merchandise-backend
+
 3.npm install
 3.npm install
 

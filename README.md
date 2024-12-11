@@ -26,6 +26,8 @@
 
 ## 开发
 
+github 与 gitee 仓库地址:
+
 1.git clone https://github.com/return-Liu/ManagementSystem.git(注意:要从main分支拉取代码)
 
 2.cd ManagementSystem
@@ -37,6 +39,12 @@ npm run serve 运行之后，会默认打开本地访问路径：http://localhos
 
 发布:
 npm run build (生成打包之后的项目文件,此文件主要用于项目部署)。
+
+1.git clone https://gitee.com/publishnsodqmodd/merchandise-backend.git(注意:要从master分支拉取代码)
+
+2.cd merchandise-backend
+
+3.npm install
 
 ## 运行项目
 

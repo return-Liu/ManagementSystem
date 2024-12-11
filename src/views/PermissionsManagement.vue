@@ -40,7 +40,11 @@
       </el-form>
     </el-dialog>
     <el-card>
-      <div slot="header" class="Permissions-Management" style="color: #000">
+      <div
+        slot="header"
+        class="Permissions-Management"
+        style="color: var(--text-color1)"
+      >
         权限管理
       </div>
       <div class="main">
@@ -230,6 +234,9 @@ export default {
           this.modelType = 0; // 设置为编辑模式
           this.dialogVisible = true;
           this.form = JSON.parse(JSON.stringify(row));
+          //  处理状态
+          this.form.status = this.form.status === "1" ? "启用" : "禁用";
+          console.log(this.form); // 调试用，生产环境中可以移除
         })
         .catch(() => {
           this.$message({

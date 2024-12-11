@@ -349,7 +349,7 @@ export default {
               // 要么获取到对应的提示，要么返回默认提示
               this.weatherDataArray[liveData.weather] ||
               this.weatherDataArray.default;
-            this.weatherData = ` 当前地区:${liveData.city} 今日:${liveData.weather} 实时气温:${liveData.temperature}℃ 温馨提示: ${weatherTip}`;
+            this.weatherData = `当前地区:${liveData.city} 今日:${liveData.weather} 实时气温:${liveData.temperature}℃ 温馨提示: ${weatherTip}`;
             this.$notify({
               title: "天气查询",
               message: "获取成功",
@@ -408,24 +408,30 @@ export default {
 
           return;
         }
+        // 获取文件对象
         const file = e.target.files[0];
-        console.log(file);
+        // 创建FileReader实例
         const reader = new FileReader();
+        // 加载文件
         reader.onload = (e) => {
+          // 将获取的头像地址赋值给avatar
           this.avatar = e.target.result;
+          // 存储到本地存储
           localStorage.setItem("avatar", this.avatar);
+          // 提示成功信息
           this.$message({
             message: "头像更换成功",
             type: "success",
           });
         };
+        // 将读取的文件转换为DataURL
         reader.readAsDataURL(file);
       } catch (error) {
+        // 提示失败信息
         this.$message({
           message: "头像更换失败",
           type: "error",
         });
-        console.dir(error);
       }
     },
     handlerList() {
@@ -567,7 +573,6 @@ export default {
 .main {
   width: 1500px;
   height: 570px;
-
   margin-bottom: 0;
   display: flex;
   flex-wrap: wrap;
@@ -710,84 +715,6 @@ export default {
     .el-carousel__item:nth-child(2n + 1) {
       background-color: #d3dce6;
     }
-  }
-}
-/* 响应式布局 */
-@media (max-width: 768px) {
-  .el-col {
-    width: 100%;
-  }
-  .main {
-    flex-direction: column;
-    align-items: center;
-  }
-  .Project-List,
-  .Quick-Navigation,
-  .New,
-  .card-Img {
-    width: 100%;
-    margin: 10px 0;
-  }
-  .Project-List .item-list {
-    flex-direction: column;
-  }
-  .Project-List .item {
-    width: 100%;
-    border-right: none;
-    border-bottom: 1px solid var(--border3);
-  }
-  .Quick-Navigation .Quick-list {
-    flex-direction: column;
-  }
-  .Quick-Navigation .list {
-    width: 100%;
-    border-right: none;
-    border-bottom: 1px solid var(--border3);
-  }
-  .New .new {
-    text-indent: 20px;
-  }
-  .card-Img {
-    margin-top: 10px;
-  }
-}
-
-@media (min-width: 769px) and (max-width: 1024px) {
-  .el-col {
-    width: 100%;
-  }
-  .main {
-    flex-direction: column;
-    align-items: center;
-  }
-  .Project-List,
-  .Quick-Navigation,
-  .New,
-  .card-Img {
-    width: 100%;
-    margin: 10px 0;
-  }
-  .Project-List .item-list {
-    flex-direction: row;
-    flex-wrap: wrap;
-  }
-  .Project-List .item {
-    width: 50%;
-    border-right: none;
-    border-bottom: 1px solid var(--border3);
-  }
-  .Quick-Navigation .Quick-list {
-    flex-direction: row;
-  }
-  .Quick-Navigation .list {
-    width: 25%;
-    border-right: 1px solid var(--border3);
-  }
-  .New .new {
-    text-indent: 20px;
-  }
-  .card-Img {
-    margin-top: 10px;
   }
 }
 // 设置动画

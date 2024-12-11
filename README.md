@@ -27,7 +27,9 @@
 ## 开发
 
 1.git clone https://github.com/return-Liu/ManagementSystem.git(注意:要从main分支拉取代码)
+
 2.cd ManagementSystem
+
 3.npm install
 
 本地运行:

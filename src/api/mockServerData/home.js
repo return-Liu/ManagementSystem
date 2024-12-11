@@ -124,6 +124,30 @@ export default {
             name: "全栈开发组",
             time: formatTime(currentTimeISO),
           },
+          {
+            title: "vue-cli",
+            p: "vue-cli 是一个官方的脚手架工具，用于快速搭建基于 Vue.js 的单页面应用",
+            name: "前端开发组",
+            time: formatTime(currentTimeISO),
+          },
+          {
+            title: "vue-schart",
+            p: "vue-schart 是一个基于 canvas 的图表组件，基于schart.js封装而成，使用更简单，更轻量。",
+            name: "前端开发组",
+            time: formatTime(currentTimeISO),
+          },
+          {
+            title: "vue-cropper",
+            p: "vue-cropper 是一款vue图片裁剪插件，基于babel+rollup+css-loader+vue-loader封装的vue组件，支持vue单文件组件语法。",
+            name: "前端开发组",
+            time: formatTime(currentTimeISO),
+          },
+          {
+            title: "vue-quill-editor",
+            p: "vue-quill-editor 是一个基于vue.js的富文本编辑器组件，基于quill封装而成，使用更简单，更轻量。",
+            name: "前端开发组",
+            time: formatTime(currentTimeISO),
+          },
         ],
         // 最新动态更多
         newListMore: [
@@ -133,6 +157,10 @@ export default {
           },
           {
             name: "新增了导入导出excel功能 导入excel目前存在错误bug 目前正在排查 会尽快解决",
+            time: formatTime(currentTimeISO),
+          },
+          {
+            name: "加强对页面UI的优化 对布局设置的页面进行了全新设计 功能如下(主题风格设置,模式选择,导航模式,其他设置)",
             time: formatTime(currentTimeISO),
           },
         ],

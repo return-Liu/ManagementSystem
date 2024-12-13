@@ -16,7 +16,6 @@
   </div>
 </template>
 <script>
-import cookie from "js-cookie";
 import { mapState, mapMutations } from "vuex";
 export default {
   name: "CommonTag",
@@ -35,7 +34,7 @@ export default {
     ...mapMutations(["closeRemove"]),
     // 点击tag跳转的功能
     addMsg(item) {
-      // 如果点击的tag和当前路由名称相同，则不跳转
+      // 当点击的标签与当前路由名称不同时，进行页面跳转
       if (item.name !== this.$route.name) {
         this.$router.push({ name: item.name });
       }
@@ -43,37 +42,33 @@ export default {
     // 点击tag删除的功能
     hanlderClose(item, index) {
       this.closeRemove(item);
+      // 获取当前tag的长度
       const length = this.tag.length;
-      //   删除之后的跳转逻辑
-      // 如果删除非tag标签 不高亮显示
+      // 当删除的标签与当前路由名称不同时，直接返回
       if (item.name !== this.$route.name) {
         return;
       }
-      //   表示的是删除的最后一项
+      //   表示的是删除的最后一项 则跳转至前一项
       if (index === length) {
         this.$router.push({
           name: this.tag[length - 1].name,
         });
-        // 如果删除是中间一项 则跳转到前一项
+        // 如果删除是中间一项 则跳转到最后一项
       } else {
         this.$router.push({
           name: this.tag[index].name,
         });
       }
     },
-    loadMessages() {
-      const messages = localStorage.getItem("messages") || "用户信息获取失败";
+    load() {
+      const messages = localStorage.getItem("messages");
       this.messages = messages;
-    },
-    loadRoles() {
-      const roles = localStorage.getItem("roles") || "用户获取失败";
+      const roles = localStorage.getItem("roles");
       this.roles = roles;
     },
   },
   created() {
-    this.roles = cookie.get("roles");
-    this.loadMessages();
-    this.loadRoles();
+    this.load();
   },
 };
 </script>

@@ -160,7 +160,11 @@ export default {
             time: formatTime(currentTimeISO),
           },
           {
-            name: "加强对页面UI的优化 对布局设置的页面进行了全新设计 功能如下(主题风格设置,模式选择,导航模式,其他设置)",
+            name: "加强对页面UI的优化 对布局设置的页面进行了全新设计 功能如下(主题风格设置,色彩模式,导航模式,其他设置)",
+            time: formatTime(currentTimeISO),
+          },
+          {
+            name: "由gitee迁移至github gitee将停止更新 请关注项目地址 https://github.com/return-Liu/ManagementSystem.git 之后项目可能还会选择gitee平台 敬请期待",
             time: formatTime(currentTimeISO),
           },
         ],

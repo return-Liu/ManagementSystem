@@ -16,7 +16,7 @@ const routes = [
   {
     path: "/",
     component: Main,
-    redirect: "/home", //重定向
+    redirect: "/login/index", //重定向
     name: "Main",
   },
 

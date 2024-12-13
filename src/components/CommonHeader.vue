@@ -27,10 +27,10 @@
         class="iconfont icon-tubiao-"
         style="font-size: 20px; cursor: pointer"
         @click="drawer = true"
-        title="布局设置"
+        title="模式选择"
       ></div>
       <el-drawer
-        title="布局设置"
+        title="模式选择"
         :visible.sync="drawer"
         :direction="direction"
         :before-close="handleClose"
@@ -40,7 +40,7 @@
             class="Style-Settings"
             style="display: flex; justify-content: center; color: #000"
           >
-            主题风格设置
+            主题风格模式
           </div>
           <div
             class="Style"
@@ -225,7 +225,7 @@
               justify-content: space-around;
             "
           >
-            <div class="Settings">其他设置</div>
+            <div class="Settings">其他模式</div>
           </div>
 
           <div
@@ -420,15 +420,27 @@ export default {
       this.avatar = avatar;
     },
     handleLogout() {
-      cookie.remove("token");
-      cookie.remove("menu");
-      this.$router.push({ name: "login" });
-      this.$store.commit("CLEAR_TABS_LIST");
-      this.$notify({
-        title: "提示",
-        message: `退出成功`,
-        type: "success",
-      });
+      this.$confirm("确认退出？", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
+      })
+        .then(() => {
+          this.$message({
+            type: "success",
+            message: "退出成功",
+          });
+          cookie.remove("token");
+          cookie.remove("menu");
+          this.$router.push({ name: "login" });
+          this.$store.commit("CLEAR_TABS_LIST");
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消退出",
+          });
+        });
     },
     setTheme(Theme) {
       this.loading = true; // 设置加载状态

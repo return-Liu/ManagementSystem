@@ -1,6 +1,6 @@
 ## 技术栈
 
-前端技术栈: vue2、vuex、vue-router、axios、element-ui less sass echarts
+前端技术栈: vue2、vuex、vue-router、axios、element-ui less scss echarts
 服务端技术栈 mock.js 模拟数据
 
 ## 功能主要
@@ -8,8 +8,8 @@
 1. 登录注册功能
 2. 菜单栏功能
 3. 权限管理功能
-4. 搜索功能 增删改查与批量操作功能 分页功能 tag 标签功能 面包屑功能 查询天气功能 更多列表 导入导出功能
-5. 头像上传功能 主题切换(主题风格设置 模式选择 色弱模式) 固定头部栏 显示 LOGO 侧边栏折叠功能 vuex 持久化 路由加载状态
+4. 搜索功能 增删改查与批量操作功能 分页功能 tag 标签功能 面包屑功能 查询天气功能 更多列表 导入导出功能 地图(高德地图随时展示信息)
+5. 头像上传功能 模式选择(主题风格模式 色彩模式 导航模式 其他模式) 侧边栏折叠功能 vuex 持久化 路由加载状态
 
 ## 演示
 
@@ -40,7 +40,7 @@ npm run serve 运行之后，会默认打开本地访问路径：http://localhos
 发布:
 npm run build (生成打包之后的项目文件,此文件主要用于项目部署)。
 
-gitee 托管平台更新信息将不再有 转移至 github
+gitee 托管平台更新版本信息将不再有 转移至 github
 
 1.git clone https://gitee.com/publishnsodqmodd/merchandise-backend.git(注意:要从master分支拉取代码)
 

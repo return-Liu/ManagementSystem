@@ -1,8 +1,5 @@
 <template>
   <div class="login" :class="{ 'register-page': true }">
-    <div class="layer1"></div>
-    <div class="layer2"></div>
-    <div class="layer3"></div>
     <el-form
       ref="form"
       label-width="70px"
@@ -11,7 +8,7 @@
       :model="form"
     >
       <i class="el-icon-back" title="返回" @click="returnClick"></i>
-      <h3 class="login-title">注册页面</h3>
+      <h3 class="login-title">快捷注册</h3>
       <el-form-item prop="username">
         <el-input
           v-model="form.username"

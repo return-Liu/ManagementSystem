@@ -1,10 +1,21 @@
 <template>
   <div :class="{ 'login-page': true }">
-    <div class="layer1"></div>
-    <div class="layer2"></div>
-    <div class="layer3"></div>
-    <el-form label-width="70px" ref="form" :model="form" class="login-form">
-      <h3 class="login-title">系统登录</h3>
+    <!-- 七天免登录 -->
+    <div class="header-ui">
+      <ul>
+        <li>
+          <a @click="handlerLogin" href="javascript:0;">登录</a>
+        </li>
+      </ul>
+    </div>
+    <div class="login-bg-title">
+      <h1 class="bg-title" v-show="bgTitle">
+        后台管理系统 支持七天免登录 乐在体验中
+      </h1>
+    </div>
+    <el-form label-width="70px" :model="form" class="login-form">
+      <h3 class="login-title">快捷登录</h3>
+      <i class="el-icon el-icon-close" @click="loginClose"></i>
       <el-form-item prop="username">
         <el-input
           v-model="form.username"
@@ -32,7 +43,7 @@
         </el-input>
       </el-form-item>
       <div class="register-box">
-        <span class="register" @click="register">没有此账号? 注册</span>
+        <span class="register" @click="register">还没有此账号? 立即注册</span>
       </div>
       <el-form-item>
         <el-button type="primary" class="login" @click="login">登录</el-button>
@@ -48,6 +59,7 @@ export default {
   name: "LoginManage",
   data() {
     return {
+      bgTitle: true,
       form: {
         username: "",
         password: "",
@@ -75,19 +87,31 @@ export default {
         this.login();
       }
     },
+    // 七天免登录
+    handlerLogin() {
+      const ElLogin = document.querySelector(".login-form");
+      ElLogin.style.display = "block";
+      this.bgTitle = false;
+      // 设置七天免登录
+
+      // 跳转首页
+    },
+    loginClose() {
+      const ElLogin = document.querySelector(".login-form");
+      ElLogin.style.display = "none";
+      this.bgTitle = true;
+    },
     // 登录
     login() {
       if (!this.form.username) {
-        this.$notify({
-          title: "账号信息",
+        this.$message({
           message: "请输入账号",
           type: "error",
         });
         return;
       }
       if (!this.form.password) {
-        this.$notify({
-          title: "密码信息",
+        this.$message({
           message: "请输入密码",
           type: "error",
         });
@@ -113,14 +137,12 @@ export default {
             // 当前路由为登录页时 跳转到首页
             this.$router.push({ name: "home", path: "/home" });
             // 登录成功逻辑  直接显示登录成功通知
-            this.$notify({
-              title: "提示",
+            this.$message({
               message: `登录成功 欢迎回来 ${data.data.roles}`,
               type: "success",
             });
           } else {
-            this.$notify({
-              title: "警告",
+            this.$message({
               message: "用户名或密码错误",
               type: "error",
             });
@@ -128,8 +150,7 @@ export default {
         })
         .catch((error) => {
           console.error("登录失败:", error.message);
-          this.$notify({
-            title: "错误",
+          this.$message({
             message: "你的网络登录过程中发生错误，请稍后再试。",
             type: "error",
           });
@@ -145,12 +166,37 @@ export default {
   },
 };
 </script>
-
 <style scoped lang="less">
 .login-page {
   background: radial-gradient(ellipse at bottom, #1b2753 0%, #090a0f 100%);
   width: 100%;
   height: 100vh;
+}
+.header-ui {
+  height: 30px;
+  display: flex;
+  justify-content: flex-end;
+  padding-right: 20px;
+  ul {
+    list-style-type: none;
+  }
+  ul li a {
+    text-decoration: none;
+    color: #fff;
+  }
+  ul li a:hover {
+    color: skyblue;
+  }
+}
+.bg-title {
+  display: flex;
+  justify-content: center;
+  height: 530px;
+  align-items: center;
+  background: var(--bg9);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 .login-form {
   width: 360px;
@@ -161,11 +207,11 @@ export default {
   background: var(--bg12);
   box-sizing: border-box;
   position: relative;
+  display: none;
   top: 200px;
   .el-form-item {
     margin-bottom: 20px;
   }
-
   .login-title {
     text-align: center;
     margin-bottom: 40px;
@@ -174,12 +220,17 @@ export default {
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
   }
+  .el-icon-close {
+    height: 275px;
+    position: absolute;
+    top: 0;
+    right: 0;
+  }
   .el-input {
     width: 100%;
     position: relative;
     left: -30px;
   }
-
   .login {
     position: relative;
     left: -30px;
@@ -189,7 +240,6 @@ export default {
     border-color: var(--border6);
     margin-top: 10px;
   }
-
   .el-icon-view,
   .el-icon-close {
     position: absolute;
@@ -199,7 +249,6 @@ export default {
     cursor: pointer;
     color: var(--text-color7);
   }
-
   .register-box {
     margin-top: 10px;
     text-align: right;
@@ -207,7 +256,6 @@ export default {
     left: -30px;
     cursor: pointer;
   }
-
   .register {
     color: var(--text-color7);
     font-size: 12px;

@@ -56,6 +56,7 @@ export default {
           { value: "包头市", label: "包头" },
           { value: "奉新县", label: "奉新" },
           { value: "青云谱", label: "青云谱" },
+          { value: "莲池", label: "莲池" },
           { value: "后续会增加更多地区", label: "后续会增加更多地区" },
         ],
         // 项目列表
@@ -165,6 +166,14 @@ export default {
           },
           {
             name: "由gitee迁移至github gitee将停止更新 请关注项目地址 https://github.com/return-Liu/ManagementSystem.git 之后项目可能还会选择gitee平台 敬请期待",
+            time: formatTime(currentTimeISO),
+          },
+          {
+            name: "由于退出账号时 头像会出现默认头像的问题 目前未解决 可以重新获取头像 只有在不退出账号的情况下 才会出现该问题",
+            time: formatTime(currentTimeISO),
+          },
+          {
+            name: "头像问题:排查到由于默认头像是初始头像 并没有存储更换后的头像 所以导致退出再登录时还是默认头像 在下个版本将会修复该问题",
             time: formatTime(currentTimeISO),
           },
         ],

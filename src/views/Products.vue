@@ -217,7 +217,9 @@
 import { getMall, addMall, editMall, delMall } from "../api";
 import * as XLSX from "xlsx";
 export default {
-  name: "ProductsManage",
+  // 关闭语法检查
+  /* eslint-disable */
+  name: "Products",
   data() {
     return {
       value3: localStorage.getItem("deficiency") === "true",

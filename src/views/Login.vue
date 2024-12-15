@@ -56,7 +56,9 @@
 import Cookie from "js-cookie";
 import { getMenu } from "../api";
 export default {
-  name: "LoginManage",
+  // 关闭语法检查
+  /* eslint-disable */
+  name: "Login",
   data() {
     return {
       bgTitle: true,

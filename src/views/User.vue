@@ -203,7 +203,9 @@
 import { getUser, addUser, editUser, delUser } from "../api";
 import * as XLSX from "xlsx";
 export default {
-  name: "UserManage",
+  // 关闭语法检查
+  /* eslint-disable */
+  name: "User",
   data() {
     return {
       value3: localStorage.getItem("deficiency") === "true",

@@ -63,7 +63,9 @@
 <script>
 import { getRegister } from "../api";
 export default {
-  name: "RegisterManage",
+  // 关闭语法检查
+  /* eslint-disable */
+  name: "Register",
   data() {
     return {
       passwordError: false,

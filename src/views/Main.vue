@@ -23,7 +23,9 @@ import CommonHeader from "../components/CommonHeader";
 import CommonTag from "../components/CommonTag";
 
 export default {
-  name: "MainManage",
+  // 关闭语法检查
+  /* eslint-disable */
+  name: "Main",
   components: {
     CommonAside,
     CommonHeader,

@@ -112,6 +112,7 @@ export default {
     return {
       value3: localStorage.getItem("deficiency") === "true",
       dialogVisible: false,
+      roles: "",
       form: {
         name: "",
         permission: "",
@@ -144,6 +145,7 @@ export default {
         document.body.classList.remove("color-deficiency-mode");
       }
     });
+    this.roles = localStorage.getItem("roles");
   },
   methods: {
     // 封装日期函数
@@ -155,11 +157,19 @@ export default {
       return `${y}-${m}-${d}`;
     },
     handlerAdd() {
+      if (this.roles !== "超级管理员") {
+        this.$message({
+          type: "error",
+          message: "亲，您的权限不足",
+        });
+        return;
+      }
       this.$confirm("此操作将新增权限, 是否继续?", "温馨提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning",
       })
+
         .then(() => {
           this.modelType = 1; // 设置为新增模式
           this.dialogVisible = true; // 显示对话框
@@ -225,6 +235,13 @@ export default {
       });
     },
     handlereidt(row) {
+      if (this.roles !== "超级管理员") {
+        this.$message({
+          type: "error",
+          message: "亲，您的权限不足",
+        });
+        return;
+      }
       this.$confirm("此操作将编辑权限, 是否继续?", "温馨提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
@@ -246,6 +263,13 @@ export default {
         });
     },
     handlerRemove(row) {
+      if (this.roles !== "超级管理员") {
+        this.$message({
+          type: "error",
+          message: "亲，您的权限不足",
+        });
+        return;
+      }
       this.$confirm("此操作将删除权限, 是否继续?", "温馨提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",

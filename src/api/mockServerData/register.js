@@ -1,77 +1,57 @@
-import Mock from "mockjs";
-export default {
-  // config 为请求体
-  getMenu: (config) => {
-    // 声明一个变量来存储请求体
-    let requestBody;
-    try {
-      // 如果解析请求体成功 说明请求体是有效JSON字符串，解析为对象
-      requestBody = JSON.parse(config.body);
-    } catch (error) {
-      return {
-        code: -1,
-        data: {
-          message: "请求体不是有效的JSON字符串",
-        },
-      };
-    }
+// import Mock from "mockjs";
 
-    // 确保请求体中包含username和password与passwords
-    if (
-      !requestBody ||
-      !requestBody.username ||
-      !requestBody.password ||
-      !requestBody.passwords
-    ) {
-      return {
-        code: -1,
-        data: {
-          message: "缺少必要的参数",
-        },
-      };
-    }
+// // 定义注册接口
+// Mock.mock("/api/register", "post", (config) => {
+//   // 声明一个变量来存储请求体
+//   let requestBody;
+//   try {
+//     // 如果解析请求体成功 说明请求体是有效JSON字符串，解析为对象
+//     requestBody = JSON.parse(config.body);
+//     console.log("Parsed request body:", requestBody); // 调试信息
+//   } catch (error) {
+//     console.error("Failed to parse request body:", error); // 调试信息
+//     return {
+//       code: -1,
+//       data: {
+//         message: "请求体不是有效的JSON字符串",
+//       },
+//     };
+//   }
 
-    const { username, password, passwords } = requestBody;
+//   // 确保请求体中包含username和password与passwords
+//   if (
+//     !requestBody ||
+//     !requestBody.username ||
+//     !requestBody.password ||
+//     !requestBody.passwords
+//   ) {
+//     console.error("Missing necessary parameters in request body:", requestBody); // 调试信息
+//     return {
+//       code: -1,
+//       data: {
+//         message: "缺少必要的参数",
+//       },
+//     };
+//   }
 
-    // 先判断用户是否存在
-    // 判断账号和密码是否对应
-    // 再判断密码是否一致
-    if (
-      username === "admin" &&
-      password === "123456" &&
-      passwords === "123456"
-    ) {
-      return {
-        code: 200,
-        data: {
-          menu: [
-            {
-              path: "/login",
-              name: "login",
-              label: "登录",
-              url: "Login.vue",
-            },
-          ],
-        },
-      };
-    } else {
-      return {
-        // 随意登录
-        code: 200,
-        data: {
-          menu: [
-            {
-              path: "/login",
-              name: "login",
-              label: "登录",
-              url: "Login.vue",
-            },
-          ],
-        },
-        // 模拟token
-        token: Mock.Random.guid(),
-        message: "获取成功",
-      };
-    }
-  },
-};
+//   const { username, password, passwords } = requestBody;
+
+//   // 判断两次输入的密码是否一致
+//   if (password !== passwords) {
+//     return {
+//       code: -1,
+//       data: {
+//         message: "两次输入的密码不一致",
+//       },
+//     };
+//   }
+//   // 模拟用户注册成功
+//   return {
+//     code: 200,
+//     data: {
+//       message: "注册成功",
+//     },
+//     // 模拟token
+//     token: Mock.Random.guid(),
+//   };
+// });

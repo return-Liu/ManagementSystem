@@ -1,57 +1,63 @@
 <template>
-  <div :class="{ 'login-page': true }">
-    <!-- 七天免登录 -->
-    <div class="header-ui">
-      <ul>
-        <li>
-          <a @click="handlerLogin" href="javascript:0;">登录</a>
-        </li>
-      </ul>
-    </div>
-    <div class="login-bg-title">
-      <h1 class="bg-title" v-show="bgTitle">
-        后台管理系统 支持七天免登录 乐在体验中
-      </h1>
-    </div>
-    <el-form label-width="70px" :model="form" class="login-form">
-      <h3 class="login-title">快捷登录</h3>
-      <i class="el-icon el-icon-close" @click="loginClose"></i>
-      <el-form-item prop="username">
-        <el-input
-          v-model="form.username"
-          prefix-icon="el-icon-user"
-          placeholder="请输入账号"
-        ></el-input>
-      </el-form-item>
-      <el-form-item prop="password">
-        <el-input
-          :type="showPassword ? 'text' : 'password'"
-          v-model="form.password"
-          prefix-icon="el-icon-lock"
-          placeholder="请输入密码"
-          @keyup.enter="login"
-        >
-          <i
-            slot="suffix"
-            class="el-input__icon el-icon-view"
-            :class="{
-              'iconfont icon-biyan': !showPassword,
-              'iconfont icon-zhengyan': showPassword,
-            }"
-            @click="handlerClick"
-          ></i>
-        </el-input>
-      </el-form-item>
-      <div class="register-box">
-        <span class="register" @click="register">还没有此账号? 立即注册</span>
+  <div class="login-container">
+    <div class="part part-01">
+      <div class="bannervideo" v-show="isVideo">
+        <div class="video-bg-title">
+          <ul>
+            <li>
+              <a href="javascript:;" @click="handlerLogin">登录</a>
+            </li>
+          </ul>
+        </div>
+        <video
+          autoplay
+          muted
+          id="video1"
+          poster="https://mumu.163.com/homepage_2023/animation_01.jpg"
+          src="https://mumu-fe.fp.ps.netease.com/file/66ebea2b818b7af1bea07601HVJLgDNt05"
+        ></video>
       </div>
-      <el-form-item>
-        <el-button type="primary" class="login" @click="login">登录</el-button>
-      </el-form-item>
-    </el-form>
+      <el-form label-width="70px" :model="form" class="login-form">
+        <h3 class="login-title">快捷登录</h3>
+        <i class="el-icon el-icon-close" @click="loginClose"></i>
+        <el-form-item prop="username">
+          <el-input
+            v-model="form.username"
+            prefix-icon="el-icon-user"
+            placeholder="请输入账号"
+          ></el-input>
+        </el-form-item>
+        <el-form-item prop="password">
+          <el-input
+            :type="showPassword ? 'text' : 'password'"
+            v-model="form.password"
+            prefix-icon="el-icon-lock"
+            placeholder="请输入密码"
+            @keyup.enter="login"
+          >
+            <i
+              slot="suffix"
+              class="el-input__icon el-icon-view"
+              :class="{
+                'iconfont icon-biyan': !showPassword,
+                'iconfont icon-zhengyan': showPassword,
+              }"
+              @click="handlerClick"
+            ></i>
+          </el-input>
+        </el-form-item>
+        <div class="register-box">
+          <span class="register" @click="register">还没有此账号? 立即注册</span>
+        </div>
+        <el-form-item>
+          <el-button type="primary" class="login" @click="login"
+            >登录</el-button
+          >
+        </el-form-item>
+      </el-form>
+    </div>
   </div>
 </template>
-
 <script>
 import Cookie from "js-cookie";
 import { getMenu } from "../api";
@@ -61,7 +67,7 @@ export default {
   name: "Login",
   data() {
     return {
-      bgTitle: true,
+      isVideo: true,
       form: {
         username: "",
         password: "",
@@ -93,15 +99,14 @@ export default {
     handlerLogin() {
       const ElLogin = document.querySelector(".login-form");
       ElLogin.style.display = "block";
-      this.bgTitle = false;
+      this.isVideo = false;
       // 设置七天免登录
-
       // 跳转首页
     },
     loginClose() {
       const ElLogin = document.querySelector(".login-form");
       ElLogin.style.display = "none";
-      this.bgTitle = true;
+      this.isVideo = true;
     },
     // 登录
     login() {
@@ -169,36 +174,59 @@ export default {
 };
 </script>
 <style scoped lang="less">
-.login-page {
-  background: radial-gradient(ellipse at bottom, #1b2753 0%, #090a0f 100%);
-  width: 100%;
+.part-01 {
   height: 100vh;
-}
-.header-ui {
-  height: 30px;
-  display: flex;
   justify-content: flex-end;
-  padding-right: 20px;
-  ul {
-    list-style-type: none;
+  background: radial-gradient(ellipse at bottom, #1b2753 0%, #090a0f 100%);
+  position: relative;
+  .bannervideo {
+    width: 100%;
+    height: 100vh;
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 1;
+    pointer-events: none;
+    overflow: hidden;
+    background: url(https://mumu.res.netease.com/pc/gw/20230510161641/img/kv_bg_9466e7b0.jpg)
+      no-repeat 60% bottom #000;
+    background-size: auto 100%;
+    .video-bg-title {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      height: 40px;
+      position: fixed;
+      pointer-events: auto; /* 确保可以接收点击事件 */
+      z-index: 2;
+      width: 100%;
+      ul {
+        list-style-type: none;
+      }
+      ul li a {
+        text-decoration: none;
+        color: #fff;
+        padding: 20px;
+      }
+      ul li a:hover {
+        color: skyblue;
+      }
+    }
+    .part-01 .banenrVideo video {
+      z-index: 2;
+    }
+    video {
+      position: absolute;
+      width: 100%;
+      min-width: 100%;
+      min-height: 100%;
+      -o-object-fit: cover;
+      object-fit: cover;
+      top: 50%;
+      left: 50%;
+      transform: translate3d(-50%, -50%, 0);
+    }
   }
-  ul li a {
-    text-decoration: none;
-    color: #fff;
-  }
-  ul li a:hover {
-    color: skyblue;
-  }
-}
-.bg-title {
-  display: flex;
-  justify-content: center;
-  height: 530px;
-  align-items: center;
-  background: var(--bg9);
-  background-clip: text;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
 }
 .login-form {
   width: 360px;
@@ -210,6 +238,7 @@ export default {
   box-sizing: border-box;
   position: relative;
   display: none;
+  z-index: 1000;
   top: 200px;
   .el-form-item {
     margin-bottom: 20px;

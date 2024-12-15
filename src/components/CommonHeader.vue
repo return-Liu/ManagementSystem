@@ -402,7 +402,7 @@ export default {
     },
     switchAside() {
       this.$root.$emit("updateSidebarAside", this.value4);
-      if (this.value3 == false) {
+      if (this.value4 == true) {
         this.$message({
           type: "success",
           message: "已开启固定侧边栏",

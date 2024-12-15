@@ -23,6 +23,18 @@
       </el-breadcrumb>
     </div>
     <div class="r-content">
+      <div class="theme">
+        <i
+          @click="handlerTheme('light')"
+          v-show="theme === 'dark'"
+          :class="iconClass"
+        ></i>
+        <i
+          @click="handlerTheme('dark')"
+          v-show="theme === 'light'"
+          :class="iconClass"
+        ></i>
+      </div>
       <div
         class="iconfont icon-tubiao-"
         style="font-size: 20px; cursor: pointer"
@@ -56,19 +68,19 @@
             <div class="container" @click="selectItem('left')">
               <div class="aside-left"></div>
               <div class="content">
-                <i v-if="selectedItem === 'left'" class="el-icon-check"></i>
+                <i v-show="selectedItem === 'left'" class="el-icon-check"></i>
               </div>
             </div>
             <div class="container" @click="selectItem('right')">
               <div class="aside-right"></div>
               <div class="content">
-                <i v-if="selectedItem === 'right'" class="el-icon-check"></i>
+                <i v-show="selectedItem === 'right'" class="el-icon-check"></i>
               </div>
             </div>
             <div class="container-header" @click="selectItem('top-black')">
               <div class="content-header">
                 <i
-                  v-if="selectedItem === 'top-black'"
+                  v-show="selectedItem === 'top-black'"
                   class="el-icon-check"
                 ></i>
               </div>
@@ -76,7 +88,7 @@
             <div class="container-header" @click="selectItem('top-white')">
               <div class="content-headers">
                 <i
-                  v-if="selectedItem === 'top-white'"
+                  v-show="selectedItem === 'top-white'"
                   class="el-icon-check"
                 ></i>
               </div>
@@ -115,7 +127,7 @@
             >
               <p>
                 <span>暗黑模式跟随系统</span>
-                <i v-if="theme === 'system'" class="el-icon-check"></i>
+                <i v-show="theme === 'system'" class="el-icon-check"></i>
               </p>
             </div>
             <div>
@@ -126,7 +138,7 @@
               >
                 <p>
                   <span>明亮模式</span>
-                  <i v-if="theme === 'light'" class="el-icon-check"></i>
+                  <i v-show="theme === 'light'" class="el-icon-check"></i>
                 </p>
               </div>
               <div
@@ -136,7 +148,7 @@
               >
                 <p>
                   <span>暗黑模式</span>
-                  <i v-if="theme === 'dark'" class="el-icon-check"></i>
+                  <i v-show="theme === 'dark'" class="el-icon-check"></i>
                 </p>
               </div>
             </div>
@@ -165,7 +177,7 @@
           </div>
           <div
             :class="{ disabled: value3 }"
-            class="Content_Header"
+            class="Content_The_Header"
             style="
               margin-top: 30px;
               color: #000;
@@ -173,11 +185,31 @@
               justify-content: center;
             "
           >
-            <div class="Header">固定Header</div>
-            <div class="Switch" style="margin-left: 100px">
+            <div class="The_Header">固定Header</div>
+            <div class="Header" style="margin-left: 100px">
               <el-switch
                 v-model="value1"
                 @change="switchHeader"
+                active-color="#409EFF"
+                :disabled="isDisabled"
+              ></el-switch>
+            </div>
+          </div>
+          <div
+            :class="{ disabled: value3 }"
+            class="Content-The_Aside"
+            style="
+              margin-top: 30px;
+              color: #000;
+              display: flex;
+              justify-content: center;
+            "
+          >
+            <div class="The_Aside">固定侧边栏</div>
+            <div class="Aside" style="margin-left: 100px">
+              <el-switch
+                v-model="value4"
+                @change="switchAside"
                 active-color="#409EFF"
                 :disabled="isDisabled"
               ></el-switch>
@@ -194,7 +226,7 @@
             "
           >
             <div class="The-LOGO">显示LOGO</div>
-            <div class="" style="margin-left: 110px">
+            <div class="LOGO" style="margin-left: 110px">
               <el-switch
                 v-model="value2"
                 @change="switchLogo"
@@ -247,10 +279,6 @@
             </div>
           </div>
         </div>
-        <div v-if="loading" class="loading-overlay">
-          <span class="loading-text">模式切换中</span>
-          <div class="loading-spinner"></div>
-        </div>
       </el-drawer>
       <el-dropdown
         @command="handlerDropdown"
@@ -276,11 +304,10 @@ export default {
   name: "CommonHeader",
   data() {
     return {
-      // 色彩模式加载
-      loading: false,
       selectedItem: null,
       value1: false,
       value2: true,
+      value4: false,
       value3: localStorage.getItem("deficiency") === "true",
       roles: "",
       drawer: false,
@@ -288,6 +315,7 @@ export default {
       theme: localStorage.getItem("theme") || "light",
       selectedItems: "left",
       isDisabled: false,
+      iconClass: localStorage.getItem("icon") || "el-icon-sunny",
     };
   },
   created() {
@@ -296,6 +324,10 @@ export default {
     this.loadAvatar();
   },
   methods: {
+    handlerTheme(theme) {
+      //  调用setTheme方法
+      this.setTheme(theme);
+    },
     selectItem(item) {
       this.selectedItem = item;
       const header_container = document.querySelector(".header-container");
@@ -311,7 +343,7 @@ export default {
       }
       this.$message({
         type: "success",
-        message: "主题风格设置成功",
+        message: "主题风格模式成功",
         duration: 1500,
       });
     },
@@ -368,6 +400,22 @@ export default {
         });
       }
     },
+    switchAside() {
+      this.$root.$emit("updateSidebarAside", this.value4);
+      if (this.value3 == false) {
+        this.$message({
+          type: "success",
+          message: "已开启固定侧边栏",
+          duration: 1500,
+        });
+      } else {
+        this.$message({
+          type: "success",
+          message: "已取消固定侧边栏",
+          duration: 1500,
+        });
+      }
+    },
     loadRoles() {
       const roles = localStorage.getItem("roles") || "获取用户失败 请登录重试";
       this.roles = roles;
@@ -376,7 +424,7 @@ export default {
       this.$confirm("确认关闭？")
         .then(() => {
           this.$notify({
-            title: "布局设置",
+            title: "模式选择",
             message: "关闭成功",
             type: "success",
           });
@@ -384,7 +432,7 @@ export default {
         })
         .catch(() => {
           this.$notify({
-            title: "布局设置",
+            title: "模式选择",
             message: "关闭失败",
             type: "info",
           });
@@ -443,28 +491,29 @@ export default {
         });
     },
     setTheme(Theme) {
-      this.loading = true; // 设置加载状态
-      setTimeout(() => {
-        this.theme = Theme;
-        if (Theme === "dark") {
-          console.log("当前模式为: " + Theme);
-          document.documentElement.setAttribute("data-theme", "dark");
-          localStorage.setItem("theme", "dark");
-        } else if (Theme === "system") {
-          this.applySystemTheme();
-          localStorage.setItem("theme", "system");
-        } else {
-          document.documentElement.setAttribute("data-theme", "light");
-          localStorage.setItem("theme", "light");
-        }
-        this.loading = false; // 清除加载状态
-        this.$notify({
-          title: "色彩模式",
-          message: "切换成功",
-          type: "success",
-        });
-      }, 3000); // 假设加载过程需要3秒
+      this.theme = Theme;
+      if (Theme === "dark") {
+        document.documentElement.setAttribute("data-theme", "dark");
+        localStorage.setItem("theme", "dark");
+        this.iconClass = "el-icon-sunny";
+        localStorage.setItem("icon", "el-icon-sunny");
+      } else if (Theme === "system") {
+        this.applySystemTheme();
+        localStorage.setItem("theme", "system");
+        // 根据系统主题更新图标
+        const prefersDarkScheme = window.matchMedia(
+          "(prefers-color-scheme: dark)"
+        ).matches;
+        this.iconClass = prefersDarkScheme ? "el-icon-moon" : "el-icon-sunny";
+        localStorage.setItem("icon", this.iconClass);
+      } else {
+        document.documentElement.setAttribute("data-theme", "light");
+        localStorage.setItem("theme", "light");
+        this.iconClass = "el-icon-moon";
+        localStorage.setItem("icon", "el-icon-moon");
+      }
     },
+    // 系统主题
     applySystemTheme() {
       const prefersDarkScheme = window.matchMedia(
         "(prefers-color-scheme: dark)"
@@ -484,36 +533,6 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.loading-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: #000;
-  opacity: 0.7;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
-}
-.loading-text {
-  position: fixed;
-  left: 52%;
-}
-.loading-spinner {
-  border: 4px solid rgba(0, 0, 0, 0.1);
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  border-left-color: #09f;
-  animation: spin 1s linear infinite;
-}
-@keyframes spin {
-  to {
-    transform: rotate(360deg);
-  }
-}
 .disabled {
   pointer-events: none; /* 禁用所有鼠标事件 */
   opacity: 0.5; /* 可选：降低透明度以表示禁用状态 */
@@ -554,6 +573,14 @@ export default {
 .r-content {
   display: flex;
   align-items: center;
+  .theme {
+    margin-right: 20px;
+  }
+  .el-icon-moon,
+  .el-icon-sunny {
+    font-size: 20px;
+    cursor: pointer;
+  }
   .Style {
     display: flex;
     justify-content: center;

@@ -5,7 +5,7 @@
     text-color="var(--text-color1)"
     active-text-color="#43b3cf"
     :style="{ backgroundColor: bgc }"
-    :class="{ 'color-deficiency-mode': value3 }"
+    :class="{ 'color-deficiency-mode': value3, 'aslide-fixed': isAside }"
   >
     <h3
       :style="{
@@ -57,27 +57,35 @@ export default {
       bgc: "var(--bg7)", // 设置初始值
       logo: true, // 设置初始值
       value3: localStorage.getItem("deficiency") === "true",
+      // 固定侧边栏
+      isAside: "",
     };
   },
   created() {
-    // 监听父组件的事件
+    // 更新背景颜色 接收组件传来的值
     this.$root.$on("updateSidebarBackground", (newBgc) => {
-      // console.log(newBgc);
-      // 更新背景颜色
       this.bgc = newBgc;
     });
-    // 监听父组件的事件
+    // 控制LOGO显示 接收组件传来的值
     this.$root.$on("updateSidebarLogo", (newLogo) => {
-      // 控制LOGO显示
       this.logo = newLogo;
     });
+    // 控制色弱模式 接收组件传来的值
     this.$root.$on("updateSidebarDeficiency", (newDeficiency) => {
-      // 控制色弱模式
       this.value3 = newDeficiency;
       if (newDeficiency) {
         document.body.classList.add("color-deficiency-mode");
       } else {
         document.body.classList.remove("color-deficiency-mode");
+      }
+    });
+    // 固定侧边栏 接收组件传来的值
+    this.$root.$on("updateSidebarAside", (newAside) => {
+      this.isAside = newAside;
+      if (newAside) {
+        document.body.classList.add("aslide-fixed");
+      } else {
+        document.body.classList.remove("aslide-fixed");
       }
     });
   },
@@ -113,6 +121,10 @@ export default {
 .color-deficiency-mode {
   filter: invert(70%) sepia(8%) saturate(150%) hue-rotate(310deg)
     brightness(110%) contrast(110%);
+}
+.aslide-fixed {
+  position: static;
+  height: 100vh;
 }
 .el-menu-vertical-demo:not(.el-menu--collapse) {
   width: 200px;

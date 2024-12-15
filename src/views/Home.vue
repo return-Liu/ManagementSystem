@@ -45,7 +45,7 @@
             </el-select>
             <div class="city" style="margin-left: 370px; margin-top: -25px">
               <p>
-                天气信息由中国气象局提供<span class="detail-text">
+                数据由中国天气提供<span class="detail-text">
                   <a
                     style="text-decoration: none; color: skyblue"
                     href="https://www.weather.com.cn/"
@@ -204,6 +204,7 @@ const WEATHER_TIPS = {
   多云: "天气多云，适合出门活动哦！",
   阴: "今天阴天，注意防晒哦！",
   雾: "今天有雾，请注意安全！",
+  霾: "今天有霾，请注意安全！",
   雷阵雨: "今天有雷阵雨，请注意安全！",
   暴雨: "今天有暴雨，尽量减少外出！",
   台风: "今天有台风，请留在室内！",
@@ -213,7 +214,9 @@ const WEATHER_TIPS = {
 import axios from "axios";
 import { getListData } from "../api";
 export default {
-  name: "HomeManage",
+  // 关闭语法检查
+  /* eslint-disable */
+  name: "Home",
   data() {
     return {
       value3: localStorage.getItem("deficiency") === "true",
@@ -294,7 +297,7 @@ export default {
       }
     });
     this.loadRoles();
-    this.loadAvatar();
+    this.loadAvatar(); // 确保在created中调用loadAvatar
   },
   methods: {
     handleClick(item) {
@@ -325,10 +328,10 @@ export default {
       this.roles = roles;
     },
     loadAvatar() {
-      const avatar =
-        localStorage.getItem("avatar") ||
+      const storedAvatar = localStorage.getItem(`avatar_${this.username}`);
+      const defaultAvatar =
         "https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png";
-      this.avatar = avatar;
+      this.avatar = storedAvatar || defaultAvatar;
     },
     async Weather(city) {
       await axios({
@@ -350,19 +353,6 @@ export default {
               this.weatherDataArray[liveData.weather] ||
               this.weatherDataArray.default;
             this.weatherData = `当前地区:${liveData.city} 今日:${liveData.weather} 实时气温:${liveData.temperature}℃ 温馨提示: ${weatherTip}`;
-            this.$notify({
-              title: "天气查询",
-              message: "获取成功",
-              type: "success",
-              duration: 2000,
-            });
-          } else {
-            this.$notify({
-              title: "天气查询",
-              message: "服务器返回了非预期的状态码，请稍后再试",
-              type: "warning",
-              duration: 2000,
-            });
           }
         })
         .catch((error) => {
@@ -402,10 +392,9 @@ export default {
         }
         if (!this.roles.includes("超级管理员")) {
           this.$message({
-            message: "您没有权限更换头像",
-            type: "warning",
+            type: "error",
+            message: "亲，您的权限不足",
           });
-
           return;
         }
         // 获取文件对象
@@ -417,7 +406,7 @@ export default {
           // 将获取的头像地址赋值给avatar
           this.avatar = e.target.result;
           // 存储到本地存储
-          localStorage.setItem("avatar", this.avatar);
+          localStorage.setItem(`avatar_${this.username}`, this.avatar);
           // 提示成功信息
           this.$message({
             message: "头像更换成功",

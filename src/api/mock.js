@@ -10,7 +10,7 @@ Mock.mock("/api/home/getListData", home.getListData);
 // 登录拦截
 Mock.mock(/api\/login\/getMenu/, "post", login.getMenu);
 // 注册拦截
-Mock.mock(/api\/register\/getMenu/, "post", register.getMenu);
+Mock.mock(/api\/register\/getRegister/, "post", register.getRegister);
 
 // 定义用户列表的数据
 // 新增

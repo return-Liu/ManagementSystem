@@ -47,11 +47,11 @@ export const delMall = (data) => {
   return http.post("/mall/del", data);
 };
 
-// 获取动态菜单
+// 登录
 export const getMenu = (data) => {
   return http.post("/login/getMenu", data);
 };
 // 注册
 export const getRegister = (data) => {
-  return http.post("/register/getMenu", data);
+  return http.post("/register/getRegister", data);
 };

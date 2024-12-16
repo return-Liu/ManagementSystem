@@ -174,6 +174,9 @@ export default {
 };
 </script>
 <style scoped lang="less">
+.login-container {
+  height: 100vh;
+}
 .part-01 {
   height: 100vh;
   justify-content: flex-end;

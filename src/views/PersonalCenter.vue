@@ -55,13 +55,21 @@ export default {
   name: "PersonalCenter",
   data() {
     return {
-      avatar: localStorage.getItem("avatar"),
+      avatar: "",
       isFullScreen: false,
       roles: localStorage.getItem("roles"),
     };
   },
-
+  created() {
+    this.loadAvatar();
+  },
   methods: {
+    loadAvatar() {
+      const storedAvatar = localStorage.getItem(`avatar_${this.username}`);
+      const defaultAvatar =
+        "https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png";
+      this.avatar = storedAvatar || defaultAvatar;
+    },
     handleChange() {
       this.isFullScreen = true;
     },
@@ -79,8 +87,8 @@ export default {
           this.avatar = reader.result;
           // 通过ref获取头像
           this.$refs.avatarImg.src = this.avatar;
-          // 存储新的头像
-          localStorage.setItem("avatar", this.avatar);
+          // 存储到本地存储
+          localStorage.setItem(`avatar_${this.username}`, this.avatar);
         };
         // 读取文件
         reader.readAsDataURL(file);

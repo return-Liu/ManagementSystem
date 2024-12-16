@@ -154,27 +154,31 @@ export default {
         newListMore: [
           {
             name: "优化了部分功能 新增了全新功能 例如:查看头像功能 查看表格数据 引入高德地图可视化数据 权限管理增删改查等等",
-            time: formatTime(currentTimeISO),
+            time: "2024-11-28",
           },
           {
             name: "新增了导入导出excel功能 导入excel目前存在错误bug 目前正在排查 会尽快解决",
-            time: formatTime(currentTimeISO),
+            time: "2024-12-1",
           },
           {
             name: "加强对页面UI的优化 对布局设置的页面进行了全新设计 功能如下(主题风格设置,色彩模式,导航模式,其他设置)",
-            time: formatTime(currentTimeISO),
+            time: "2024-12-2",
           },
           {
             name: "由gitee迁移至github gitee将停止更新 请关注项目地址 https://github.com/return-Liu/ManagementSystem.git 之后项目可能还会选择gitee平台 敬请期待",
-            time: formatTime(currentTimeISO),
+            time: "2024-12-8",
           },
           {
             name: "由于退出账号时 头像会出现默认头像的问题 目前未解决 可以重新获取头像 只有在不退出账号的情况下 才会出现该问题",
-            time: formatTime(currentTimeISO),
+            time: "2024-12-11",
           },
           {
             name: "头像问题:排查到由于默认头像是初始头像 并没有存储更换后的头像 所以导致退出再登录时还是默认头像 在下个版本将会修复该问题",
-            time: formatTime(currentTimeISO),
+            time: "2024-12-11",
+          },
+          {
+            name: "头像问题:已解决 退出账号时 存储了更换后的头像 所以不会出现默认头像的问题",
+            time: "2024-12-15",
           },
         ],
         message: "获取成功",

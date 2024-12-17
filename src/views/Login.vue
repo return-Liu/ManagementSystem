@@ -127,7 +127,6 @@ export default {
       getMenu(this.form)
         .then(({ data }) => {
           console.log("登录返回数据:", data, "账号密码", this.form);
-
           if (data.code === 200) {
             // 根据响应码决定是否显示错误提示及后续操作
             Cookie.set("token", data.data.token);

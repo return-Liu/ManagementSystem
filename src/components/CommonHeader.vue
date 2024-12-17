@@ -126,7 +126,7 @@
               @click="setTheme('system')"
             >
               <p>
-                <span>暗黑模式跟随系统</span>
+                <span>深色模式跟随系统</span>
                 <i v-show="theme === 'system'" class="el-icon-check"></i>
               </p>
             </div>
@@ -137,7 +137,7 @@
                 @click="setTheme('light')"
               >
                 <p>
-                  <span>明亮模式</span>
+                  <span>浅色模式</span>
                   <i v-show="theme === 'light'" class="el-icon-check"></i>
                 </p>
               </div>
@@ -147,7 +147,7 @@
                 @click="setTheme('dark')"
               >
                 <p>
-                  <span>暗黑模式</span>
+                  <span>深色模式</span>
                   <i v-show="theme === 'dark'" class="el-icon-check"></i>
                 </p>
               </div>
@@ -468,7 +468,7 @@ export default {
       this.avatar = avatar;
     },
     handleLogout() {
-      this.$confirm("确认退出？", "提示", {
+      this.$confirm("此操作将退出此账号, 是否继续?", "温馨提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning",

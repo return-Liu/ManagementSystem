@@ -523,7 +523,6 @@ export default {
         this.handlerDialog();
         return;
       }
-
       try {
         const confirmResult = await this.$confirm(
           "此操作将永久删除该文件, 是否继续?",
@@ -535,16 +534,36 @@ export default {
           }
         );
         if (confirmResult === "confirm") {
-          // 使用Promise.all来等待所有请求完成
-          const promises = this.seles.map((id) => delUser({ id }));
-          await Promise.all(promises);
-          // 在所有请求成功后刷新列表
+          const batchSize = 10; // 每批处理的数量
+          // 成功的总数
+          let successCount = 0;
+          // 失败的总数
+          let failedCount = 0;
+          // 使用循环方式 遍历每一条复选框 i累加每次批量处理的数量
+          for (let i = 0; i < this.seles.length; i += batchSize) {
+            // 获取当前批次的数据 i是当前批次的开始索引，i+batchSize是当前批次的结束索引
+            const batch = this.seles.slice(i, i + batchSize);
+            // 等待所有请求 将新数组中的每个id转换为一个删除请求
+            const results = await Promise.all(
+              batch.map((id) => delUser({ id }))
+            );
+            // 统计成功和失败的数量
+            successCount += results.filter((result) => result).length;
+            failedCount += results.filter((result) => !result).length;
+          }
+          // 刷新列表
           this.getList();
-          // 成功信息
-          this.$message({
-            type: "success",
-            message: "批量删除成功",
-          });
+          if (failedCount > 0) {
+            this.$message({
+              type: "warning",
+              message: `批量删除完成，成功 ${successCount} 项，失败 ${failedCount} 项`,
+            });
+          } else {
+            this.$message({
+              type: "success",
+              message: "批量删除成功",
+            });
+          }
         } else {
           this.$message({
             type: "error",

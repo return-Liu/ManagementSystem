@@ -51,7 +51,11 @@
   </div>
 </template>
 <script>
+// 引入混入
+import { avatarMixin } from "../mixin/avatarMixin";
 export default {
+  // 使用混入
+  mixins: [avatarMixin],
   name: "PersonalCenter",
   data() {
     return {
@@ -64,46 +68,10 @@ export default {
     this.loadAvatar();
   },
   methods: {
-    loadAvatar() {
-      const storedAvatar = localStorage.getItem(`avatar_${this.username}`);
-      const defaultAvatar =
-        "https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png";
-      this.avatar = storedAvatar || defaultAvatar;
-    },
     handleChange() {
       this.isFullScreen = true;
     },
-    handleFileChange(e) {
-      try {
-        // 获取头像文件
-        const file = e.target.files[0];
-        // 判断文件是否存在 不存在退出
-        if (!file) return;
-        // 创建文件读取对象
-        const reader = new FileReader();
-        // 当文件读取成功
-        reader.onload = () => {
-          // 将头像地址赋值给avatarImg
-          this.avatar = reader.result;
-          // 通过ref获取头像
-          this.$refs.avatarImg.src = this.avatar;
-          // 存储到本地存储
-          localStorage.setItem(`avatar_${this.username}`, this.avatar);
-        };
-        // 读取文件
-        reader.readAsDataURL(file);
-        // 成功信息
-        this.$message({
-          message: "头像更换成功",
-          type: "success",
-        });
-      } catch (error) {
-        this.$message({
-          message: "头像更换失败",
-          type: "error",
-        });
-      }
-    },
+
     closeFullScreen() {
       this.isFullScreen = false;
     },

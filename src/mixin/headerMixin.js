@@ -1,6 +1,6 @@
 export const headerMixin = {
   methods: {
-    // 一些共用方法
+    // 获取主题的功能 减少代码复用
     handlerTheme(theme) {
       //  调用setTheme方法
       this.setTheme(theme);

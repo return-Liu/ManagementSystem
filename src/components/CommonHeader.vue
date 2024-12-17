@@ -326,7 +326,6 @@ export default {
   created() {
     this.loadRoles();
     this.selectedItem = this.selectedItems;
-    this.loadAvatar();
   },
   methods: {
     loadRoles() {
@@ -373,12 +372,6 @@ export default {
           type: "warning",
         });
       }
-    },
-    loadAvatar() {
-      const avatar =
-        localStorage.getItem("avatar") ||
-        "https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png";
-      this.avatar = avatar;
     },
     handleLogout() {
       this.$confirm("此操作将退出此账号, 是否继续?", "温馨提示", {

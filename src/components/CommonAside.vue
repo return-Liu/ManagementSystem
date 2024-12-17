@@ -9,11 +9,11 @@
   >
     <h3
       :style="{
-        backgroundColor: bgc,
+        // backgroundColor: bgc,
         display: logo ? 'block' : 'none', // 根据 logo 值控制显示
       }"
     >
-      {{ isCollapse ? "后台" : "后台管理系统" }}
+      {{ isCollapse ? "Krry" : " Krry blog" }}
     </h3>
     <el-menu-item
       @click="clickMenu(item)"

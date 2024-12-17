@@ -8,7 +8,6 @@ export const headerMixin = {
       this.theme = theme;
       document.documentElement.setAttribute("data-theme", theme);
       localStorage.setItem("theme", theme);
-
       const iconMap = {
         dark: "el-icon-sunny",
         light: "el-icon-moon",
@@ -18,7 +17,7 @@ export const headerMixin = {
       };
       this.iconClass = iconMap[theme];
       localStorage.setItem("icon", this.iconClass);
-      this.showMessage("模式选择切换成功");
+      this.showMessage("色彩模式切换成功");
     },
     applySystemTheme() {
       const prefersDarkScheme = window.matchMedia(
@@ -36,20 +35,17 @@ export const headerMixin = {
         "top-black": "#2F273B",
         "top-white": "#77CB29",
       };
-
       if (backgroundColorMap[item]) {
         headerContainer.style.backgroundColor = backgroundColorMap[item];
       }
-
       const sidebarBackgroundMap = {
         left: "rgb(48, 70, 92)",
         right: "#4CE4CD",
       };
-
       if (sidebarBackgroundMap[item]) {
         this.$root.$emit("updateSidebarBackground", sidebarBackgroundMap[item]);
       }
-      this.showMessage("模式选择切换成功");
+      this.showMessage("主题风格模式切换成功");
     },
     switchHeader() {
       const isHeader = document.querySelector(".header-container");

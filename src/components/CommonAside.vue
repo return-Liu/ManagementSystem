@@ -9,7 +9,6 @@
   >
     <h3
       :style="{
-        // backgroundColor: bgc,
         display: logo ? 'block' : 'none', // 根据 logo 值控制显示
       }"
     >

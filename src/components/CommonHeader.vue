@@ -28,11 +28,13 @@
           @click="handlerTheme('light')"
           v-show="theme === 'dark'"
           :class="iconClass"
+          title="浅色模式"
         ></i>
         <i
           @click="handlerTheme('dark')"
           v-show="theme === 'light'"
           :class="iconClass"
+          title="深色模式"
         ></i>
       </div>
       <div
@@ -286,7 +288,7 @@
       >
         <div class="el-dropdown-link">
           <!-- 显示用户角色 -->
-          <span> {{ roles }}</span>
+          <span style="color: var(--text-color6)"> {{ roles }}</span>
           <i class="el-icon-arrow-down el-icon--right"></i>
         </div>
         <el-dropdown-menu slot="dropdown">

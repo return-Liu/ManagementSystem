@@ -320,7 +320,7 @@ export default {
       theme: localStorage.getItem("theme") || "light",
       selectedItems: "left",
       isDisabled: false,
-      iconClass: localStorage.getItem("icon") || "el-icon-sunny",
+      iconClass: localStorage.getItem("icon") || "el-icon-moon",
     };
   },
   created() {

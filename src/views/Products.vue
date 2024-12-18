@@ -213,10 +213,13 @@
   </div>
 </template>
 <script>
-// import Vue from "vue";
 import { getMall, addMall, editMall, delMall } from "../api";
 import * as XLSX from "xlsx";
+// 引入混入
+import { pagedataMixin } from "../mixin/pagedataMixin";
 export default {
+  // 使用混入
+  mixins: [pagedataMixin],
   // 关闭语法检查
   /* eslint-disable */
   name: "Products",
@@ -649,15 +652,6 @@ export default {
           this.total = data.data.count || 0;
         }
       );
-    },
-    // 修正分页处理逻辑
-    handleSizeChange(val) {
-      this.pageData.limit = val;
-      this.getList();
-    },
-    handleCurrentChange(val) {
-      this.pageData.page = val;
-      this.getList();
     },
     /*
      * 搜索

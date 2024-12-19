@@ -89,7 +89,7 @@
         class="el-button el-button--primary"
         type="primary"
       >
-        + 新增
+        <i class="el-icon-plus"></i> 新增
       </el-button>
       <el-button
         type="danger"
@@ -97,10 +97,10 @@
         @click="hanlderReomve"
         :disabled="this.seles.length === 0"
       >
-        - 批量删除</el-button
+        <i class="el-icon-delete"></i> 批量删除</el-button
       >
-      <el-button type="primary" class="Im_port" @click="handlerImport"
-        >导入Excel</el-button
+      <el-button type="primary" class="Im_port" @click="handlerImport">
+        <i class="el-icon-upload2"></i> 导入Excel</el-button
       >
       <input
         type="file"
@@ -110,7 +110,7 @@
         accept=".xlsx, .xls"
       />
       <el-button type="primary" class="Ex_port" @click="handlerExport()"
-        >导出Excel</el-button
+        ><i class="el-icon-download"></i> 导出Excel</el-button
       >
       <el-form
         :inline="true"
@@ -158,19 +158,21 @@
               size="mini"
               type="primary"
               class="edit"
-              @click="handlerEidt(scope.row)"
-              >编辑</span
+              @click="handlerEdit(scope.row)"
             >
+              <i class="el-icon-edit"></i> 编辑
+            </span>
             <span
               size="mini"
               type="danger"
               class="dangers"
               @click="handlerDelete(scope.row)"
-              >删除</span
             >
-            <span size="mini" @click="handlerView(scope.row)" class="View"
-              >查看</span
-            >
+              <i class="el-icon-delete"></i> 删除
+            </span>
+            <span size="mini" @click="handlerView(scope.row)" class="View">
+              <i class="el-icon-view"></i> 查看
+            </span>
           </template>
         </el-table-column>
       </el-table>
@@ -416,7 +418,7 @@ export default {
         }
       });
     },
-    async handlerEidt(row) {
+    async handlerEdit(row) {
       if (this.roles !== "超级管理员") {
         this.handlerDialog();
         return;
@@ -682,7 +684,7 @@ export default {
     }
     .Ex_port {
       position: absolute;
-      left: 350px;
+      left: 360px;
       background-color: var(--bg4);
       border-color: var(--border4);
       color: var(--text-color1);
@@ -692,7 +694,7 @@ export default {
     width: 260px;
   }
   ::v-deep .el-button + .el-button {
-    margin-left: 5px;
+    margin-left: 10px;
   }
   .common-tabel {
     position: relative;
@@ -700,11 +702,11 @@ export default {
     .edit,
     .View {
       color: skyblue;
-      margin-left: 30px;
+      margin-left: 20px;
     }
     .dangers {
       color: rgb(196, 67, 67);
-      margin-left: 30px;
+      margin-left: 20px;
     }
     .ViewContent {
       background-color: rgba(0, 0, 0, 0.8);

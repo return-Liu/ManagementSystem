@@ -34,13 +34,6 @@ export default {
   data() {
     return {};
   },
-
-  methods: {
-    // 获取路由
-    getRouter() {
-      console.log(this.$route.path);
-    },
-  },
 };
 </script>
 <style scoped>

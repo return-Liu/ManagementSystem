@@ -1,9 +1,12 @@
 import Mock from "mockjs";
+// 引入nanoid
+import { nanoid } from "nanoid";
 // 添加默认头像
 const avatar =
   "https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png";
 const user_data = {
   admin: {
+    uid: nanoid(),
     roles: "超级管理员",
     avatar,
     menu: [
@@ -66,10 +69,12 @@ const user_data = {
   },
   user: {
     roles: "普通管理员",
+    uid: nanoid(),
     avatar,
     menu: [],
   },
   guest: {
+    uid: nanoid(),
     roles: "普通用户",
     avatar,
     messages: "此账号仅可查看 支持一些功能，不可操作",

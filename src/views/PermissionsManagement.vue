@@ -150,7 +150,11 @@ export default {
   methods: {
     // 封装日期函数
     formatDate(date) {
-      if (!date) return "";
+      if (!date) return ""; // 如果日期为空，返回空字符串
+      if (!(date instanceof Date) || isNaN(date.getTime())) {
+        // 检查是否为有效的 Date 对象
+        return "";
+      }
       const y = date.getFullYear();
       const m = (date.getMonth() + 1).toString().padStart(2, "0");
       const d = date.getDate().toString().padStart(2, "0");
@@ -202,18 +206,14 @@ export default {
       });
     },
     submitForm() {
-      if (
-        this.form.name === "" ||
-        (this.form.permission === "" &&
-          this.form.createTime === null &&
-          this.form.status === "")
-      ) {
-        this.$message.error("请输入表单数据");
-        return;
-      }
       this.$refs.form.validate((valid) => {
         if (valid) {
-          this.form.createTime = this.formatDate(this.form.createTime);
+          if (this.form.createTime && this.form.createTime instanceof Date) {
+            this.form.createTime = this.formatDate(this.form.createTime);
+          } else {
+            this.$message.error("请选择有效的创建时间");
+            return;
+          }
           this.dialogVisible = false;
           if (this.modelType === 0) {
             const index = this.tableData.findIndex(

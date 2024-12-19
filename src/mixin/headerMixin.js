@@ -17,7 +17,7 @@ export const headerMixin = {
       };
       this.iconClass = iconMap[theme];
       localStorage.setItem("icon", this.iconClass);
-      this.showMessage("色彩模式切换成功");
+      this.showMessage("模式切换成功");
     },
     applySystemTheme() {
       const prefersDarkScheme = window.matchMedia(

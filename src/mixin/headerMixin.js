@@ -59,8 +59,8 @@ export const headerMixin = {
       this.isDisabled = this.value3;
       this.showMessage(
         this.value3
-          ? "色弱模式已开启 部分主题开启禁用状态 注意用眼"
-          : "色弱模式已关闭 部分主题解除禁用状态"
+          ? "护眼模式已开启 部分主题开启禁用状态"
+          : "护眼模式已关闭 部分主题解除禁用状态"
       );
       localStorage.setItem("deficiency", this.value3.toString());
     },

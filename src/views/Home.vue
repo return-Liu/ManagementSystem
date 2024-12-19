@@ -101,10 +101,10 @@
         <el-card
           :class="{ 'color-deficiency-mode': value3 }"
           v-show="DataList"
+          class="DataList"
           style="
             background: var(--bg9);
             color: var(--text-color9);
-
             width: 850px;
             height: 350px;
             position: fixed;
@@ -400,11 +400,9 @@ export default {
 </script>
 <style lang="less" scoped>
 .color-deficiency-mode {
-  --bg10: #f5f5f5; /* 更柔和的背景颜色 */
-  --text-color9: #000000; /* 更深的文字颜色 */
-  --border1: rgba(0, 0, 0, 0.2); /* 更明显的边框颜色 */
-  --border3: rgba(0, 0, 0, 0.2); /* 更明显的边框颜色 */
-  --highlight-color: #ffcc00; /* 高亮颜色 */
+  --bg10: #f9f9f9; /* 更柔和的背景颜色 */
+  --text-color9: #333333; /* 更深的文字颜色 */
+  filter: brightness(90%) contrast(110%) sepia(10%) hue-rotate(20deg);
 }
 // 原有样式保持不变
 .el-row {
@@ -547,6 +545,7 @@ export default {
       justify-content: space-evenly;
       flex-wrap: wrap;
       color: var(--text-color9);
+
       .item {
         width: 250px;
         height: 200px;
@@ -666,5 +665,16 @@ export default {
   from {
     width: 0ch;
   }
+}
+@keyframes blink {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+.el-icon-close:hover {
+  animation: blink 0.5s linear;
 }
 </style>

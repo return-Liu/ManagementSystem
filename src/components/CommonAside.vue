@@ -12,7 +12,7 @@
         display: logo ? 'block' : 'none', // 根据 logo 值控制显示
       }"
     >
-      {{ isCollapse ? "Krry" : " Krry blog" }}
+      {{ isCollapse ? "Vue" : "Vue-Template" }}
     </h3>
     <el-menu-item
       @click="clickMenu(item)"
@@ -118,8 +118,9 @@ export default {
 
 <style lang="less" scoped>
 .color-deficiency-mode {
-  filter: invert(70%) sepia(8%) saturate(150%) hue-rotate(310deg)
-    brightness(110%) contrast(110%);
+  --bg10: #f9f9f9; /* 更柔和的背景颜色 */
+  --text-color9: #333333; /* 更深的文字颜色 */
+  filter: brightness(90%) contrast(110%) sepia(10%) hue-rotate(20deg);
 }
 .aslide-fixed {
   position: static;

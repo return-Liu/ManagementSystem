@@ -23,18 +23,18 @@
       </el-breadcrumb>
     </div>
     <div class="r-content">
-      <div class="theme">
+      <div class="theme" :class="{ disabled: value3 }">
         <i
           @click="handlerTheme('light')"
           v-show="theme === 'dark'"
           :class="iconClass"
-          title="浅色模式"
+          :title="titleTheme"
         ></i>
         <i
           @click="handlerTheme('dark')"
           v-show="theme === 'light'"
           :class="iconClass"
-          title="深色模式"
+          :title="titleTheme"
         ></i>
       </div>
       <div
@@ -271,7 +271,7 @@
               justify-content: center;
             "
           >
-            <div class="Color-Deficiency-Mode">色弱模式</div>
+            <div class="Color-Deficiency-Mode">护眼模式</div>
             <div class="Switch" style="margin-left: 115px">
               <el-switch
                 v-model="value3"
@@ -326,6 +326,15 @@ export default {
   created() {
     this.loadRoles();
     this.selectedItem = this.selectedItems;
+    this.$root.$on("updateSidebarDeficiency", (newDeficiency) => {
+      // 控制色弱模式
+      this.value3 = newDeficiency;
+      if (newDeficiency) {
+        document.body.classList.add("color-deficiency-mode");
+      } else {
+        document.body.classList.remove("color-deficiency-mode");
+      }
+    });
   },
   methods: {
     loadRoles() {
@@ -401,11 +410,19 @@ export default {
     ...mapState({
       msg: (state) => state.tab.tabsList,
     }),
+    titleTheme() {
+      return this.theme === "light" ? "深色模式" : "浅色模式";
+    },
   },
 };
 </script>
 
 <style lang="less" scoped>
+.color-deficiency-mode {
+  --bg10: #f9f9f9; /* 更柔和的背景颜色 */
+  --text-color9: #333333; /* 更深的文字颜色 */
+  filter: brightness(90%) contrast(110%) sepia(10%) hue-rotate(20deg);
+}
 .disabled {
   pointer-events: none; /* 禁用所有鼠标事件 */
   opacity: 0.5; /* 可选：降低透明度以表示禁用状态 */

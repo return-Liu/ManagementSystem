@@ -72,6 +72,7 @@ export const headerMixin = {
       this.$root.$emit("updateSidebarLogo", this.value2);
       this.showMessage(this.value2 ? "Logo显示成功" : "Logo隐藏成功");
     },
+    // 统一处理提示信息
     showMessage(message) {
       this.$message({
         type: "success",

@@ -211,13 +211,13 @@ const WEATHER_TIPS = {
   沙尘暴: "今天有沙尘暴，请佩戴口罩！",
   default: "未知天气，请关注最新气象信息！",
 };
-import axios from "axios";
 import { getListData } from "../api";
 // 引入混入
 import { avatarMixin } from "../mixin/avatarMixin";
+import { homeMixin } from "../mixin/homeMixin";
 export default {
   // 使用混入
-  mixins: [avatarMixin],
+  mixins: [avatarMixin, homeMixin],
   // 关闭语法检查
   /* eslint-disable */
   name: "Home",
@@ -305,86 +305,6 @@ export default {
     this.loadAvatar(); // 确保在created中调用loadAvatar
   },
   methods: {
-    handleClick(item) {
-      switch (item.name) {
-        case "产品管理":
-          this.$router.push({ name: "products", path: "/products" });
-          break;
-        case "用户管理":
-          this.$router.push({ name: "users", path: "/users" });
-          break;
-        case "高德地图":
-          this.$router.push({
-            name: "mapintegration",
-            path: "/mapintegration",
-          });
-          break;
-        case "权限管理":
-          this.$router.push({
-            name: "permissionmanagement",
-            path: "/permissionmanagement",
-          });
-          break;
-      }
-    },
-    loadRoles() {
-      const roles = localStorage.getItem("roles") || "用户获取失败";
-      this.roles = roles;
-    },
-
-    async Weather(city) {
-      await axios({
-        url: `https://restapi.amap.com/v3/weather/weatherInfo`,
-        params: {
-          key: "b219cc978d96ce513e410c5835a84050",
-          city,
-        },
-      })
-        .then((response) => {
-          if (
-            response.status === 200 &&
-            response.data.lives &&
-            response.data.lives.length > 0
-          ) {
-            const liveData = response.data.lives[0];
-            const weatherTip =
-              // 要么获取到对应的提示，要么返回默认提示
-              this.weatherDataArray[liveData.weather] ||
-              this.weatherDataArray.default;
-            this.weatherData = `当前地区:${liveData.city} 今日:${liveData.weather} 实时气温:${liveData.temperature}℃ 温馨提示: ${weatherTip}`;
-          }
-        })
-        .catch((error) => {
-          if (error.response) {
-            this.$notify({
-              title: "天气查询",
-              message: "天气数据请求异常，请稍后重试",
-              type: "error",
-              duration: 2000,
-            });
-          } else {
-            console.error("Error", error.message);
-            this.$notify({
-              title: "天气查询",
-              message: "你的网络发生问题，请稍后重试",
-              type: "error",
-              duration: 2000,
-            });
-          }
-        });
-    },
-    handlerCity() {
-      const city = this.selectedCity;
-      this.Weather(city);
-    },
-    handlerList() {
-      if (this.roles.includes("普通用户")) {
-        this.$notify({
-          message: "暂无查看权限",
-          type: "warning",
-        });
-      }
-    },
     handlerListMore() {
       this.DataList = true;
     },

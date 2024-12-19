@@ -555,7 +555,7 @@ export default {
   .switch-theme {
     margin-left: 235px;
     width: 300px;
-    height: 130px;
+    height: 80px;
   }
   .switch div p {
     height: 20px;

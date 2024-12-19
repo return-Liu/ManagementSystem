@@ -11,6 +11,7 @@ export const avatarMixin = {
         "https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png";
       this.avatar = storedAvatar || defaultAvatar;
     },
+    // 判断文件是否符合
     handleFileChange(e) {
       // 判断文件非符合 直接返回
       if (!this.isValidFile(e)) return;
@@ -18,6 +19,13 @@ export const avatarMixin = {
       if (!this.hasPermission()) return;
       // 获取文件
       const file = e.target.files[0];
+      // 获取头像类型
+      const fileType = file.type;
+      // 判断文件类型是否是图片
+      if (!fileType.startsWith("image/")) {
+        this.showMessage("请选择正确的头像类型", "error");
+        return;
+      }
       // 读取文件
       const reader = new FileReader();
       // 读取加载后

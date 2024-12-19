@@ -256,10 +256,6 @@ export default {
     };
   },
   methods: {
-    // 关闭查看内容
-    viewClose() {
-      this.viewList = false;
-    },
     // 查看内容
     handlerView(row) {
       if (this.roles !== "超级管理员") {
@@ -270,25 +266,6 @@ export default {
       this.vieName = ` 用户姓名: ${row.name} 用户性别: ${
         row.sex == 1 ? "男" : "女"
       } 用户年龄: ${row.age} 用户出生日期: ${row.birth} 用户地址: ${row.addr}`;
-    },
-    // 封装弹窗权限方法
-    handlerDialog() {
-      this.$message({
-        type: "error",
-        message: "亲，您的权限不足",
-      });
-    },
-    // 导入导出权限处理
-    handlerImEx() {
-      if (this.roles !== "超级管理员") {
-        this.handlerDialog();
-        return;
-      }
-    },
-    // 导入excel
-    handlerImport() {
-      // 获取DOM点击事件
-      this.$refs.fileInput.click();
     },
     // 导入文件
     handleFileChange(e) {
@@ -314,14 +291,7 @@ export default {
         console.log(json);
         // 验证数据
         if (
-          json.every(
-            (item) =>
-              item.name &&
-              item.type &&
-              item.number &&
-              item.price &&
-              item.description
-          )
+          json.every((item) => item.name && item.age && item.sex && item.addr)
         ) {
           // 发送到后端
           this.importData(json);
@@ -446,19 +416,6 @@ export default {
         }
       });
     },
-
-    // 弹窗关闭的时候
-    handleClose() {
-      // 清空表单
-      this.resetForm();
-      // 关闭弹窗
-      this.dialogVisible = false;
-    },
-    cancel() {
-      this.handleClose();
-      //  调用resetForm方法 用于统一重置表单
-      this.resetForm();
-    },
     async handlerEidt(row) {
       if (this.roles !== "超级管理员") {
         this.handlerDialog();
@@ -489,7 +446,6 @@ export default {
         this.handlerDialog();
         return;
       }
-
       try {
         await this.$confirm("此操作将永久删除该文件, 是否继续?", "温馨提示", {
           confirmButtonText: "确定",

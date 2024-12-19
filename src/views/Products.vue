@@ -279,10 +279,6 @@ export default {
     console.log(XLSX);
   },
   methods: {
-    // 关闭查看内容
-    viewClose() {
-      this.viewList = false;
-    },
     // 查看内容
     handlerView(row) {
       if (this.roles !== "超级管理员") {
@@ -297,25 +293,6 @@ export default {
   产品价格: ${row.price}
   产品介绍:${row.description}
 `;
-    },
-    // 封装弹窗权限方法
-    handlerDialog() {
-      this.$message({
-        type: "error",
-        message: "亲，您的权限不足",
-      });
-    },
-    // 导入导出权限处理
-    handlerImEx() {
-      if (this.roles !== "超级管理员") {
-        this.handlerDialog();
-        return;
-      }
-    },
-    // 导入excel
-    handlerImport() {
-      // 获取DOM点击事件
-      this.$refs.fileInput.click();
     },
     // 导入文件
     handleFileChange(e) {
@@ -463,19 +440,6 @@ export default {
           this.alertVisible = true;
         }
       });
-    },
-    handleClose() {
-      // console.log(this.form);
-      // 清空表单
-      this.resetForm();
-      // 关闭弹窗
-      this.dialogVisible = false;
-    },
-    cancel() {
-      // 关闭弹窗
-      this.handleClose();
-      //  调用resetForm方法 用于统一重置表单
-      this.resetForm();
     },
     async handlerEidt(row) {
       if (this.roles !== "超级管理员") {

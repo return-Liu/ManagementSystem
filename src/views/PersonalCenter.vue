@@ -33,17 +33,16 @@
       <!-- 用户信息 -->
       <div class="user-info-box">
         <div class="user-info">
-          <span class="user-info-title" style="color: var(--text-color2)"
-            >用户名: {{ roles }}
-          </span>
+          <div class="user-info-id">Uid:{{ uid }}</div>
+          <div class="user-info-title">用户名:{{ roles }}</div>
         </div>
         <div class="user-info-content"></div>
       </div>
     </el-card>
     <!-- 全屏蒙层 -->
     <div v-if="isFullScreen" class="fullscreen-overlay">
-      <span class="avatar-name">我的头像</span>
-      <span class="close-name" @click="closeFullScreen">关闭头像</span>
+      <div class="avatar-name">我的头像</div>
+      <div class="close-name" @click="closeFullScreen">关闭头像</div>
       <div class="fullscreen-content">
         <img :src="avatar" class="fullscreen-avatar" alt="" />
       </div>
@@ -62,6 +61,7 @@ export default {
       avatar: "",
       isFullScreen: false,
       roles: localStorage.getItem("roles"),
+      uid: localStorage.getItem("uid"),
     };
   },
   created() {
@@ -87,6 +87,16 @@ export default {
     color: var(--text-color2);
   }
   .user-info {
+    width: 210px;
+    height: 30px;
+    color: var(--text-color2);
+    .user-info-id,
+    .user-info-title {
+      width: 240px;
+    }
+    .user-info-title {
+      margin-top: 10px;
+    }
     .avatars {
       color: var(--text-color2);
     }
@@ -124,7 +134,7 @@ export default {
   .user-info-box {
     position: absolute;
     top: 130px;
-    right: 180px;
+    right: 110px;
   }
 }
 

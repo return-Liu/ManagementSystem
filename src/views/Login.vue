@@ -134,6 +134,8 @@ export default {
             this.$store.commit("setMenu", data.data.menu);
             // 添加动态路由
             this.$store.commit("addMenu", this.$router);
+            // 将用户ID存入store
+            this.$store.commit("setUid", data.data.uid);
             // 将用户角色存入store
             this.$store.commit("setMessage", data.data.messages);
             // 将用户信息存入store

@@ -109,7 +109,7 @@ export default {
           {
             id: 1,
             name: "优化了部分功能 新增了全新功能 例如:查看头像功能 查看表格数据 引入高德地图可视化数据 权限管理增删改查等等",
-            time: formatTime(currentTimeISO),
+            time: "2024-11-05",
           },
         ],
         // 最新项目列表更多
@@ -162,6 +162,34 @@ export default {
             name: "前端开发组",
             time: formatTime(currentTimeISO),
           },
+          {
+            id: 7,
+            title: "vue-echarts",
+            p: "vue-echarts 是一款基于vue.js的图表组件，基于echarts封装而成，使用更简单，更轻量。",
+            name: "前端开发组",
+            time: formatTime(currentTimeISO),
+          },
+          {
+            id: 8,
+            title: "vue-count-to",
+            p: "vue-count-to 是一款vue.js的数字滚动插件，基于countup.js封装而成，使用更简单",
+            name: "前端开发组",
+            time: formatTime(currentTimeISO),
+          },
+          {
+            id: 9,
+            title: "vue-pinia",
+            p: "vue-pinia 是一款基于vue.js的pinia状态管理插件，基于pinia封装而成，使用更简单，更轻量。",
+            name: "前端开发组",
+            time: formatTime(currentTimeISO),
+          },
+          {
+            id: 10,
+            title: "vue-element-admin",
+            p: "vue-element-admin 是一款后台管理系统的模板，基于vue.js + element-ui + vuex + vue-router + axios + webpack封装的模板，使用更简单，更轻量。",
+            name: "前端开发组",
+            time: formatTime(currentTimeISO),
+          },
         ],
         // 最新动态更多
         newListMore: [
@@ -199,6 +227,11 @@ export default {
             id: 7,
             name: "头像问题:已解决 退出账号时 存储了更换后的头像 所以不会出现默认头像的问题",
             time: "2024-12-15",
+          },
+          {
+            id: 8,
+            name: "全新使用mixin 进行代码复用 减少代码重复 提升代码可读性 降低代码维护成本和使用nanoid随机生成id 避免id重复",
+            time: "2024-12-19",
           },
         ],
         message: "获取成功",

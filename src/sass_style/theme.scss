@@ -39,9 +39,9 @@ html[data-theme="dark"] {
   --text-color1: var(--text-color);
   --text-color7: #31c0eb;
   --text-color9: #{$text-color};
-  --bg1: #0b0909;
-  --bg2: #050505;
-  --bg3: #121111;
+  --bg1: #101010;
+  --bg2: #121111;
+  --bg3: var(--bg2);
   --bg4: var(--bg3);
   --bg5: var(--bg3);
   --bg6: var(--bg3);
@@ -51,11 +51,11 @@ html[data-theme="dark"] {
   --bg10: var(--bg3);
   --bg11: #{$text-color};
   --bg12: #{$bg12};
-  --border1: #2a2845;
-  --border2: #1f1b1b;
-  --border3: #2d2929;
-  --border4: #333;
+  --border1: #3a3a3a;
+  --border2: #424242;
+  --border3: #4a4a4a;
+  --border4: #525252;
   --border5: var(--border5);
   --border6: #{$text-color};
-  --border7: #333;
+  --border7: #525252;
 }

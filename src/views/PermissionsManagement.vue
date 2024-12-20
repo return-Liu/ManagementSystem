@@ -27,6 +27,9 @@
             placeholder="选择日期"
           ></el-date-picker>
         </el-form-item>
+        <el-form-item label="角色" prop=" roles">
+          <el-input v-model="form.roles"></el-input>
+        </el-form-item>
         <el-form-item label="状态" prop="status">
           <el-select v-model="form.status" placeholder="请选择">
             <el-option label="启用" value="1"></el-option>
@@ -75,6 +78,11 @@
               {{ scope.row.createTime }}
             </template>
           </el-table-column>
+          <el-table-column prop="createTime" label="角色">
+            <template slot-scope="scope">
+              {{ scope.row.roles }}
+            </template>
+          </el-table-column>
           <el-table-column prop="status" label="状态">
             <template slot-scope="scope">
               <el-tag :type="scope.row.status === '1' ? 'success' : 'danger'">
@@ -89,14 +97,16 @@
                 type="primary"
                 class="edit"
                 @click="handlereidt(scope.row)"
-                >编辑</span
+              >
+                <i class="el-icon-edit"></i> 编辑</span
               >
               <span
                 size="mini"
                 type="danger"
                 class="dangers"
                 @click="handlerDelete(scope.row)"
-                >删除</span
+              >
+                <i class="el-icon-delete"></i> 删除</span
               >
             </template>
           </el-table-column>
@@ -118,6 +128,7 @@ export default {
         permission: "",
         createTime: null,
         status: "",
+        roles: "",
         permissionType: "success", // 新增一个字段来控制标签类型
       },
       modelType: 0, // 0 新增 1 编辑
@@ -262,7 +273,7 @@ export default {
           });
         });
     },
-    handlerRemove(row) {
+    handlerDelete(row) {
       if (this.roles !== "超级管理员") {
         this.$message({
           type: "error",

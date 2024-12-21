@@ -228,23 +228,15 @@ export default {
       card: [
         {
           id: 0,
-          CardView:
-            "	https://img.alicdn.com/imgextra/i3/O1CN01QsTHmn1PNjPfl0ILH_!!6000000001829-2-tps-896-336.png",
+          CardView: "https://alp.alicdn.com/1679195662871-1060-562.jpg",
         },
         {
           id: 1,
-          CardView:
-            "https://img.alicdn.com/imgextra/i1/O1CN01nqwokR1jdZQRGgX27_!!6000000004571-2-tps-896-336.png",
+          CardView: "	https://alp.alicdn.com/1714233834197-1060-562.jpg",
         },
         {
           id: 2,
-          CardView:
-            "https://img.alicdn.com/imgextra/i3/O1CN010nhTE71WerXP5QAot_!!6000000002814-2-tps-896-336.png",
-        },
-        {
-          id: 3,
-          CardView:
-            "https://img.alicdn.com/imgextra/i1/O1CN01nqwokR1jdZQRGgX27_!!6000000004571-2-tps-896-336.png",
+          CardView: "https://alp.alicdn.com/1660612535589-1060-562.jpg",
         },
       ],
       // 快捷导航列表
@@ -335,7 +327,7 @@ export default {
 }
 .header {
   width: 1500px; /* 占满父元素宽度 */
-  height: 110px;
+  height: 115px;
   background: var(--bg10);
   border: var(--border1);
   position: relative;
@@ -350,7 +342,9 @@ export default {
     display: flex;
     align-items: center; /* 垂直居中 */
     padding-left: 20px; /* 左侧内边距 */
-    .avatar-img {
+    .avatar-img,
+    .mask,
+    label {
       width: 70px;
       height: 70px;
       border-radius: 50%;
@@ -358,22 +352,16 @@ export default {
     }
     .mask {
       position: absolute;
-      width: 70px;
-      height: 70px;
-      border-radius: 50%;
       transition: background 0.3s ease;
     }
     /* 头像上传样式 */
     label {
-      width: 70px;
-      height: 70px;
       line-height: 70px;
       opacity: 0;
       color: #7a6c6c;
       display: flex;
       align-items: center;
       justify-content: center;
-      transition: opacity 0.3s ease;
     }
     .mask:hover label {
       opacity: 1;
@@ -386,7 +374,6 @@ export default {
       cursor: pointer;
       background: rgba(0, 0, 0, 0.7);
     }
-
     .message {
       font-size: 16px; /* 文字大小 */
       margin-left: 10px; /* 左侧外边距 */
@@ -465,7 +452,6 @@ export default {
       justify-content: space-evenly;
       flex-wrap: wrap;
       color: var(--text-color9);
-
       .item {
         width: 250px;
         height: 200px;
@@ -551,7 +537,6 @@ export default {
       padding-top: 20px;
     }
   }
-
   ::v-deep .el-card__body {
     padding: 0;
   }

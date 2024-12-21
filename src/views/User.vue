@@ -137,7 +137,7 @@
         v-loading="loading"
         element-loading-text="拼命加载中"
         element-loading-spinner="el-icon-loading"
-        element-loading-background="rgba(0, 0, 0, 0.8)"
+        element-loading-background="rgba(0, 0, 0, 0.3)"
         style="width: 100%"
         @selection-change="handleSelect"
         @select="handleSelect"
@@ -603,6 +603,8 @@ export default {
       const illegalCharacters = /[^\w\s\u4e00-\u9fa5]/;
       if (illegalCharacters.test(this.userForm.name)) {
         this.$message.error("请输入合法字符");
+        // 将表格清空
+        this.tableData = [];
         return;
       }
       // 重置之前的错误提示标志（如果有的话）
@@ -611,6 +613,19 @@ export default {
       this.loading = true;
       try {
         await new Promise((reslove) => setTimeout(reslove, 2000));
+        // 判断是否是重复搜索
+        const currentTime = Date.now();
+        if (
+          this.lastSearchTime &&
+          this.lastSearchText === this.userForm.name &&
+          currentTime - this.lastSearchTime < 3000
+        ) {
+          this.$message.error("请不要重复输入搜索关键字，请在3秒后再试");
+          return;
+        }
+        // 更新上次搜索时间和关键字
+        this.lastSearchTime = currentTime;
+        this.lastSearchText = this.userForm.name;
         const response = await getUser({
           params: { ...this.userForm, ...this.pageData },
         });
@@ -619,6 +634,8 @@ export default {
           this.tableData = response.data.list;
           this.total = response.data.count || 0;
           this.$message.success("搜索成功！");
+          // 清空输入框
+          this.userForm.name = "";
         } else {
           // 没有数据匹配搜索条件，非错误情况，给予用户无结果提示
           this.$message.info("没有找到匹配的记录。");
@@ -684,10 +701,17 @@ export default {
     }
     .Ex_port {
       position: absolute;
-      left: 360px;
+      left: 365px;
       background-color: var(--bg4);
       border-color: var(--border4);
       color: var(--text-color1);
+    }
+    .el-form-item {
+      .el-input__inner {
+        background-color: var(--bg10);
+        color: var(--text-color9);
+        border-color: var(--border1);
+      }
     }
   }
   ::v-deep .el-table td.el-table__cell div {

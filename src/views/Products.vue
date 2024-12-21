@@ -153,7 +153,7 @@
         v-loading="loading"
         element-loading-text="拼命加载中"
         element-loading-spinner="el-icon-loading"
-        element-loading-background="rgba(0, 0, 0, 0.8)"
+        element-loading-background="rgba(0, 0, 0,0.3)"
         @selection-change="handleSelect"
         @select="handleSelect"
         style="width: 100%"
@@ -634,6 +634,8 @@ export default {
       const illegalCharacters = /[^\w\s\u4e00-\u9fa5]/;
       if (illegalCharacters.test(this.mallForm.name)) {
         this.$message.error("请输入合法字符");
+        // 将表格清空
+        this.tableData = [];
         return;
       }
       // 重置之前的错误提示标志（如果有的话）
@@ -643,18 +645,31 @@ export default {
       try {
         // 模拟延迟，以模拟搜索请求
         await new Promise((reslove) => setTimeout(reslove, 2000));
+        // 判断是否是重复搜索
+        const currentTime = Date.now();
+        if (
+          this.lastSearchTime &&
+          this.lastSearchText === this.mallForm.name &&
+          currentTime - this.lastSearchTime < 3000
+        ) {
+          this.$message.error("请不要重复输入搜索关键字，请在3秒后再试");
+          return;
+        }
+        // 更新上次搜索时间和关键字
+        this.lastSearchTime = currentTime;
+        this.lastSearchText = this.mallForm.name;
         // 调用获取列表的方法，并传递搜索参数 （包括表单参数, 分页参数）
         const response = await getMall({
           params: { ...this.mallForm, ...this.pageData },
         });
         // 判断响应中data里的列表或大于0
         if (response.data.list && response.data.list.length > 0) {
-          console.log(response.data.list);
-
           // 有数据就返回数据 更新表格数据
           this.tableData = response.data.list;
           this.total = response.data.count || 0;
           this.$message.success("搜索成功！");
+          // 清空输入框
+          this.mallForm.name = "";
         } else {
           // 没有数据匹配搜索条件，非错误情况，给予用户无结果提示
           this.$message.info("没有找到匹配的记录。");
@@ -725,7 +740,7 @@ export default {
     }
     .Ex_port {
       position: absolute;
-      left: 360px;
+      left: 365px;
       background-color: var(--bg4);
       border-color: var(--border4);
       color: var(--text-color1);

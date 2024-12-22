@@ -1,6 +1,12 @@
 <template>
   <div class="container">
-    <el-card style="background-color: var(--bg10); border: var(--border1)">
+    <el-card
+      style="
+        background-color: var(--bg10);
+        border: var(--border1);
+        border-radius: 10px;
+      "
+    >
       <div slot="header" class="clearfix">
         <span>个人信息</span>
       </div>

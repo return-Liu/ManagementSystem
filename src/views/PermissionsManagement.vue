@@ -315,6 +315,7 @@ export default {
   width: initial;
   background: var(--bg10);
   border: var(--border1);
+  border-radius: 10px;
 }
 .el-card__header {
   border: 0;

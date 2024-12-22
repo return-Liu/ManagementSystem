@@ -613,19 +613,6 @@ export default {
       this.loading = true;
       try {
         await new Promise((reslove) => setTimeout(reslove, 2000));
-        // 判断是否是重复搜索
-        const currentTime = Date.now();
-        if (
-          this.lastSearchTime &&
-          this.lastSearchText === this.userForm.name &&
-          currentTime - this.lastSearchTime < 3000
-        ) {
-          this.$message.error("请不要重复输入搜索关键字，请在3秒后再试");
-          return;
-        }
-        // 更新上次搜索时间和关键字
-        this.lastSearchTime = currentTime;
-        this.lastSearchText = this.userForm.name;
         const response = await getUser({
           params: { ...this.userForm, ...this.pageData },
         });

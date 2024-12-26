@@ -228,15 +228,19 @@ export default {
       card: [
         {
           id: 0,
-          CardView: "https://alp.alicdn.com/1679195662871-1060-562.jpg",
+          CardView: require("../assets/images/top-bg-1.png"),
         },
         {
           id: 1,
-          CardView: "	https://alp.alicdn.com/1714233834197-1060-562.jpg",
+          CardView: require("../assets/images/top-bg-2.png"),
         },
         {
           id: 2,
-          CardView: "https://alp.alicdn.com/1660612535589-1060-562.jpg",
+          CardView: require("../assets/images/top-bg-3.png"),
+        },
+        {
+          id: 3,
+          CardView: require("../assets/images/top-bg-4.png"),
         },
       ],
       // 快捷导航列表

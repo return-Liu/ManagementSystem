@@ -34,9 +34,22 @@ export const headerMixin = {
       const backgroundColorMap = {
         "top-black": "#2F273B",
         "top-white": "#77CB29",
+        "top-bg1": this.background_bg_1,
+        "top-bg2": this.background_bg_2,
+        "top-bg3": this.background_bg_3,
+        "top-bg4": this.background_bg_4,
       };
+      console.log(item);
       if (backgroundColorMap[item]) {
-        headerContainer.style.backgroundColor = backgroundColorMap[item];
+        if (item.startsWith("top-bg")) {
+          // 如果是背景图片，清除背景颜色
+          headerContainer.style.backgroundImage = `url(${backgroundColorMap[item]})`;
+          headerContainer.style.backgroundColor = "transparent"; // 确保背景颜色透明
+        } else {
+          // 如果是颜色，清除背景图片
+          headerContainer.style.backgroundImage = "none";
+          headerContainer.style.backgroundColor = backgroundColorMap[item];
+        }
       }
       const sidebarBackgroundMap = {
         left: "rgb(48, 70, 92)",

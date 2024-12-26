@@ -65,6 +65,7 @@
               height: 35px;
               color: white;
               margin-top: 30px;
+              flex-wrap: wrap;
             "
           >
             <div class="container" @click="selectItem('left')">
@@ -95,6 +96,50 @@
                 ></i>
               </div>
             </div>
+            <div class="container-header-bg" @click="selectItem('top-bg1')">
+              <div
+                class="content-headers-bg"
+                :style="{ backgroundImage: `url(${background_bg_1})` }"
+              >
+                <i
+                  v-show="selectedItem === 'top-bg1'"
+                  class="el-icon-check"
+                ></i>
+              </div>
+            </div>
+            <div class="container-header-bg" @click="selectItem('top-bg2')">
+              <div
+                class="content-headers-bg"
+                :style="{ backgroundImage: `url(${background_bg_2})` }"
+              >
+                <i
+                  v-show="selectedItem === 'top-bg2'"
+                  class="el-icon-check"
+                ></i>
+              </div>
+            </div>
+            <div class="container-header-bg" @click="selectItem('top-bg3')">
+              <div
+                class="content-headers-bg"
+                :style="{ backgroundImage: `url(${background_bg_3})` }"
+              >
+                <i
+                  v-show="selectedItem === 'top-bg3'"
+                  class="el-icon-check"
+                ></i>
+              </div>
+            </div>
+            <div class="container-header-bg" @click="selectItem('top-bg4')">
+              <div
+                class="content-headers-bg"
+                :style="{ backgroundImage: `url(${background_bg_4})` }"
+              >
+                <i
+                  v-show="selectedItem === 'top-bg4'"
+                  class="el-icon-check"
+                ></i>
+              </div>
+            </div>
           </div>
         </div>
         <div
@@ -103,7 +148,7 @@
             width: 500px;
             height: 1px;
             background-color: #ccc;
-            margin-top: 60px;
+            margin-top: 150px;
           "
         ></div>
         <div class="System_Theme" :class="{ disabled: value3 }">
@@ -265,7 +310,7 @@
           <div
             class=""
             style="
-              margin-top: 30px;
+              margin-top: 20px;
               color: #000;
               display: flex;
               justify-content: center;
@@ -321,6 +366,10 @@ export default {
       selectedItems: "left",
       isDisabled: false,
       iconClass: localStorage.getItem("icon") || "el-icon-moon",
+      background_bg_1: require("../assets/images/top-bg-1.png"),
+      background_bg_2: require("../assets/images/top-bg-2.png"),
+      background_bg_3: require("../assets/images/top-bg-3.png"),
+      background_bg_4: require("../assets/images/top-bg-4.png"),
     };
   },
   created() {
@@ -506,14 +555,8 @@ export default {
     left: 20px;
     border-bottom-right-radius: 5px;
   }
-  .content .el-icon-check {
-    display: flex;
-    justify-content: center;
-    color: blue;
-    align-items: center;
-    line-height: 40px;
-  }
-  .container-header {
+  .container-header,
+  .container-header-bg {
     width: 60px;
     height: 50px;
     background-color: #eeeaf3;
@@ -521,27 +564,43 @@ export default {
     margin-top: 30px;
     margin-left: 50px;
   }
+  .content-headers-bg {
+    height: 20px;
+    width: 60px;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+  }
+  .container-header-bg .el-icon-check,
   .content-header .el-icon-check,
   .content-headers .el-icon-check {
     display: flex;
     justify-content: center;
     color: blue;
     align-items: center;
-    line-height: 70px;
+    line-height: 60px;
   }
-  .content-headers {
-    height: 15px;
-    width: 60px;
-    background-color: #77cb29;
-    border-top-left-radius: 5px;
-    border-top-right-radius: 5px;
+  .content .el-icon-check {
+    display: flex;
+    justify-content: center;
+    color: blue;
+    align-items: center;
+    line-height: 30px;
   }
+  .content-headers,
   .content-header {
     height: 15px;
     width: 60px;
-    background-color: #2f273b;
     border-top-left-radius: 5px;
     border-top-right-radius: 5px;
+  }
+  .content-headers {
+    background-color: #77cb29;
+  }
+  .content-header {
+    background-color: #2f273b;
   }
   .Theme-Color div {
     width: 30px;

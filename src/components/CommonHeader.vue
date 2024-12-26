@@ -54,7 +54,7 @@
             class="Style-Settings"
             style="display: flex; justify-content: center; color: #000"
           >
-            主题风格模式
+            主题风格模式(颜色与背景)
           </div>
           <div
             class="Style"
@@ -483,6 +483,9 @@ export default {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  background-size: cover; /* 确保图片覆盖整个区域 */
+  background-repeat: no-repeat; /* 防止图片重复 */
+  background-position: center; /* 确保图片居中 */
   .title {
     color: var(--text-color1);
     font-size: 14px;

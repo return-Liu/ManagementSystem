@@ -102,16 +102,7 @@
           :class="{ 'color-deficiency-mode': value3 }"
           v-show="DataList"
           class="DataList"
-          style="
-            background: var(--bg9);
-            color: var(--text-color9);
-            width: 850px;
-            height: 350px;
-            position: fixed;
-            left: 200px;
-            z-index: 999;
-            top: 500px;
-          "
+          :style="{ backgroundImage: `url(${background_bg_1})` }"
         >
           <p class="moreList" style="text-align: center; margin-top: 10px">
             项目更多列表 尽在处理优化中
@@ -146,18 +137,10 @@
           </div>
         </el-card>
         <el-card
+          class="NewList"
           :class="{ 'color-deficiency-mode': value3 }"
           v-show="moreList"
-          style="
-            background: var(--bg9);
-            color: var(--text-color9);
-            width: 850px;
-            height: 350px;
-            position: fixed;
-            left: 200px;
-            z-index: 999;
-            top: 500px;
-          "
+          :style="{ backgroundImage: `url(${background_bg_1})` }"
         >
           <p class="moreList" style="text-align: center; margin-top: 10px">
             动态更多列表 尽在处理优化中
@@ -223,6 +206,7 @@ export default {
   name: "Home",
   data() {
     return {
+      background_bg_1: require("../assets/images/top-bg-1.png"),
       value3: localStorage.getItem("deficiency") === "true",
       // 轮播图列表
       card: [
@@ -481,6 +465,17 @@ export default {
       }
     }
   }
+  .DataList,
+  .NewList {
+    color: var(--text-color9);
+    width: 850px;
+    height: 350px;
+    position: fixed;
+    left: 200px;
+    z-index: 999;
+    top: 500px;
+  }
+
   .el-card {
     border: 0;
   }

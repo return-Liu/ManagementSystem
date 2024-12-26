@@ -17,7 +17,12 @@
           src="https://mumu-fe.fp.ps.netease.com/file/66ebea2b818b7af1bea07601HVJLgDNt05"
         ></video>
       </div>
-      <el-form label-width="70px" :model="form" class="login-form">
+      <el-form
+        label-width="70px"
+        :model="form"
+        class="login-form"
+        :style="{ backgroundImage: `url(${background_bg_1})` }"
+      >
         <h3 class="login-title">快捷登录</h3>
         <i class="el-icon el-icon-close" @click="loginClose"></i>
         <el-form-item prop="username">
@@ -67,6 +72,7 @@ export default {
   name: "Login",
   data() {
     return {
+      background_bg_1: require("../assets/images/top-bg-1.png"),
       isVideo: true,
       form: {
         username: "",
@@ -83,6 +89,10 @@ export default {
       this.alertVisible = false;
     }
   },
+  destroyed() {
+    // 在组件销毁时移除事件监听器
+    document.removeEventListener("keydown", this.onKeyPress);
+  },
   mounted() {
     document.addEventListener("keydown", this.onKeyPress);
   },
@@ -95,13 +105,10 @@ export default {
         this.login();
       }
     },
-    // 七天免登录
     handlerLogin() {
       const ElLogin = document.querySelector(".login-form");
       ElLogin.style.display = "block";
       this.isVideo = false;
-      // 设置七天免登录
-      // 跳转首页
     },
     loginClose() {
       const ElLogin = document.querySelector(".login-form");
@@ -238,7 +245,6 @@ export default {
   margin: 0 auto;
   padding: 35px 35px 25px 35px;
   border-radius: 15px;
-  background: var(--bg12);
   box-sizing: border-box;
   position: relative;
   display: none;

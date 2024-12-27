@@ -419,7 +419,7 @@ export default {
       });
     },
     async handlerEdit(row) {
-      if (this.roles !== "超级管理员") {
+      if (this.roles !== "前端开发管理组") {
         this.handlerDialog();
         return;
       }
@@ -444,7 +444,7 @@ export default {
     },
     // 删除功能
     async handlerDelete(row) {
-      if (this.roles !== "超级管理员") {
+      if (this.roles !== "前端开发管理组") {
         this.handlerDialog();
         return;
       }
@@ -481,7 +481,7 @@ export default {
     },
     // 批量删除
     async hanlderReomve() {
-      if (this.roles !== "超级管理员") {
+      if (this.roles !== "前端开发管理组") {
         this.handlerDialog();
         return;
       }
@@ -541,7 +541,7 @@ export default {
       }
     },
     async handleAdd() {
-      if (this.roles !== "超级管理员") {
+      if (this.roles !== "前端开发管理组") {
         this.handlerDialog();
         return;
       }

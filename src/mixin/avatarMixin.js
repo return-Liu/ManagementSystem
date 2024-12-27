@@ -55,7 +55,7 @@ export const avatarMixin = {
         this.showMessage("用户获取失败 请重新登录", "warning");
         return false;
       }
-      if (!this.roles.includes("超级管理员")) {
+      if (!this.roles.includes("前端开发管理组")) {
         this.showMessage("亲，您的权限不足", "error");
         return false;
       }

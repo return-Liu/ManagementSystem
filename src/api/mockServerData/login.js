@@ -7,7 +7,7 @@ const avatar =
 const user_data = {
   admin: {
     uid: nanoid(),
-    roles: "超级管理员",
+    roles: "前端开发管理组",
     avatar,
     menu: [
       {
@@ -68,16 +68,16 @@ const user_data = {
     ],
   },
   user: {
-    roles: "普通管理员",
+    roles: "普通管理组",
     uid: nanoid(),
     avatar,
     menu: [],
   },
   guest: {
     uid: nanoid(),
-    roles: "普通用户",
+    roles: "普通用户组",
     avatar,
-    messages: "此账号仅可查看 支持一些功能，不可操作",
+    messages: "普通用户组 对功能没有权限更改",
     menu: [],
   },
 };

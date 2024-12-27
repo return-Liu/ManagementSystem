@@ -172,7 +172,7 @@ export default {
       return `${y}-${m}-${d}`;
     },
     handlerAdd() {
-      if (this.roles !== "超级管理员") {
+      if (this.roles !== "前端开发管理组") {
         this.$message({
           type: "error",
           message: "亲，您的权限不足",
@@ -246,7 +246,7 @@ export default {
       });
     },
     handlereidt(row) {
-      if (this.roles !== "超级管理员") {
+      if (this.roles !== "前端开发管理组") {
         this.$message({
           type: "error",
           message: "亲，您的权限不足",
@@ -274,7 +274,7 @@ export default {
         });
     },
     handlerDelete(row) {
-      if (this.roles !== "超级管理员") {
+      if (this.roles !== "前端开发管理组") {
         this.$message({
           type: "error",
           message: "亲，您的权限不足",

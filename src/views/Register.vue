@@ -1,7 +1,6 @@
 <template>
   <div class="login" :class="{ 'register-page': true }">
     <el-form
-      :style="{ backgroundImage: `url(${background_bg_1})` }"
       ref="form"
       label-width="70px"
       :inline="true"
@@ -69,7 +68,6 @@ export default {
   name: "Register",
   data() {
     return {
-      background_bg_1: require("../assets/images/top-bg-1.png"),
       passwordError: false,
       form: {
         username: "",
@@ -190,6 +188,7 @@ export default {
   border-radius: 15px;
   box-sizing: border-box;
   position: relative;
+  background: var(--bg12);
   top: 200px;
   .el-icon-back {
     color: var(--text-color7);

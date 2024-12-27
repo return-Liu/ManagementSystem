@@ -9,6 +9,7 @@
       style="padding-right: 10px"
       class="animate__animated animate__fadeIn"
     >
+      <div class="overlay" v-show="moreList || DataList"></div>
       <el-card class="header" :class="{ 'color-deficiency-mode': value3 }">
         <h6
           class="avatar-name"
@@ -102,17 +103,16 @@
           :class="{ 'color-deficiency-mode': value3 }"
           v-show="DataList"
           class="DataList"
-          :style="{ backgroundImage: `url(${background_bg_1})` }"
         >
           <p class="moreList" style="text-align: center; margin-top: 10px">
-            项目更多列表 尽在处理优化中
+            {{ currentTip }}
           </p>
           <i
             @click="moreClose"
             class="el-icon-close"
             style="position: absolute; cursor: pointer; top: 10px; right: 10px"
           ></i>
-          <div style="overflow-y: scroll; height: 250px" class="Morelist">
+          <div style="overflow-y: scroll; height: 400px" class="Morelist">
             <div
               class="list-item"
               style="margin-top: 40px"
@@ -140,17 +140,16 @@
           class="NewList"
           :class="{ 'color-deficiency-mode': value3 }"
           v-show="moreList"
-          :style="{ backgroundImage: `url(${background_bg_1})` }"
         >
           <p class="moreList" style="text-align: center; margin-top: 10px">
-            动态更多列表 尽在处理优化中
+            {{ currentTip }}
           </p>
           <i
             @click="moreClose"
             class="el-icon-close"
             style="position: absolute; cursor: pointer; top: 10px; right: 10px"
           ></i>
-          <div style="overflow-y: scroll; height: 250px" class="Morelist">
+          <div style="overflow-y: scroll; height: 400px" class="Morelist">
             <div
               class="list-item"
               style="margin-top: 20px"
@@ -206,25 +205,23 @@ export default {
   name: "Home",
   data() {
     return {
-      background_bg_1: require("../assets/images/top-bg-1.png"),
       value3: localStorage.getItem("deficiency") === "true",
       // 轮播图列表
       card: [
         {
           id: 0,
-          CardView: require("../assets/images/top-bg-1.png"),
+          CardView:
+            "	https://qzonestyle.gtimg.cn/qzone/qzactStatics/imgs/20171123181522_c48800.jpg",
         },
         {
           id: 1,
-          CardView: require("../assets/images/top-bg-2.png"),
+          CardView:
+            "	https://qzonestyle.gtimg.cn/qzone/qzactStatics/imgs/20171122191630_ff8fef.jpg",
         },
         {
           id: 2,
-          CardView: require("../assets/images/top-bg-3.png"),
-        },
-        {
-          id: 3,
-          CardView: require("../assets/images/top-bg-4.png"),
+          CardView:
+            "	https://qzonestyle.gtimg.cn/qzone/qzactStatics/imgs/20171122191532_f2975b.jpg",
         },
       ],
       // 快捷导航列表
@@ -235,6 +232,7 @@ export default {
         { id: 4, name: "高德地图" },
         { id: 5, name: "权限管理" },
       ],
+      currentTip: "", // 存储更多列表标题信息
       // 动态更多列表
       moreList: false,
       // 项目更多列表
@@ -287,18 +285,30 @@ export default {
   methods: {
     handlerListMore() {
       this.DataList = true;
+      this.currentTip = "项目更多列表 尽在处理优化中";
     },
     handlerMore() {
       this.moreList = true;
+      this.currentTip = "动态更多列表 尽在处理优化中";
     },
     moreClose() {
       this.moreList = false;
       this.DataList = false;
+      this.currentTip = ""; // 关闭时清空提示信息
     },
   },
 };
 </script>
 <style lang="less" scoped>
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 998; /* 确保遮罩层在内容之上，但在更多列表之下 */
+}
 .color-deficiency-mode {
   --bg10: #f9f9f9; /* 更柔和的背景颜色 */
   --text-color9: #333333; /* 更深的文字颜色 */
@@ -469,13 +479,16 @@ export default {
   .NewList {
     color: var(--text-color9);
     width: 850px;
-    height: 350px;
+    height: 400px;
     position: fixed;
-    left: 200px;
+    left: 550px;
     z-index: 999;
-    top: 500px;
+    top: 330px;
+    background: url(https://qzonestyle.gtimg.cn/qzone/qzactStatics/imgs/20171122191532_f2975b.jpg);
+    background-size: 100% 100%; /* 确保图片覆盖整个区域 */
+    background-repeat: no-repeat; /* 防止图片重复 */
+    background-position: center; /* 确保图片居中 */
   }
-
   .el-card {
     border: 0;
   }

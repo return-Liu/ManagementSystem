@@ -36,6 +36,12 @@
           :class="iconClass"
           :title="titleTheme"
         ></i>
+        <i
+          @click="applySystemTheme"
+          v-show="theme === 'system'"
+          :class="iconClass"
+          :title="titleTheme"
+        ></i>
       </div>
       <div
         class="iconfont icon-tubiao-"
@@ -421,6 +427,11 @@ export default {
           break;
       }
     },
+    // 获取主题的功能 增强代码的复用 减少代码重复
+    handlerTheme(theme) {
+      this.setTheme(theme);
+    },
+
     handleSelfCenter() {
       if (this.roles.includes("超级管理员")) {
         this.$router.push({ name: "personalcenter" });

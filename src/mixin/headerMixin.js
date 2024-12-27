@@ -1,9 +1,5 @@
 export const headerMixin = {
   methods: {
-    // 获取主题的功能 增强代码的复用 减少代码重复
-    handlerTheme(theme) {
-      this.setTheme(theme);
-    },
     setTheme(theme) {
       this.theme = theme;
       document.documentElement.setAttribute("data-theme", theme);
@@ -23,10 +19,7 @@ export const headerMixin = {
       const prefersDarkScheme = window.matchMedia(
         "(prefers-color-scheme: dark)"
       ).matches;
-      document.documentElement.setAttribute(
-        "data-theme",
-        prefersDarkScheme ? "dark" : "light"
-      );
+      this.setTheme(prefersDarkScheme ? "dark" : "light");
     },
     selectItem(item) {
       this.selectedItem = item;

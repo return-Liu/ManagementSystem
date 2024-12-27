@@ -17,12 +17,7 @@
           src="https://mumu-fe.fp.ps.netease.com/file/66ebea2b818b7af1bea07601HVJLgDNt05"
         ></video>
       </div>
-      <el-form
-        label-width="70px"
-        :model="form"
-        class="login-form"
-        :style="{ backgroundImage: `url(${background_bg_1})` }"
-      >
+      <el-form label-width="70px" :model="form" class="login-form">
         <h3 class="login-title">快捷登录</h3>
         <i class="el-icon el-icon-close" @click="loginClose"></i>
         <el-form-item prop="username">
@@ -72,7 +67,6 @@ export default {
   name: "Login",
   data() {
     return {
-      background_bg_1: require("../assets/images/top-bg-1.png"),
       isVideo: true,
       form: {
         username: "",
@@ -248,6 +242,7 @@ export default {
   box-sizing: border-box;
   position: relative;
   display: none;
+  background: var(--bg12);
   z-index: 1000;
   top: 200px;
   .el-form-item {

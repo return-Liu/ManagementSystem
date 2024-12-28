@@ -1,65 +1,43 @@
 <template>
-  <div class="login" :class="{ 'register-page': true }">
-    <el-form
-      ref="form"
-      label-width="70px"
-      :inline="true"
-      class="login-container"
-      :model="form"
-    >
-      <i class="el-icon-back" title="返回" @click="returnClick"></i>
-      <h3 class="login-title">快捷注册</h3>
-      <el-form-item prop="username">
-        <el-input
-          v-model="form.username"
-          prefix-icon="el-icon-user"
-          placeholder="请输入账号"
-        ></el-input>
-      </el-form-item>
-      <el-form-item prop="password">
-        <el-input
-          prefix-icon="el-icon-lock"
-          :type="showPassword ? 'text' : 'password'"
-          v-model="form.password"
-          placeholder="请输入密码"
-          @keyup.enter="register"
+  <div class="part">
+    <div class="register-container">
+      <el-card
+        class="box-card"
+        :style="{ backgroundImage: `url(${login_bg})` }"
+      >
+        <div class="register-title">快捷注册</div>
+        <el-form
+          :model="form"
+          status-icon
+          ref="form"
+          label-width="100px"
+          class="demo-ruleForm"
         >
-        </el-input>
-        <i
-          class="el-icon-view"
-          :class="{
-            'iconfont icon-biyan': !showPassword,
-            'iconfont icon-zhengyan': showPassword,
-          }"
-          @click="togglePasswordVisibility('password')"
-        ></i>
-      </el-form-item>
-      <el-form-item prop="passwords">
-        <el-input
-          prefix-icon="el-icon-lock"
-          :type="showConfirmPassword ? 'text' : 'password'"
-          v-model="form.passwords"
-          placeholder="请再次输入密码"
-          @keyup.enter="register"
-        >
-        </el-input>
-        <i
-          class="el-icon-view"
-          :class="{
-            'iconfont icon-biyan': !showConfirmPassword,
-            'iconfont icon-zhengyan': showConfirmPassword,
-          }"
-          @click="togglePasswordVisibility('confirmPassword')"
-        ></i>
-      </el-form-item>
-      <el-form-item>
-        <el-button type="primary" class="register" @click="register"
-          >注册</el-button
-        >
-      </el-form-item>
-    </el-form>
+          <el-form-item label="账号" prop="account">
+            <el-input type="text" v-model="form.account"></el-input>
+          </el-form-item>
+          <el-form-item label="密码" prop="password">
+            <el-input type="password" v-model="form.password"></el-input>
+          </el-form-item>
+          <el-form-item label="验证码" prop="code">
+            <el-input type="text" v-model="form.code">
+              <template #append>
+                <el-button @click="getCode">获取验证码</el-button>
+              </template>
+            </el-input>
+          </el-form-item>
+
+          <el-form-item>
+            <el-button type="primary" class="resister-btn" @click="resister"
+              >注册</el-button
+            >
+          </el-form-item>
+        </el-form>
+      </el-card>
+    </div>
   </div>
 </template>
+
 <script>
 import { getRegister } from "../api";
 export default {
@@ -68,158 +46,110 @@ export default {
   name: "Register",
   data() {
     return {
-      passwordError: false,
+      login_bg: require("@/assets/images/app=49&f=JPEG&fm=173&fmt=auto&u=3666850970,953079923.jpg"),
       form: {
-        username: "",
+        account: "",
         password: "",
-        passwords: "",
+        code: "",
       },
-      showPassword: false, // 控制第一个密码输入框的显示
-      showConfirmPassword: false, // 控制第二个密码输入框的显示
     };
   },
+  destroyed() {
+    // 在组件销毁时移除事件监听器
+    document.removeEventListener("keydown", this.onKeyPress);
+  },
   mounted() {
-    // 监听键盘事件
     document.addEventListener("keydown", this.onKeyPress);
   },
   beforeDestroy() {
-    // 销毁监听键盘事件
     document.removeEventListener("keydown", this.onKeyPress);
   },
   methods: {
-    // 判断事件
     onKeyPress(e) {
-      // 如果e.key是回车
       if (e.key === "Enter") {
-        // 直接注册
-        this.register();
-      } else {
-        // 否则退出
-        return;
+        this.resister();
       }
     },
-    // 返回
-    returnClick() {
-      // 跳转回登录页
-      this.$router.push("login/index");
-    },
-    togglePasswordVisibility(type) {
-      if (type === "password") {
-        this.showPassword = !this.showPassword;
-      } else if (type === "confirmPassword") {
-        this.showConfirmPassword = !this.showConfirmPassword;
-      }
-    },
-    register() {
-      // 判断校验
-      if (!this.form.username) {
-        this.$notify({
-          title: "账号信息",
-          message: "请输入账号",
-          type: "error",
-        });
+    // 注册
+    resister() {
+      if (!this.form.account) {
+        this.showAlert("请输入账号", "error");
         return;
       }
       if (!this.form.password) {
-        this.$notify({
-          title: "密码信息",
-          message: "请输入密码",
-          type: "error",
-        });
+        this.showAlert("请输入密码", "error");
         return;
       }
-      if (!this.form.passwords) {
-        this.$notify({
-          title: "密码信息",
-          message: "请再次输入密码",
-          type: "error",
-        });
-        return;
-      }
-      if (this.form.password !== this.form.passwords) {
-        this.$notify({
-          title: "密码信息",
-          message: "两次密码不一致 请重新输入",
-          type: "error",
-        });
+      // 验证码
+      if (!this.form.code) {
+        this.showAlert("请输入验证码", "error");
         return;
       }
       getRegister(this.form)
         .then(({ data }) => {
-          console.log("注册返回数据:", data, "账号密码", this.form);
+          console.log("返回返回数据:", data, "账号密码", this.form);
+          // 跳转至登录
           if (data.code === 200) {
-            this.$notify({
-              title: "提示",
-              message: "注册成功",
-              type: "success",
-            });
-            this.$router.push("login/index");
+            this.showAlert("注册成功", "success");
+            this.$router.push("/login/index");
           } else {
-            this.$notify({
-              title: "警告",
-              message: "注册失败 请重新输入",
-              type: "error",
-            });
+            this.showAlert("注册失败", "error");
           }
         })
         .catch((error) => {
-          console.error("注册请求失败:", error);
-          this.$notify({
-            title: "错误",
-            message: "注册请求失败，请稍后再试",
-            type: "error",
-          });
+          console.log("错误信息:", error);
         });
+    },
+    getCode() {
+      console.log("获取验证码");
+      // 随机数
+      this.form.code = Math.floor(Math.random() * 1000000);
+      console.log(this.form.code);
+    },
+    // 显示提示框
+    showAlert(message) {
+      this.alertVisible = true;
+      this.$message({
+        message,
+        type,
+      });
     },
   },
 };
 </script>
 <style scoped lang="less">
-// 为了确保注册页面(register.vue)不受全局body样式的影响
-.register-page {
-  background: radial-gradient(ellipse at bottom, #1b2753 0%, #090a0f 100%);
-  width: 100%;
+.part {
   height: 100vh;
+  background: #fff;
 }
-.login-container {
-  width: 350px;
-  margin: 0 auto;
-  padding: 35px 35px 25px 35px;
-  border-radius: 15px;
-  box-sizing: border-box;
-  position: relative;
+.register-container,
+.box-card {
+  width: 480px;
+  transform: translateX(70%) translateY(10%);
+  height: 620px;
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  background-position: center;
+  border-radius: 10px;
+}
+.register-title {
+  text-align: center;
+  margin-top: 100px;
+  padding: 20px;
+  font-size: 30px;
   background: var(--bg12);
-  top: 200px;
-  .el-icon-back {
-    color: var(--text-color7);
-    font-size: 20px;
-  }
-  .login-title {
-    text-align: center;
-    margin-bottom: 40px;
-    background: var(--bg9);
-    background-clip: text;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-  }
-  .el-input {
-    width: 198px;
-    position: relative;
-    left: 40px;
-  }
-  .el-icon-view {
-    position: absolute;
-    right: -30px;
-    top: 13px;
-    cursor: pointer;
-    color: var(--text-color7);
-  }
-  .register {
-    margin: 0 40px;
-    width: 200px;
-    background: var(--bg11);
-    color: var(--text-color7);
-    border-color: var(--border6);
-  }
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.el-form {
+  margin-right: 70px;
+}
+.resister-btn {
+  width: 100%;
+  background-color: #409eff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  height: 40px;
 }
 </style>

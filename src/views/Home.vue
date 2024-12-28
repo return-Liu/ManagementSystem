@@ -104,15 +104,11 @@
           v-show="DataList"
           class="DataList"
         >
-          <p class="moreList" style="text-align: center; margin-top: 10px">
+          <p class="moreList">
             {{ currentTip }}
           </p>
-          <i
-            @click="moreClose"
-            class="el-icon-close"
-            style="position: absolute; cursor: pointer; top: 10px; right: 10px"
-          ></i>
-          <div style="overflow-y: scroll; height: 400px" class="Morelist">
+          <i @click="moreClose" class="el-icon-close"></i>
+          <div class="Morelist">
             <div
               class="list-item"
               style="margin-top: 40px"
@@ -141,15 +137,11 @@
           :class="{ 'color-deficiency-mode': value3 }"
           v-show="moreList"
         >
-          <p class="moreList" style="text-align: center; margin-top: 10px">
+          <p class="moreList">
             {{ currentTip }}
           </p>
-          <i
-            @click="moreClose"
-            class="el-icon-close"
-            style="position: absolute; cursor: pointer; top: 10px; right: 10px"
-          ></i>
-          <div style="overflow-y: scroll; height: 400px" class="Morelist">
+          <i @click="moreClose" class="el-icon-close"></i>
+          <div class="Morelist">
             <div
               class="list-item"
               style="margin-top: 20px"
@@ -481,13 +473,18 @@ export default {
     width: 850px;
     height: 400px;
     position: fixed;
-    left: 550px;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
     z-index: 999;
-    top: 330px;
     background: url(https://qzonestyle.gtimg.cn/qzone/qzactStatics/imgs/20171122191532_f2975b.jpg);
     background-size: 100% 100%; /* 确保图片覆盖整个区域 */
     background-repeat: no-repeat; /* 防止图片重复 */
     background-position: center; /* 确保图片居中 */
+  }
+  .moreList {
+    text-align: center;
+    margin-top: 10px;
   }
   .el-card {
     border: 0;
@@ -593,5 +590,16 @@ export default {
 }
 .el-icon-close:hover {
   animation: blink 0.5s linear;
+}
+.el-icon-close {
+  position: absolute;
+  cursor: pointer;
+  top: 10px;
+  right: 10px;
+}
+.Morelist {
+  overflow-y: scroll;
+  height: 350px;
+  width: 850px;
 }
 </style>

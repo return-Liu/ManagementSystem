@@ -1,15 +1,21 @@
 export const headerMixin = {
   methods: {
+    // 获取主题的功能 增强代码的复用 减少代码重复
+    handlerTheme(theme) {
+      if (theme === "system") {
+        this.applySystemTheme();
+      } else {
+        this.setTheme(theme);
+      }
+    },
     setTheme(theme) {
       this.theme = theme;
       document.documentElement.setAttribute("data-theme", theme);
       localStorage.setItem("theme", theme);
       const iconMap = {
-        dark: "el-icon-sunny",
-        light: "el-icon-moon",
-        system: window.matchMedia("(prefers-color-scheme: dark)").matches
-          ? "el-icon-moon"
-          : "el-icon-sunny",
+        dark: "el-icon-sunny", // 深色模式时图标为太阳
+        light: "el-icon-moon", // 浅色模式时图标为月亮
+        system: "el-icon-moon", // 系统模式时图标为月亮
       };
       this.iconClass = iconMap[theme];
       localStorage.setItem("icon", this.iconClass);
@@ -19,7 +25,11 @@ export const headerMixin = {
       const prefersDarkScheme = window.matchMedia(
         "(prefers-color-scheme: dark)"
       ).matches;
-      this.setTheme(prefersDarkScheme ? "dark" : "light");
+      if (prefersDarkScheme) {
+        this.setTheme("dark"); // 系统为深色时，切换到深色模式
+      } else {
+        this.setTheme("light"); // 系统为浅色时，切换到浅色模式
+      }
     },
     selectItem(item) {
       this.selectedItem = item;

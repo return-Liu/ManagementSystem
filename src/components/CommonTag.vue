@@ -11,17 +11,18 @@
       {{ item.lable }}
     </el-tag>
     <div class="message-title">
-      <span v-show="roles.includes('普通用户')">{{ messages }}</span>
+      <span v-if="roles && roles.includes('普通用户')">{{ messages }}</span>
     </div>
   </div>
 </template>
+
 <script>
 import { mapState, mapMutations } from "vuex";
 export default {
   name: "CommonTag",
   data() {
     return {
-      roles: "",
+      roles: "", // 初始化 roles 属性
       messages: "",
     };
   },
@@ -48,12 +49,11 @@ export default {
       if (item.name !== this.$route.name) {
         return;
       }
-      //   表示的是删除的最后一项 则跳转至前一项
-      if (index === length) {
+      // 表示的是删除的最后一项 则跳转至前一项
+      if (index === length - 1) {
         this.$router.push({
-          name: this.tag[length - 1].name,
+          name: this.tag[length - 2].name,
         });
-        // 如果删除是中间一项 则跳转到最后一项
       } else {
         this.$router.push({
           name: this.tag[index].name,
@@ -62,9 +62,9 @@ export default {
     },
     load() {
       const messages = localStorage.getItem("messages");
-      this.messages = messages;
+      this.messages = messages || ""; // 添加默认值
       const roles = localStorage.getItem("roles");
-      this.roles = roles;
+      this.roles = roles || ""; // 添加默认值
     },
   },
   created() {
@@ -72,6 +72,7 @@ export default {
   },
 };
 </script>
+
 <style lang="less" scoped>
 .tabs {
   padding: 20px;

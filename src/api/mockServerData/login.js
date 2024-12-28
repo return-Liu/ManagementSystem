@@ -109,14 +109,14 @@ export default {
     }
 
     // 验证请求体
-    if (!requestBody || !requestBody.username || !requestBody.password) {
+    if (!requestBody || !requestBody.account || !requestBody.password) {
       return { code: -2, data: { message: ERROR_MESSAGES.MISSING_PARAMS } };
     }
 
-    const { username, password } = requestBody;
+    const { account, password } = requestBody;
 
     // 验证用户
-    if (username === "admin" && password === "123456") {
+    if (account === "admin" && password === "123456") {
       const userData = user_data.admin;
       return {
         code: 200,
@@ -126,7 +126,7 @@ export default {
           message: "获取成功",
         },
       };
-    } else if (username === "user" && password === "123456") {
+    } else if (account === "user" && password === "123456") {
       const userData = user_data.user;
       return {
         code: 200,

@@ -37,7 +37,7 @@
           :title="titleTheme"
         ></i>
         <i
-          @click="applySystemTheme"
+          @click="handlerTheme('system')"
           v-show="theme === 'system'"
           :class="iconClass"
           :title="titleTheme"
@@ -176,7 +176,7 @@
             <div
               class="ocs-theme"
               :class="{ active: theme === 'system' }"
-              @click="setTheme('system')"
+              @click="handlerTheme('system')"
             >
               <p>
                 <span>深色模式跟随系统</span>
@@ -187,7 +187,7 @@
               <div
                 class="light-theme"
                 :class="{ active: theme === 'light' }"
-                @click="setTheme('light')"
+                @click="handlerTheme('light')"
               >
                 <p>
                   <span>浅色模式</span>
@@ -197,7 +197,7 @@
               <div
                 class="dark-theme"
                 :class="{ active: theme === 'dark' }"
-                @click="setTheme('dark')"
+                @click="handlerTheme('dark')"
               >
                 <p>
                   <span>深色模式</span>
@@ -312,7 +312,6 @@
           >
             <div class="Settings">其他模式</div>
           </div>
-
           <div
             class=""
             style="
@@ -381,6 +380,7 @@ export default {
   created() {
     this.loadRoles();
     this.selectedItem = this.selectedItems;
+    // this.applySystemTheme(); // 应用系统主题
     this.$root.$on("updateSidebarDeficiency", (newDeficiency) => {
       // 控制色弱模式
       this.value3 = newDeficiency;
@@ -427,11 +427,6 @@ export default {
           break;
       }
     },
-    // 获取主题的功能 增强代码的复用 减少代码重复
-    handlerTheme(theme) {
-      this.setTheme(theme);
-    },
-
     handleSelfCenter() {
       if (this.roles.includes("超级管理员")) {
         this.$router.push({ name: "personalcenter" });
@@ -471,6 +466,12 @@ export default {
       msg: (state) => state.tab.tabsList,
     }),
     titleTheme() {
+      if (this.theme === "system") {
+        const prefersDarkScheme = window.matchMedia(
+          "(prefers-color-scheme: dark)"
+        ).matches;
+        return prefersDarkScheme ? "浅色模式" : "深色模式";
+      }
       return this.theme === "light" ? "深色模式" : "浅色模式";
     },
   },

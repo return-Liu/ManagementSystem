@@ -161,7 +161,7 @@ export default {
       this.$router.push({ name: "register", path: "/register" });
     },
     // 封装提示信息
-    showAlert(message) {
+    showAlert(message, type) {
       this.alertVisible = true;
       this.$message({
         message,

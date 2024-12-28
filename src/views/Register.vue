@@ -107,7 +107,7 @@ export default {
       console.log(this.form.code);
     },
     // 显示提示框
-    showAlert(message) {
+    showAlert(message, type) {
       this.alertVisible = true;
       this.$message({
         message,

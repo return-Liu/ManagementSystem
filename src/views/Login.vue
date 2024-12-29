@@ -213,7 +213,7 @@ input::-webkit-input-placeholder {
   width: 100%;
 }
 .forget-password {
-  margin-right: 120px;
+  margin-right: 115px;
 }
 .forget-password,
 .new-user-login {

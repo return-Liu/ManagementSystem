@@ -59,14 +59,22 @@ export default {
   },
   methods: {
     forgetPassword() {
-      if (this.form.password != this.form.passwords) {
+      const validateField = (field, message) => {
+        if (!this.form[field]) {
+          this.showAlert(message, "error");
+          return true;
+        }
+        return false;
+      };
+      if (validateField("password", "请输入密码")) return;
+      if (validateField("passwords", "请再次输入密码")) return;
+
+      if (this.form.password !== this.form.passwords) {
         this.showAlert("两次密码不一致", "error");
-      } else if (!this.form.password && !this.form.passwords) {
-        this.showAlert("请输入密码", "error");
         return;
       }
+      this.showAlert("密码修改成功", "success");
       this.$router.push({ name: "login", path: "/login/index" });
-      this.showAlert("修改成功", "success");
     },
     showAlert(message, type) {
       this.alertVisible = true;

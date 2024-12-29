@@ -13,23 +13,32 @@
           label-width="100px"
           class="demo-ruleForm"
         >
-          <el-form-item label="账号" prop="account">
-            <el-input type="text" v-model="form.account"></el-input>
+          <el-form-item prop="account">
+            <input
+              type="text"
+              v-model="form.account"
+              placeholder="账号/手机号"
+            />
           </el-form-item>
-          <el-form-item label="密码" prop="password">
-            <el-input type="password" v-model="form.password"></el-input>
+          <el-form-item prop="password">
+            <input type="text" placeholder="密码" v-model="form.password" />
           </el-form-item>
-          <el-form-item label="验证码" prop="code">
-            <el-input type="text" v-model="form.code">
-              <template #append>
-                <el-button @click="getCode">获取验证码</el-button>
-              </template>
-            </el-input>
+          <el-form-item prop="code" style="position: relative">
+            <input type="text" v-model="form.code" placeholder="验证码" />
+            <span
+              style="position: absolute; right: 0; bottom: 10px; color: orange"
+              @click="getCode"
+              >获取验证码</span
+            >
           </el-form-item>
-
           <el-form-item>
             <el-button type="primary" class="resister-btn" @click="resister"
               >注册</el-button
+            >
+          </el-form-item>
+          <el-form-item class="button-container">
+            <el-button type="text" class="login" @click="newUserLogin"
+              >已有账号 立即登录</el-button
             >
           </el-form-item>
         </el-form>
@@ -53,6 +62,17 @@ export default {
         code: "",
       },
     };
+  },
+  computed: {
+    validAccount() {
+      return this.form.account.length >= 3; // 根据实际需求调整验证规则
+    },
+    validPassword() {
+      return this.form.password.length >= 6; // 根据实际需求调整验证规则
+    },
+    validCode() {
+      return this.form.code.length >= 5; // 根据实际需求调整验证规则
+    },
   },
   destroyed() {
     // 在组件销毁时移除事件监听器
@@ -103,8 +123,13 @@ export default {
     getCode() {
       console.log("获取验证码");
       // 随机数
-      this.form.code = Math.floor(Math.random() * 1000000);
+      this.form.code = Math.floor(Math.random() * 100000)
+        .toString()
+        .padStart(5, "0");
       console.log(this.form.code);
+    },
+    newUserLogin() {
+      this.$router.push({ name: "login", path: "/login/index" });
     },
     // 显示提示框
     showAlert(message, type) {
@@ -117,6 +142,7 @@ export default {
   },
 };
 </script>
+
 <style scoped lang="less">
 .part {
   height: 100vh;
@@ -125,8 +151,11 @@ export default {
 .register-container,
 .box-card {
   width: 480px;
-  transform: translateX(70%) translateY(10%);
   height: 620px;
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
   background-repeat: no-repeat;
   background-size: 100% 100%;
   background-position: center;
@@ -134,15 +163,26 @@ export default {
 }
 .register-title {
   text-align: center;
-  margin-top: 100px;
+  margin-top: 120px;
   padding: 20px;
   font-size: 30px;
   background: var(--bg12);
   background-clip: text;
   -webkit-text-fill-color: transparent;
 }
+input {
+  width: 100%;
+  border: 0; // 去除未选中状态边框
+  outline: none; // 去除选中状态边框
+  background-color: rgba(0, 0, 0, 0); // 透明背景
+  border-bottom: 1px solid #ccc; // 添加底部边框
+}
 .el-form {
   margin-right: 70px;
+}
+.button-container {
+  display: flex;
+  justify-content: flex-end;
 }
 .resister-btn {
   width: 100%;
@@ -151,5 +191,14 @@ export default {
   border: none;
   border-radius: 5px;
   height: 40px;
+}
+.el-input__icon {
+  color: #606266; /* 设置图标的默认颜色 */
+}
+.el-icon-check {
+  color: #67c23a; /* 设置勾号的颜色 */
+}
+.el-icon-close {
+  color: #f56c6c; /* 设置叉号的颜色 */
 }
 </style>

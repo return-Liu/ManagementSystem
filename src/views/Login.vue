@@ -13,33 +13,20 @@
           label-width="100px"
           class="demo-ruleForm"
         >
-          <el-form-item label="账号" prop="account">
-            <el-input type="text" v-model="form.account">
-              <template #suffix>
-                <i
-                  v-if="form.account"
-                  class="el-input__icon el-icon-check"
-                  :class="{
-                    'el-icon-check': validAccount,
-                    'el-icon-close': !validAccount,
-                  }"
-                ></i>
-              </template>
-            </el-input>
+          <el-form-item prop="account">
+            <input
+              type="text"
+              v-model="form.account"
+              placeholder="账号/手机号"
+            />
           </el-form-item>
-          <el-form-item label="密码" prop="password">
-            <el-input type="password" v-model="form.password">
-              <template #suffix>
-                <i
-                  v-if="form.password"
-                  class="el-input__icon el-icon-check"
-                  :class="{
-                    'el-icon-check': validPassword,
-                    'el-icon-close': !validPassword,
-                  }"
-                ></i>
-              </template>
-            </el-input>
+          <el-form-item prop="password">
+            <input type="text" placeholder="密码" v-model="form.password" />
+          </el-form-item>
+          <el-form-item>
+            <el-button type="primary" class="login-btn" @click="login"
+              >登录</el-button
+            >
           </el-form-item>
           <!-- 忘记密码 新用户登录 -->
           <el-form-item class="button-container">
@@ -51,11 +38,6 @@
             >
             <el-button type="text" class="new-user-login" @click="newUserLogin"
               >新用户登录</el-button
-            >
-          </el-form-item>
-          <el-form-item>
-            <el-button type="primary" class="login-btn" @click="login"
-              >登录</el-button
             >
           </el-form-item>
         </el-form>
@@ -180,7 +162,10 @@ export default {
 .login-container,
 .box-card {
   width: 480px;
-  transform: translateX(70%) translateY(10%);
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
   height: 620px;
   background-repeat: no-repeat;
   background-size: 100% 100%;
@@ -190,12 +175,19 @@ export default {
 
 .login-title {
   text-align: center;
-  margin-top: 100px;
+  margin-top: 120px;
   padding: 20px;
   font-size: 30px;
   background: var(--bg12);
   background-clip: text;
   -webkit-text-fill-color: transparent;
+}
+input {
+  width: 100%;
+  border: 0; // 去除未选中状态边框
+  outline: none; // 去除选中状态边框
+  background-color: rgba(0, 0, 0, 0); // 透明背景
+  border-bottom: 1px solid #ccc; // 添加底部边框
 }
 .el-form {
   margin-right: 70px;
@@ -213,12 +205,22 @@ export default {
 .button-container {
   display: flex;
   justify-content: space-between;
+  width: 100%;
 }
 .forget-password {
-  margin-right: 100px;
+  margin-right: 125px;
 }
 .forget-password,
 .new-user-login {
   color: #409eff;
+}
+.el-input__icon {
+  color: #606266; /* 设置图标的默认颜色 */
+}
+.el-icon-check {
+  color: #67c23a; /* 设置勾号的颜色 */
+}
+.el-icon-close {
+  color: #f56c6c; /* 设置叉号的颜色 */
 }
 </style>

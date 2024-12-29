@@ -39,7 +39,7 @@
               type="text"
               class="forget-password"
               @click="forgetPassword"
-              >忘记密码</el-button
+              >忘记密码?</el-button
             >
             <el-button type="text" class="new-user-login" @click="newUserLogin"
               >新用户登录</el-button
@@ -213,7 +213,7 @@ input::-webkit-input-placeholder {
   width: 100%;
 }
 .forget-password {
-  margin-right: 125px;
+  margin-right: 120px;
 }
 .forget-password,
 .new-user-login {

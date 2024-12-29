@@ -5,7 +5,7 @@
         class="box-card"
         :style="{ backgroundImage: `url(${login_bg})` }"
       >
-        <div class="register-title">快捷注册</div>
+        <div class="register-title">注册</div>
         <el-form
           :model="form"
           status-icon
@@ -17,7 +17,7 @@
             <input
               type="text"
               v-model="form.account"
-              placeholder="账号/手机号"
+              placeholder="账号/手机号/邮箱"
             />
           </el-form-item>
           <el-form-item prop="password">
@@ -26,9 +26,9 @@
           <el-form-item prop="code" style="position: relative">
             <input type="text" v-model="form.code" placeholder="验证码" />
             <span
-              style="position: absolute; right: 0; bottom: 10px; color: orange"
+              style="position: absolute; right: 0; bottom: 10px; color: #fff"
               @click="getCode"
-              >获取验证码</span
+              >{{ buttonText }}</span
             >
           </el-form-item>
           <el-form-item>
@@ -38,7 +38,7 @@
           </el-form-item>
           <el-form-item class="button-container">
             <el-button type="text" class="login" @click="newUserLogin"
-              >已有账号 立即登录</el-button
+              >已有账号? 立即登录</el-button
             >
           </el-form-item>
         </el-form>
@@ -61,18 +61,10 @@ export default {
         password: "",
         code: "",
       },
+      isSending: false,
+      countdown: 60,
+      buttonText: "获取验证码",
     };
-  },
-  computed: {
-    validAccount() {
-      return this.form.account.length >= 3; // 根据实际需求调整验证规则
-    },
-    validPassword() {
-      return this.form.password.length >= 6; // 根据实际需求调整验证规则
-    },
-    validCode() {
-      return this.form.code.length >= 5; // 根据实际需求调整验证规则
-    },
   },
   destroyed() {
     // 在组件销毁时移除事件监听器
@@ -93,7 +85,7 @@ export default {
     // 注册
     resister() {
       if (!this.form.account) {
-        this.showAlert("请输入账号", "error");
+        this.showAlert("请输入账号/邮箱/手机号", "error");
         return;
       }
       if (!this.form.password) {
@@ -121,12 +113,34 @@ export default {
         });
     },
     getCode() {
-      console.log("获取验证码");
-      // 随机数
-      this.form.code = Math.floor(Math.random() * 100000)
-        .toString()
-        .padStart(5, "0");
-      console.log(this.form.code);
+      if (!this.form.account) {
+        this.showAlert("请输入账号/邮箱/手机号", "error");
+        return;
+      }
+      this.$refs.form.validateField("account", (error) => {
+        if (error) {
+          return;
+        }
+        this.showAlert("获取验证码成功", "success");
+        setTimeout(() => {
+          // 模拟发送验证码
+          this.form.code = Math.floor(Math.random() * 100000)
+            .toString()
+            .padStart(5, "0");
+        }, 5000);
+        // 发送验证码逻辑
+        this.isSending = true;
+        const timer = setInterval(() => {
+          this.countdown--;
+          this.buttonText = `${this.countdown}秒后重新发送`;
+          if (this.countdown <= 0) {
+            clearInterval(timer);
+            this.isSending = false;
+            this.buttonText = "获取验证码";
+            this.countdown = 60;
+          }
+        }, 1000);
+      });
     },
     newUserLogin() {
       this.$router.push({ name: "login", path: "/login/index" });
@@ -142,7 +156,6 @@ export default {
   },
 };
 </script>
-
 <style scoped lang="less">
 .part {
   height: 100vh;
@@ -162,8 +175,8 @@ export default {
   border-radius: 10px;
 }
 .register-title {
-  text-align: center;
-  margin-top: 120px;
+  margin-left: 70px;
+  margin-top: 100px;
   padding: 20px;
   font-size: 30px;
   background: var(--bg12);
@@ -176,13 +189,18 @@ input {
   outline: none; // 去除选中状态边框
   background-color: rgba(0, 0, 0, 0); // 透明背景
   border-bottom: 1px solid #ccc; // 添加底部边框
+  padding: 10px 0;
+}
+input::-webkit-input-placeholder {
+  color: #fff;
 }
 .el-form {
   margin-right: 70px;
 }
 .button-container {
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
+  width: 100%;
 }
 .resister-btn {
   width: 100%;
@@ -191,14 +209,5 @@ input {
   border: none;
   border-radius: 5px;
   height: 40px;
-}
-.el-input__icon {
-  color: #606266; /* 设置图标的默认颜色 */
-}
-.el-icon-check {
-  color: #67c23a; /* 设置勾号的颜色 */
-}
-.el-icon-close {
-  color: #f56c6c; /* 设置叉号的颜色 */
 }
 </style>

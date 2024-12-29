@@ -8,9 +8,9 @@ Vue.use(VueRouter);
 import Main from "../views/Main";
 import Login from "../views/Login";
 import Register from "../views/Register";
+import ForgetPassword from "../views/ForgetPassword";
+import PhoneVerification from "../views/PhoneVerification";
 // 1.创建路由组件
-// 2.将组件与组件进行映射
-// 3.创建路由规则
 const routes = [
   // 主路由
   {
@@ -29,6 +29,18 @@ const routes = [
     path: "/register", //注册
     name: "register",
     component: Register,
+  },
+  // 忘记密码
+  {
+    path: "/forgetpassword",
+    name: "forgetpassword",
+    component: ForgetPassword,
+  },
+  // 手机号验证
+  {
+    path: "/phoneveriflion",
+    name: "phoneveriflion",
+    component: PhoneVerification,
   },
 ];
 // 创建路由实例并暴露

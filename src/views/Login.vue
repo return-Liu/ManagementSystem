@@ -5,7 +5,7 @@
         class="box-card"
         :style="{ backgroundImage: `url(${login_bg})` }"
       >
-        <div class="login-title">快捷登录</div>
+        <div class="login-title">登录</div>
         <el-form
           :model="form"
           status-icon
@@ -13,12 +13,17 @@
           label-width="100px"
           class="demo-ruleForm"
         >
-          <el-form-item prop="account">
+          <el-form-item prop="account" style="position: relative">
             <input
               type="text"
               v-model="form.account"
-              placeholder="账号/手机号"
+              placeholder="账号/手机号/邮箱"
             />
+            <i
+              @click="arrowDown"
+              class="el-icon-arrow-down"
+              style="position: absolute; right: 0; color: #fff; bottom: 20px"
+            ></i>
           </el-form-item>
           <el-form-item prop="password">
             <input type="text" placeholder="密码" v-model="form.password" />
@@ -63,14 +68,6 @@ export default {
       alertVisible: false, // 控制错误提示的显示
     };
   },
-  computed: {
-    validAccount() {
-      return this.form.account.length >= 3; // 根据实际需求调整验证规则
-    },
-    validPassword() {
-      return this.form.password.length >= 6; // 根据实际需求调整验证规则
-    },
-  },
   created() {
     // 在组件创建时检查token是否存在，不存在则默认隐藏提示框
     if (!Cookie.get("token")) {
@@ -96,7 +93,7 @@ export default {
     // 登录
     login() {
       if (!this.form.account) {
-        this.showAlert("请输入账号", "error");
+        this.showAlert("请输入账号/手机号", "error");
         return;
       }
       if (!this.form.password) {
@@ -135,9 +132,12 @@ export default {
           this.showAlert("登录失败", "error");
         });
     },
+    arrowDown() {
+      this.showAlert("正在测试中 后续会上线", "error");
+    },
 
     forgetPassword() {
-      this.showAlert("该功能暂未开放", "error");
+      this.$router.push({ name: "phoneveriflion", path: "/phoneveriflion" });
     },
     newUserLogin() {
       this.$router.push({ name: "register", path: "/register" });
@@ -174,8 +174,8 @@ export default {
 }
 
 .login-title {
-  text-align: center;
-  margin-top: 120px;
+  margin-left: 70px;
+  margin-top: 100px;
   padding: 20px;
   font-size: 30px;
   background: var(--bg12);
@@ -188,7 +188,12 @@ input {
   outline: none; // 去除选中状态边框
   background-color: rgba(0, 0, 0, 0); // 透明背景
   border-bottom: 1px solid #ccc; // 添加底部边框
+  padding: 10px 0;
 }
+input::-webkit-input-placeholder {
+  color: #fff;
+}
+
 .el-form {
   margin-right: 70px;
 }
@@ -213,14 +218,5 @@ input {
 .forget-password,
 .new-user-login {
   color: #409eff;
-}
-.el-input__icon {
-  color: #606266; /* 设置图标的默认颜色 */
-}
-.el-icon-check {
-  color: #67c23a; /* 设置勾号的颜色 */
-}
-.el-icon-close {
-  color: #f56c6c; /* 设置叉号的颜色 */
 }
 </style>

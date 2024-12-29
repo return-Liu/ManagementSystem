@@ -28,14 +28,18 @@ import "animate.css";
 // 添加全局前置守卫
 router.beforeEach((to, from, next) => {
   const token = cookie.get("token");
-  if (!token && to.path !== "/login/index" && to.path !== "/register") {
+  if (
+    !token &&
+    to.path !== "/login/index" &&
+    to.path !== "/register" &&
+    to.path !== "/forgetpassword" &&
+    to.path !== "/phoneveriflion"
+  ) {
     // 如果token不存在 则跳转登录页面
     next({ path: "/login/index" });
+  } else if (token && to.path === "/login/index") {
     // 判断token存在 则跳转首页
-  } else if (token && to.path == "/login/index") {
     next({ path: "/home" });
-  } else if (token && to.path == "/register") {
-    next({ path: "login/index" });
   } else {
     next();
   }

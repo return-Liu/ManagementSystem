@@ -283,7 +283,7 @@ export default {
   methods: {
     // 查看内容
     handlerView(row) {
-      if (this.roles !== "超级管理员") {
+      if (this.roles !== "前端开发管理组") {
         this.handlerDialog();
         return;
       }

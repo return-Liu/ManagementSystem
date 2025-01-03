@@ -36,12 +36,6 @@
           :class="iconClass"
           :title="titleTheme"
         ></i>
-        <i
-          @click="handlerTheme('system')"
-          v-show="theme === 'system'"
-          :class="iconClass"
-          :title="titleTheme"
-        ></i>
       </div>
       <div
         class="iconfont icon-tubiao-"
@@ -173,16 +167,6 @@
         <!-- 黑白主题 -->
         <div :class="{ disabled: value3 }" class="switch" style="color: #000">
           <div class="switch-theme">
-            <div
-              class="ocs-theme"
-              :class="{ active: theme === 'system' }"
-              @click="handlerTheme('system')"
-            >
-              <p>
-                <span>深色模式跟随系统</span>
-                <i v-show="theme === 'system'" class="el-icon-check"></i>
-              </p>
-            </div>
             <div>
               <div
                 class="light-theme"
@@ -380,7 +364,6 @@ export default {
   created() {
     this.loadRoles();
     this.selectedItem = this.selectedItems;
-    // this.applySystemTheme(); // 应用系统主题
     this.$root.$on("updateSidebarDeficiency", (newDeficiency) => {
       // 控制色弱模式
       this.value3 = newDeficiency;
@@ -428,7 +411,7 @@ export default {
       }
     },
     handleSelfCenter() {
-      if (this.roles.includes("超级管理员")) {
+      if (this.roles.includes("前端开发管理组")) {
         this.$router.push({ name: "personalcenter" });
       } else {
         this.$message({
@@ -465,19 +448,9 @@ export default {
     ...mapState({
       msg: (state) => state.tab.tabsList,
     }),
-    titleTheme() {
-      if (this.theme === "system") {
-        const prefersDarkScheme = window.matchMedia(
-          "(prefers-color-scheme: dark)"
-        ).matches;
-        return prefersDarkScheme ? "浅色模式" : "深色模式";
-      }
-      return this.theme === "light" ? "深色模式" : "浅色模式";
-    },
   },
 };
 </script>
-
 <style lang="less" scoped>
 .color-deficiency-mode {
   --bg10: #f9f9f9; /* 更柔和的背景颜色 */

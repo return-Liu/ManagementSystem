@@ -11,11 +11,10 @@
       {{ item.lable }}
     </el-tag>
     <div class="message-title">
-      <span v-if="roles && roles.includes('普通用户')">{{ messages }}</span>
+      <span v-if="roles && roles.includes('普通用户组')">{{ messages }}</span>
     </div>
   </div>
 </template>
-
 <script>
 import { mapState, mapMutations } from "vuex";
 export default {

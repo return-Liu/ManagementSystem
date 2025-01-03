@@ -1,7 +1,6 @@
 import axios from "axios";
 export const homeMixin = {
   methods: {
-    // 统一处理home组件的功能
     loadRoles() {
       const roles = localStorage.getItem("roles") || "用户获取失败";
       this.roles = roles;
@@ -22,7 +21,6 @@ export const homeMixin = {
           ) {
             const liveData = response.data.lives[0];
             const weatherTip =
-              // 要么获取到对应的提示，要么返回默认提示
               this.weatherDataArray[liveData.weather] ||
               this.weatherDataArray.default;
             this.weatherData = `当前地区:${liveData.city} 今日:${liveData.weather} 实时气温:${liveData.temperature}℃ 温馨提示: ${weatherTip}`;
@@ -39,25 +37,18 @@ export const homeMixin = {
         });
     },
     handleClick(item) {
-      switch (item.name) {
-        case "产品管理":
-          this.$router.push({ name: "products", path: "/products" });
-          break;
-        case "用户管理":
-          this.$router.push({ name: "users", path: "/users" });
-          break;
-        case "高德地图":
-          this.$router.push({
-            name: "mapintegration",
-            path: "/mapintegration",
-          });
-          break;
-        case "权限管理":
-          this.$router.push({
-            name: "permissionmanagement",
-            path: "/permissionmanagement",
-          });
-          break;
+      const routeItem = {
+        产品管理: { name: "products", path: "/products" },
+        用户管理: { name: "users", path: "/users" },
+        高德地图: { name: "mapintegration", path: "/mapintegration" },
+        权限管理: {
+          name: "permissionmanagement",
+          path: "/permissionmanagement",
+        },
+      };
+      const route = routeItem[item.name];
+      if (route) {
+        this.$router.push(route);
       }
     },
     handlerCity() {
@@ -72,8 +63,6 @@ export const homeMixin = {
         });
       }
     },
-
-    // 统一处理提示信息
     showMessage(message) {
       this.$message({
         type: "success",

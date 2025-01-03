@@ -1,5 +1,5 @@
 <template>
-  <div class="container" :class="{ 'color-deficiency-mode': value3 }">
+  <div class="container">
     <el-dialog
       :visible.sync="dialogVisible"
       width="50%"
@@ -120,7 +120,6 @@ export default {
   name: "PermissionsManagement",
   data() {
     return {
-      value3: localStorage.getItem("deficiency") === "true",
       dialogVisible: false,
       roles: "",
       form: {
@@ -302,11 +301,6 @@ export default {
 };
 </script>
 <style lang="less" scoped>
-.color-deficiency-mode {
-  --bg10: #f9f9f9; /* 更柔和的背景颜色 */
-  --text-color9: #333333; /* 更深的文字颜色 */
-  filter: brightness(90%) contrast(110%) sepia(10%) hue-rotate(20deg);
-}
 .container {
   width: 100%;
   height: 100%;

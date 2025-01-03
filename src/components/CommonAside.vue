@@ -5,7 +5,7 @@
     text-color="var(--text-color1)"
     active-text-color="#43b3cf"
     :style="{ backgroundColor: bgc }"
-    :class="{ 'color-deficiency-mode': value3, 'aslide-fixed': isAside }"
+    :class="{ 'aslide-fixed': isAside }"
   >
     <h3
       :style="{
@@ -55,7 +55,6 @@ export default {
     return {
       bgc: "var(--bg7)", // 设置初始值
       logo: true, // 设置初始值
-      value3: localStorage.getItem("deficiency") === "true",
       // 固定侧边栏
       isAside: "",
     };
@@ -68,15 +67,6 @@ export default {
     // 控制LOGO显示 接收组件传来的值
     this.$root.$on("updateSidebarLogo", (newLogo) => {
       this.logo = newLogo;
-    });
-    // 控制色弱模式 接收组件传来的值
-    this.$root.$on("updateSidebarDeficiency", (newDeficiency) => {
-      this.value3 = newDeficiency;
-      if (newDeficiency) {
-        document.body.classList.add("color-deficiency-mode");
-      } else {
-        document.body.classList.remove("color-deficiency-mode");
-      }
     });
     // 固定侧边栏 接收组件传来的值
     this.$root.$on("updateSidebarAside", (newAside) => {
@@ -117,11 +107,6 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.color-deficiency-mode {
-  --bg10: #f9f9f9; /* 更柔和的背景颜色 */
-  --text-color9: #333333; /* 更深的文字颜色 */
-  filter: brightness(90%) contrast(110%) sepia(10%) hue-rotate(20deg);
-}
 .aslide-fixed {
   position: static;
   height: 100vh;

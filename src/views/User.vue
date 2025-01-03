@@ -1,8 +1,5 @@
 <template>
-  <div
-    class="manage animate__animated animate__fadeIn"
-    :class="{ 'color-deficiency-mode': value3 }"
-  >
+  <div class="manage animate__animated animate__fadeIn">
     <el-dialog
       :title="modelType ? '编辑用户' : '新增用户'"
       :visible.sync="dialogVisible"
@@ -214,7 +211,6 @@ export default {
   name: "User",
   data() {
     return {
-      value3: localStorage.getItem("deficiency") === "true",
       // 用户状态
       roles: "",
       // 弹窗
@@ -641,24 +637,10 @@ export default {
     this.getList();
     this.roles = localStorage.getItem("roles");
     console.log(this.roles);
-    this.$root.$on("updateSidebarDeficiency", (newDeficiency) => {
-      // 控制色弱模式
-      this.value3 = newDeficiency;
-      if (newDeficiency) {
-        document.body.classList.add("color-deficiency-mode");
-      } else {
-        document.body.classList.remove("color-deficiency-mode");
-      }
-    });
   },
 };
 </script>
 <style lang="less" scoped>
-.color-deficiency-mode {
-  --bg10: #f9f9f9; /* 更柔和的背景颜色 */
-  --text-color9: #333333; /* 更深的文字颜色 */
-  filter: brightness(90%) contrast(110%) sepia(10%) hue-rotate(20deg);
-}
 .manage {
   height: 90%;
 

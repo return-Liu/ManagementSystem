@@ -10,7 +10,7 @@
       class="animate__animated animate__fadeIn"
     >
       <div class="overlay" v-show="moreList || DataList"></div>
-      <el-card class="header" :class="{ 'color-deficiency-mode': value3 }">
+      <el-card class="header">
         <h6
           class="avatar-name"
           style="color: skyblue; font-family: 'Times New Roman', Times, serif"
@@ -62,10 +62,7 @@
         </div>
       </el-card>
       <div class="main">
-        <el-card
-          class="Project-List"
-          :class="{ 'color-deficiency-mode': value3 }"
-        >
+        <el-card class="Project-List">
           <span class="more-Project_List" @click="handlerListMore">更多</span>
           <span>项目</span>
           <div class="item-list">
@@ -82,10 +79,7 @@
             </div>
           </div>
         </el-card>
-        <el-card
-          class="Quick-Navigation"
-          :class="{ 'color-deficiency-mode': value3 }"
-        >
+        <el-card class="Quick-Navigation">
           <span>快捷导航</span>
           <div class="Quick-list">
             <div
@@ -99,11 +93,7 @@
             </div>
           </div>
         </el-card>
-        <el-card
-          :class="{ 'color-deficiency-mode': value3 }"
-          v-show="DataList"
-          class="DataList"
-        >
+        <el-card v-show="DataList" class="DataList">
           <p class="moreList">
             {{ currentTip }}
           </p>
@@ -124,7 +114,7 @@
             </div>
           </div>
         </el-card>
-        <el-card class="New" :class="{ 'color-deficiency-mode': value3 }">
+        <el-card class="New">
           <span>最新动态</span>
           <span class="more-list" @click="handlerMore">更多 </span>
           <div class="new" v-for="item in newList" :key="item.id">
@@ -132,11 +122,7 @@
             <div class="time">{{ item.time }}</div>
           </div>
         </el-card>
-        <el-card
-          class="NewList"
-          :class="{ 'color-deficiency-mode': value3 }"
-          v-show="moreList"
-        >
+        <el-card class="NewList" v-show="moreList">
           <p class="moreList">
             {{ currentTip }}
           </p>
@@ -197,7 +183,6 @@ export default {
   name: "Home",
   data() {
     return {
-      value3: localStorage.getItem("deficiency") === "true",
       // 轮播图列表
       card: [
         {
@@ -255,7 +240,6 @@ export default {
     getListData().then(({ data }) => {
       const { cities, newList, DataList, newListMore, DataListMore } =
         data.data;
-      console.log(data);
       this.newList = newList;
       this.dataList = DataList;
       this.cities = cities;
@@ -301,11 +285,7 @@ export default {
   background-color: rgba(0, 0, 0, 0.5);
   z-index: 998; /* 确保遮罩层在内容之上，但在更多列表之下 */
 }
-.color-deficiency-mode {
-  --bg10: #f9f9f9; /* 更柔和的背景颜色 */
-  --text-color9: #333333; /* 更深的文字颜色 */
-  filter: brightness(90%) contrast(110%) sepia(10%) hue-rotate(20deg);
-}
+
 // 原有样式保持不变
 .el-row {
   display: flex;

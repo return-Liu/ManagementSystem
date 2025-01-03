@@ -49,7 +49,7 @@
         :direction="direction"
         :before-close="handleClose"
       >
-        <div class="Overall-Style-Settings" :class="{ disabled: value3 }">
+        <div class="Overall-Style-Settings">
           <div
             class="Style-Settings"
             style="display: flex; justify-content: center; color: #000"
@@ -151,7 +151,7 @@
             margin-top: 150px;
           "
         ></div>
-        <div class="System_Theme" :class="{ disabled: value3 }">
+        <div class="System_Theme">
           <div
             class="Theme"
             style="
@@ -165,7 +165,7 @@
           </div>
         </div>
         <!-- 黑白主题 -->
-        <div :class="{ disabled: value3 }" class="switch" style="color: #000">
+        <div class="switch" style="color: #000">
           <div class="switch-theme">
             <div>
               <div
@@ -213,7 +213,6 @@
             <div class="Navigation">导航模式</div>
           </div>
           <div
-            :class="{ disabled: value3 }"
             class="Content_The_Header"
             style="
               margin-top: 30px;
@@ -233,7 +232,6 @@
             </div>
           </div>
           <div
-            :class="{ disabled: value3 }"
             class="Content-The_Aside"
             style="
               margin-top: 30px;
@@ -253,7 +251,6 @@
             </div>
           </div>
           <div
-            :class="{ disabled: value3 }"
             class="Display-The-LOGO"
             style="
               margin-top: 30px;
@@ -272,46 +269,6 @@
               >
                 ></el-switch
               >
-            </div>
-          </div>
-        </div>
-        <div
-          class="line"
-          style="
-            width: 500px;
-            height: 1px;
-            background-color: #ccc;
-            margin-top: 30px;
-          "
-        ></div>
-        <div>
-          <div
-            class="Other_Settings"
-            style="
-              margin-top: 30px;
-              color: #000;
-              display: flex;
-              justify-content: space-around;
-            "
-          >
-            <div class="Settings">其他模式</div>
-          </div>
-          <div
-            class=""
-            style="
-              margin-top: 20px;
-              color: #000;
-              display: flex;
-              justify-content: center;
-            "
-          >
-            <div class="Color-Deficiency-Mode">护眼模式</div>
-            <div class="Switch" style="margin-left: 115px">
-              <el-switch
-                v-model="value3"
-                @change="switchDeficiency"
-                active-color="#409EFF"
-              ></el-switch>
             </div>
           </div>
         </div>
@@ -364,15 +321,6 @@ export default {
   created() {
     this.loadRoles();
     this.selectedItem = this.selectedItems;
-    this.$root.$on("updateSidebarDeficiency", (newDeficiency) => {
-      // 控制色弱模式
-      this.value3 = newDeficiency;
-      if (newDeficiency) {
-        document.body.classList.add("color-deficiency-mode");
-      } else {
-        document.body.classList.remove("color-deficiency-mode");
-      }
-    });
   },
   methods: {
     loadRoles() {
@@ -401,13 +349,10 @@ export default {
       this.$store.commit("CollapseMenu");
     },
     handlerDropdown(command) {
-      switch (command) {
-        case "selfcenter":
-          this.handleSelfCenter();
-          break;
-        case "cancel":
-          this.handleLogout();
-          break;
+      if (command === "selfcenter") {
+        this.handleSelfCenter();
+      } else if (command === "cancel") {
+        this.handleLogout();
       }
     },
     handleSelfCenter() {
@@ -452,15 +397,6 @@ export default {
 };
 </script>
 <style lang="less" scoped>
-.color-deficiency-mode {
-  --bg10: #f9f9f9; /* 更柔和的背景颜色 */
-  --text-color9: #333333; /* 更深的文字颜色 */
-  filter: brightness(90%) contrast(110%) sepia(10%) hue-rotate(20deg);
-}
-.disabled {
-  pointer-events: none; /* 禁用所有鼠标事件 */
-  opacity: 0.5; /* 可选：降低透明度以表示禁用状态 */
-}
 .header-container {
   padding: 0 20px;
   background-color: var(--bg8);

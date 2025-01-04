@@ -1,6 +1,6 @@
 export const headerMixin = {
-  created() {
-    if (this.theme === "auto_light" || this.theme === "auto-dark") {
+  mounted() {
+    if (this.theme === "auto_light" || this.theme === "auto_dark") {
       this.setupSystemThemeListener();
     }
   },
@@ -11,12 +11,12 @@ export const headerMixin = {
     // 当前是系统主题
     handlerAutoTheme() {
       // 根据当前主题切换到相反的主题
-      const newTheme = this.theme === "auto-dark" ? "light" : "dark";
+      const newTheme = this.theme === "auto" ? "light" : "dark";
       this.setTheme(newTheme);
     },
     // 手动选择 dark 或 light 主题
     handlerTheme(theme) {
-      if (theme === "auto_light" || theme === "auto-dark") {
+      if (theme === "auto_light" || theme === "auto_dark") {
         this.setupSystemThemeListener();
       } else {
         this.removeSystemThemeListener();
@@ -48,11 +48,11 @@ export const headerMixin = {
         );
       }
     },
-    handleSystemThemeChange(e) {
-      const systemTheme = e.matches ? "auto-dark" : "auto-light";
+    handleSystemThemeChange(event) {
+      const systemTheme = event.matches ? "auto_dark" : "auto_light";
       document.documentElement.setAttribute("data-theme", systemTheme);
       this.iconClass =
-        systemTheme === "auto-dark" ? "el-icon-sunny" : "el-icon-moon";
+        systemTheme === "auto_dark" ? "el-icon-sunny" : "el-icon-moon";
       localStorage.setItem("icon", this.iconClass);
     },
     selectItem(item) {

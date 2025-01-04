@@ -176,7 +176,7 @@
             <div>
               <div
                 class="auto-theme"
-                :class="{ active: theme === ' auto_light' }"
+                :class="{ active: theme === 'auto_light' }"
                 @click="handlerTheme('auto_light')"
               >
                 <p>

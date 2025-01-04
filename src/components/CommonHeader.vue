@@ -37,8 +37,8 @@
           :title="titleTheme"
         ></i>
         <i
-          @click="handlerAutoTheme('auto')"
-          v-show="theme === 'auto'"
+          @click="handlerAutoTheme('auto_light')"
+          v-show="theme === 'auto_light'"
           :class="iconClass"
           :title="titleTheme"
         ></i>
@@ -176,12 +176,12 @@
             <div>
               <div
                 class="auto-theme"
-                :class="{ active: theme === 'auto' }"
-                @click="handlerTheme('auto')"
+                :class="{ active: theme === ' auto_light' }"
+                @click="handlerTheme('auto_light')"
               >
                 <p>
                   <span>深色模式跟随系统</span>
-                  <i v-show="theme === 'auto'" class="el-icon-check"></i>
+                  <i v-show="theme === 'auto_light'" class="el-icon-check"></i>
                 </p>
               </div>
               <div

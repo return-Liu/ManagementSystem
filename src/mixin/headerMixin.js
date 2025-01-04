@@ -1,6 +1,6 @@
 export const headerMixin = {
   created() {
-    if (this.theme === "auto") {
+    if (this.theme === "auto_light" || this.theme === "auto-dark") {
       this.setupSystemThemeListener();
     }
   },
@@ -11,12 +11,12 @@ export const headerMixin = {
     // 当前是系统主题
     handlerAutoTheme() {
       // 根据当前主题切换到相反的主题
-      const newTheme = this.theme === "dark" ? "light" : "dark";
+      const newTheme = this.theme === "auto-dark" ? "light" : "dark";
       this.setTheme(newTheme);
     },
     // 手动选择 dark 或 light 主题
     handlerTheme(theme) {
-      if (theme === "auto") {
+      if (theme === "auto_light" || theme === "auto-dark") {
         this.setupSystemThemeListener();
       } else {
         this.removeSystemThemeListener();
@@ -30,7 +30,7 @@ export const headerMixin = {
       const iconItem = {
         dark: "el-icon-sunny",
         light: "el-icon-moon",
-        auto: "el-icon-moon",
+        auto_light: "el-icon-moon",
       };
       this.iconClass = iconItem[theme];
       localStorage.setItem("icon", this.iconClass);
@@ -49,10 +49,10 @@ export const headerMixin = {
       }
     },
     handleSystemThemeChange(e) {
-      const systemTheme = e.matches ? "dark" : "light";
+      const systemTheme = e.matches ? "auto-dark" : "auto-light";
       document.documentElement.setAttribute("data-theme", systemTheme);
       this.iconClass =
-        systemTheme === "dark" ? "el-icon-sunny" : "el-icon-moon";
+        systemTheme === "auto-dark" ? "el-icon-sunny" : "el-icon-moon";
       localStorage.setItem("icon", this.iconClass);
     },
     selectItem(item) {

@@ -1,6 +1,26 @@
 export const headerMixin = {
+  created() {
+    if (this.theme === "auto") {
+      this.setupSystemThemeListener();
+    }
+  },
+  destroyed() {
+    this.removeSystemThemeListener();
+  },
   methods: {
+    // 当前是系统主题
+    handlerAutoTheme() {
+      // 根据当前主题切换到相反的主题
+      const newTheme = this.theme === "dark" ? "light" : "dark";
+      this.setTheme(newTheme);
+    },
+    // 手动选择 dark 或 light 主题
     handlerTheme(theme) {
+      if (theme === "auto") {
+        this.setupSystemThemeListener();
+      } else {
+        this.removeSystemThemeListener();
+      }
       this.setTheme(theme);
     },
     setTheme(theme) {
@@ -10,8 +30,29 @@ export const headerMixin = {
       const iconItem = {
         dark: "el-icon-sunny",
         light: "el-icon-moon",
+        auto: "el-icon-moon",
       };
       this.iconClass = iconItem[theme];
+      localStorage.setItem("icon", this.iconClass);
+    },
+    setupSystemThemeListener() {
+      this.mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
+      this.mediaQuery.addEventListener("change", this.handleSystemThemeChange);
+      this.handleSystemThemeChange(this.mediaQuery);
+    },
+    removeSystemThemeListener() {
+      if (this.mediaQuery) {
+        this.mediaQuery.removeEventListener(
+          "change",
+          this.handleSystemThemeChange
+        );
+      }
+    },
+    handleSystemThemeChange(e) {
+      const systemTheme = e.matches ? "dark" : "light";
+      document.documentElement.setAttribute("data-theme", systemTheme);
+      this.iconClass =
+        systemTheme === "dark" ? "el-icon-sunny" : "el-icon-moon";
       localStorage.setItem("icon", this.iconClass);
     },
     selectItem(item) {
@@ -28,11 +69,9 @@ export const headerMixin = {
       console.log(item);
       if (backgroundColorMap[item]) {
         if (item.startsWith("top-bg")) {
-          // 如果是背景图片，清除背景颜色
           headerContainer.style.backgroundImage = `url(${backgroundColorMap[item]})`;
-          headerContainer.style.backgroundColor = "transparent"; // 确保背景颜色透明
+          headerContainer.style.backgroundColor = "transparent";
         } else {
-          // 如果是颜色，清除背景图片
           headerContainer.style.backgroundImage = "none";
           headerContainer.style.backgroundColor = backgroundColorMap[item];
         }

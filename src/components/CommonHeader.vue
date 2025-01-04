@@ -36,6 +36,12 @@
           :class="iconClass"
           :title="titleTheme"
         ></i>
+        <i
+          @click="handlerAutoTheme('auto')"
+          v-show="theme === 'auto'"
+          :class="iconClass"
+          :title="titleTheme"
+        ></i>
       </div>
       <div
         class="iconfont icon-tubiao-"
@@ -169,6 +175,16 @@
           <div class="switch-theme">
             <div>
               <div
+                class="auto-theme"
+                :class="{ active: theme === 'auto' }"
+                @click="handlerTheme('auto')"
+              >
+                <p>
+                  <span>深色模式跟随系统</span>
+                  <i v-show="theme === 'auto'" class="el-icon-check"></i>
+                </p>
+              </div>
+              <div
                 class="light-theme"
                 :class="{ active: theme === 'light' }"
                 @click="handlerTheme('light')"
@@ -294,6 +310,7 @@
 import { mapState } from "vuex";
 import { headerMixin } from "../mixin/headerMixin";
 import cookie from "js-cookie";
+
 export default {
   // 使用混入
   mixins: [headerMixin],
@@ -355,6 +372,7 @@ export default {
         this.handleLogout();
       }
     },
+
     handleSelfCenter() {
       if (this.roles.includes("前端开发管理组")) {
         this.$router.push({ name: "personalcenter" });

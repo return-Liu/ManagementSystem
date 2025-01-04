@@ -19,7 +19,6 @@ export default {
     };
   },
   created() {
-    console.log("Router:", this.$router);
     if (!this.$router) {
       console.error("Vue Router is not defined");
       return;

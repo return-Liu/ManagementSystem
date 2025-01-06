@@ -17,7 +17,7 @@
             <input
               type="text"
               v-model="form.account"
-              placeholder="账号/手机号/邮箱"
+              placeholder="手机号/邮箱"
             />
           </el-form-item>
           <el-form-item prop="password">
@@ -85,7 +85,7 @@ export default {
     // 注册
     resister() {
       if (!this.form.account) {
-        this.showAlert("请输入账号/邮箱/手机号", "error");
+        this.showAlert("请输入邮箱/手机号", "error");
         return;
       }
       if (!this.form.password) {

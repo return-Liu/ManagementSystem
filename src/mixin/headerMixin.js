@@ -1,27 +1,61 @@
 export const headerMixin = {
   mounted() {
-    if (this.theme === "auto_light" || this.theme === "auto_dark") {
-      this.setupSystemThemeListener();
-    }
+    this.setupSystemThemeListener();
+    // this.handleSystemThemeChange();
   },
   destroyed() {
     this.removeSystemThemeListener();
+    this.setupSystemThemeListener();
   },
   methods: {
-    // 当前是系统主题
-    handlerAutoTheme() {
-      // 根据当前主题切换到相反的主题
-      const newTheme = this.theme === "auto" ? "light" : "dark";
-      this.setTheme(newTheme);
-    },
-    // 手动选择 dark 或 light 主题
-    handlerTheme(theme) {
-      if (theme === "auto_light" || theme === "auto_dark") {
-        this.setupSystemThemeListener();
-      } else {
-        this.removeSystemThemeListener();
+    // 图标切换
+    handlerAutoTheme(theme) {
+      if (theme === "os_default") {
+        this.$confirm(
+          "主动切换主题后,将暂时关闭主题跟随功能,可在模式选择中,重新开启自动跟随",
+          "温馨提示",
+          {
+            confirmButtonText: "确定",
+            cancelButtonText: "取消",
+          }
+        )
+          .then(() => {
+            if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
+              this.setTheme("light");
+            }
+            if (window.matchMedia("(prefers-color-scheme: light)").matches) {
+              this.setTheme("dark");
+            }
+            this.showMessage("正在切换中", "success");
+          })
+          .catch(() => {
+            this.showMessage("自动跟随系统模式中", "info");
+          });
       }
-      this.setTheme(theme);
+    },
+    // 自动主题
+    handlerTheme(theme) {
+      if (theme === "os_default") {
+        this.$confirm(
+          "切换为跟随系统模式后,将根据系统主题自动切换浅深模式？",
+          "温馨提示",
+          {
+            confirmButtonText: "确定",
+            cancelButtonText: "取消",
+          }
+        )
+          .then(() => {
+            this.setupSystemThemeListener();
+            this.showMessage("已开启跟随系统模式", "success");
+            this.setTheme(theme);
+          })
+          .catch(() => {
+            this.removeSystemThemeListener();
+            this.showMessage("已取消跟随系统模式", "error");
+          });
+      } else {
+        this.setTheme(theme);
+      }
     },
     setTheme(theme) {
       this.theme = theme;
@@ -30,13 +64,14 @@ export const headerMixin = {
       const iconItem = {
         dark: "el-icon-sunny",
         light: "el-icon-moon",
-        auto_light: "el-icon-moon",
+        os_default: `${this.iconClass}`,
       };
       this.iconClass = iconItem[theme];
       localStorage.setItem("icon", this.iconClass);
     },
     setupSystemThemeListener() {
       this.mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
+      // console.log(this.mediaQuery);
       this.mediaQuery.addEventListener("change", this.handleSystemThemeChange);
       this.handleSystemThemeChange(this.mediaQuery);
     },
@@ -48,12 +83,13 @@ export const headerMixin = {
         );
       }
     },
-    handleSystemThemeChange(event) {
-      const systemTheme = event.matches ? "auto_dark" : "auto_light";
-      document.documentElement.setAttribute("data-theme", systemTheme);
-      this.iconClass =
-        systemTheme === "auto_dark" ? "el-icon-sunny" : "el-icon-moon";
-      localStorage.setItem("icon", this.iconClass);
+    handleSystemThemeChange(e) {
+      // 系统变化
+      const systemTheme = e.matches ? "os_default" : "os_default";
+      // 图标变化
+      const IconTheme = e.matches ? "el-icon-sunny" : "el-icon-moon";
+      this.setTheme(systemTheme);
+      this.iconClass = IconTheme;
     },
     selectItem(item) {
       this.selectedItem = item;
@@ -92,16 +128,6 @@ export const headerMixin = {
         this.showMessage(this.value1 ? "已开启固定头部栏" : "已取消固定头部栏");
       }
     },
-    switchDeficiency() {
-      this.$root.$emit("updateSidebarDeficiency", this.value3);
-      this.isDisabled = this.value3;
-      this.showMessage(
-        this.value3
-          ? "护眼模式已开启 部分主题开启禁用状态"
-          : "护眼模式已关闭 部分主题解除禁用状态"
-      );
-      localStorage.setItem("deficiency", this.value3.toString());
-    },
     switchAside() {
       this.$root.$emit("updateSidebarAside", this.value4);
       this.showMessage(this.value4 ? "已开启固定侧边栏" : "已取消固定侧边栏");
@@ -111,9 +137,9 @@ export const headerMixin = {
       this.showMessage(this.value2 ? "Logo显示成功" : "Logo隐藏成功");
     },
     // 统一处理提示信息
-    showMessage(message) {
+    showMessage(message, type = "info") {
       this.$message({
-        type: "success",
+        type,
         message,
         duration: 1500,
       });
@@ -121,6 +147,9 @@ export const headerMixin = {
   },
   computed: {
     titleTheme() {
+      if (this.theme === "os_default") {
+        return "跟随系统模式";
+      }
       return this.theme === "light" ? "深色模式" : "浅色模式";
     },
   },

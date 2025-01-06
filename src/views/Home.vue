@@ -246,15 +246,6 @@ export default {
       this.newListMore = newListMore;
       this.DataListMore = DataListMore;
     });
-    this.$root.$on("updateSidebarDeficiency", (newDeficiency) => {
-      // 控制色弱模式
-      this.value3 = newDeficiency;
-      if (newDeficiency) {
-        document.body.classList.add("color-deficiency-mode");
-      } else {
-        document.body.classList.remove("color-deficiency-mode");
-      }
-    });
     this.loadRoles();
     this.loadAvatar(); // 确保在created中调用loadAvatar
   },

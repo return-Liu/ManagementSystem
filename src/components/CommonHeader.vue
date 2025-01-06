@@ -23,7 +23,7 @@
       </el-breadcrumb>
     </div>
     <div class="r-content">
-      <div class="theme" :class="{ disabled: value3 }">
+      <div class="theme">
         <i
           @click="handlerTheme('light')"
           v-show="theme === 'dark'"
@@ -37,10 +37,10 @@
           :title="titleTheme"
         ></i>
         <i
-          @click="handlerAutoTheme('auto_light')"
-          v-show="theme === 'auto_light'"
+          @click="handlerAutoTheme('os_default')"
+          v-show="theme === 'os_default'"
           :class="iconClass"
-          :title="titleTheme"
+           :title="titleTheme"
         ></i>
       </div>
       <div
@@ -176,12 +176,12 @@
             <div>
               <div
                 class="auto-theme"
-                :class="{ active: theme === 'auto_light' }"
-                @click="handlerTheme('auto_light')"
+                :class="{ active: theme === 'os_default' }"
+                @click="handlerTheme('os_default')"
               >
                 <p>
                   <span>深色模式跟随系统</span>
-                  <i v-show="theme === 'auto_light'" class="el-icon-check"></i>
+                  <i v-show="theme === 'os_default'" class="el-icon-check"></i>
                 </p>
               </div>
               <div
@@ -310,7 +310,6 @@
 import { mapState } from "vuex";
 import { headerMixin } from "../mixin/headerMixin";
 import cookie from "js-cookie";
-
 export default {
   // 使用混入
   mixins: [headerMixin],
@@ -321,7 +320,6 @@ export default {
       value1: false,
       value2: true,
       value4: false,
-      value3: localStorage.getItem("deficiency") === "true",
       roles: "",
       drawer: false,
       direction: "rtl",
@@ -345,20 +343,17 @@ export default {
       this.roles = roles;
     },
     handleClose(done) {
-      this.$confirm("确认关闭？")
+      this.$confirm("确认关闭？", "温馨提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+      })
         .then(() => {
-          this.$notify({
-            title: "模式选择",
-            message: "关闭成功",
-            type: "success",
-          });
           done();
         })
         .catch(() => {
-          this.$notify({
-            title: "模式选择",
-            message: "关闭失败",
+          this.$message({
             type: "info",
+            message: "已取消关闭",
           });
         });
     },
@@ -372,7 +367,6 @@ export default {
         this.handleLogout();
       }
     },
-
     handleSelfCenter() {
       if (this.roles.includes("前端开发管理组")) {
         this.$router.push({ name: "personalcenter" });
@@ -554,7 +548,7 @@ export default {
     margin-top: 30px;
   }
   .switch-theme {
-    margin-left: 235px;
+    margin-left: 160px;
     width: 300px;
     height: 80px;
   }

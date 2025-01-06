@@ -423,7 +423,6 @@ export default {
         await this.$confirm("此操作将编辑该文件, 是否继续?", "温馨提示", {
           confirmButtonText: "确定",
           cancelButtonText: "取消",
-          type: "warning",
         });
         // 赋值
         this.form = JSON.parse(JSON.stringify(row));
@@ -448,7 +447,6 @@ export default {
         await this.$confirm("此操作将永久删除该文件, 是否继续?", "温馨提示", {
           confirmButtonText: "确定",
           cancelButtonText: "取消",
-          type: "warning",
         });
         try {
           await delUser({ id: row.id });
@@ -488,7 +486,6 @@ export default {
           {
             confirmButtonText: "确定",
             cancelButtonText: "取消",
-            type: "warning",
           }
         );
         if (confirmResult === "confirm") {
@@ -545,7 +542,6 @@ export default {
         await this.$confirm("此操作将新增文件, 是否继续?", "温馨提示", {
           confirmButtonText: "确定",
           cancelButtonText: "取消",
-          type: "warning",
         });
         this.modelType = 0;
         this.dialogVisible = true;

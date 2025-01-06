@@ -62,7 +62,7 @@ export default {
   methods: {
     getCode() {
       if (!this.form.phone) {
-        this.showAlert("请输入账号/邮箱/手机号", "error");
+        this.showAlert("请输入邮箱/手机号", "error");
         return;
       }
       this.$refs.form.validateField("phone", (error) => {
@@ -74,7 +74,7 @@ export default {
           // 模拟发送验证码
           this.form.code = Math.floor(Math.random() * 100000)
             .toString()
-            .padStart(5, "0");
+            .padStart(6, "0");
         }, 5000);
         // 发送验证码逻辑
         this.isSending = true;

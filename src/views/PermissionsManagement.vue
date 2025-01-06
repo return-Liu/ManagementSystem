@@ -137,6 +137,7 @@ export default {
         permission: [
           { required: true, message: "请输入用户权限", trigger: "blur" },
         ],
+        roles: [{ required: true, message: "请输入角色", trigger: "blur" }],
         createTime: [
           { required: true, message: "请输入创建时间", trigger: "blur" },
         ],
@@ -181,7 +182,6 @@ export default {
       this.$confirm("此操作将新增权限, 是否继续?", "温馨提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
-        type: "warning",
       })
 
         .then(() => {
@@ -255,7 +255,6 @@ export default {
       this.$confirm("此操作将编辑权限, 是否继续?", "温馨提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
-        type: "warning",
       })
         .then(() => {
           this.modelType = 0; // 设置为编辑模式
@@ -283,7 +282,6 @@ export default {
       this.$confirm("此操作将删除权限, 是否继续?", "温馨提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
-        type: "warning",
       })
         .then(() => {
           this.tableData.splice(this.tableData.indexOf(row), 1);

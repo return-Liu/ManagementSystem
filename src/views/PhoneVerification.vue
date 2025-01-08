@@ -92,7 +92,7 @@ export default {
     },
     verifyCode() {
       if (!this.form.phone) {
-        this.showAlert("请输入账号/邮箱/手机号", "error");
+        this.showAlert("手机号/邮箱", "error");
         return;
       }
       // 判断手机号是否为空或格式不对  // 判断邮箱是否为空或格式不对
@@ -135,7 +135,6 @@ export default {
   background-position: center;
   border-radius: 10px;
 }
-
 .verification-title {
   margin-left: 70px;
   margin-top: 100px;
